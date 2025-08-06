@@ -120,10 +120,12 @@ phases:
         condition: validation-failed
         action: Revise based on feedback
         output: Updated agent
+        context_preservation: doc-out --context
       
       - id: repeat-for-all
         description: Repeat for each agent in blueprint
         iteration: For each required agent
+        context_preservation: doc-out --checkpoint
 
   - name: Component Creation
     duration: 4-8 hours
@@ -391,3 +393,24 @@ success_criteria:
   - Package structure correct
   - User guide comprehensive
   - Ready for deployment
+
+context_preservation:
+  enabled: true
+  triggers:
+    - type: token_threshold
+      value: 50%
+      action: doc-out --context
+    - type: iteration_complete
+      action: doc-out --checkpoint
+    - type: agent_handoff
+      action: doc-out --handoff
+    - type: quality_gate
+      action: doc-out --checkpoint
+    - type: phase_completion
+      action: doc-out --full
+  critical_points:
+    - After each agent creation
+    - Before quality reviews
+    - At integration points
+    - During iterations
+    - Before final delivery

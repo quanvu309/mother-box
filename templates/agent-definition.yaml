@@ -63,7 +63,14 @@ yaml_block:
       - "Announce: Introduce yourself as [Agent Title] who [primary purpose]"
       - "IMPORTANT: Tell users that all commands start with *"
       - "CRITICAL: [Agent-specific critical instruction]"
+      - "CONTEXT: Monitor token usage and trigger doc-out at 50% threshold"
       - "On activation, ONLY greet user and then HALT"
+    
+    llm_optimization:
+      - "Use pattern completion for consistent responses"
+      - "Maintain context awareness through structured state tracking"
+      - "Apply role-specific language patterns consistently"
+      - "Trigger context preservation before handoffs"
 
 # Agent Metadata
 agent:
@@ -134,9 +141,13 @@ persona:
     type: list
     required: true
     min_items: 8
-    max_items: 10
+    max_items: 12
     format:
       - "[Principle Name]: [How it guides behavior]"
+    required_principles:
+      - "Context Preservation: Proactively doc-out at 50% token usage or before handoffs"
+      - "LLM Optimization: Use structured outputs and pattern completion for consistency"
+      - "State Awareness: Track decisions, rationale, and next steps continuously"
     last_item: "Numbered Options Protocol: Always use numbered lists for selections"
 
 # Commands Section
@@ -158,8 +169,17 @@ commands:
       required: false
     
     doc-out:
-      description: "Output documentation"
-      required: false
+      description: "Output documentation with context preservation"
+      required: true
+      variations:
+        - "doc-out: Full documentation with all context"
+        - "doc-out --context: Current state and decisions only"
+        - "doc-out --handoff: Prepare context for agent transition"
+        - "doc-out --checkpoint: Create workflow checkpoint"
+    
+    context-status:
+      description: "Show current context usage and preservation status"
+      required: true
   
   custom_commands:
     format: "[verb]: [description]"
@@ -227,21 +247,96 @@ dependencies:
     format: "- [data-file].md"
     required: false
 
+# Context Preservation Configuration
+context_preservation:
+  triggers:
+    token_threshold:
+      percentage: 50
+      action: "Automatic doc-out with context summary"
+    
+    complexity_threshold:
+      decisions_made: 5
+      analysis_depth: 3
+      action: "Checkpoint current state"
+    
+    time_based:
+      interval_minutes: 10
+      action: "Progressive documentation"
+    
+    event_based:
+      - trigger: "agent_handoff"
+        action: "doc-out --handoff"
+      - trigger: "phase_completion"
+        action: "doc-out --checkpoint"
+      - trigger: "error_encountered"
+        action: "doc-out --context"
+  
+  output_formats:
+    micro:
+      description: "Single decision or action"
+      max_lines: 2
+      when: "After each significant decision"
+    
+    mini:
+      description: "Subtask completion summary"
+      max_lines: 10
+      when: "End of each subtask"
+    
+    checkpoint:
+      description: "Phase completion documentation"
+      sections: ["objectives", "decisions", "rationale", "next_steps"]
+      when: "Phase transitions"
+    
+    full:
+      description: "Complete context dump"
+      includes: ["all_decisions", "full_rationale", "complete_state"]
+      when: "Token threshold or major handoff"
+
+# LLM Prompt Patterns
+llm_patterns:
+  role_reinforcement:
+    frequency: "Every 3rd response"
+    pattern: "As [Agent Title], I [action aligned with role]..."
+  
+  structured_thinking:
+    format: |
+      Assessment: [Current situation]
+      Decision: [What I'm doing]
+      Rationale: [Why this approach]
+      Next: [What comes after]
+  
+  context_awareness:
+    track:
+      - "User's primary goal"
+      - "Current phase/step"
+      - "Key decisions made"
+      - "Pending questions"
+      - "Next actions"
+  
+  consistency_patterns:
+    - "Always use numbered lists for options"
+    - "Maintain agent's voice and style"
+    - "Follow command prefix convention (*)"
+    - "Use structured outputs for complex data"
+
 # Validation Requirements
 validation:
   format_compliance:
     - BMAD structure complete
     - YAML properly formatted
     - All required sections present
+    - Context preservation configured
   
   content_quality:
     - Persona authentic to domain
     - Commands comprehensive
     - Dependencies accurate
     - Help display clear
+    - LLM patterns defined
   
   integration_readiness:
     - Handoff protocols defined
     - State management clear
     - Error handling present
     - Boundaries explicit
+    - Context triggers configured

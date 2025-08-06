@@ -53,6 +53,7 @@ phases:
         agent: analyst
         action: Identify what needs research
         output: Research questions
+        context_preservation: doc-out --context
 
   - name: Research
     duration: 3-6 hours
@@ -173,6 +174,7 @@ phases:
         action: Present findings to user
         interaction: required
         output: User feedback
+        context_preservation: doc-out --checkpoint
       
       - id: incorporate-feedback
         agent: analyst
@@ -185,6 +187,7 @@ phases:
         action: Get user sign-off
         required: true
         output: Confirmed requirements
+        context_preservation: doc-out --handoff
 
   - name: Phase Completion
     duration: 0.5-1 hour
@@ -216,6 +219,7 @@ phases:
           - Quality gates passed
           - Team aligned
         output: Transition decision
+        context_preservation: doc-out --full
 
 quality_gates:
   - name: Requirements Completeness
@@ -297,6 +301,25 @@ outputs:
 success_criteria:
   - Requirements clarity: 90%+
   - Domain coverage: 95%+
+
+context_preservation:
+  enabled: true
+  triggers:
+    - type: token_threshold
+      value: 50%
+      action: doc-out --context
+    - type: phase_completion
+      action: doc-out --checkpoint
+    - type: agent_handoff
+      action: doc-out --handoff
+    - type: complexity_threshold
+      decisions: 5
+      action: doc-out --context
+  documentation_levels:
+    micro: After each decision
+    mini: End of each step
+    checkpoint: Phase transitions
+    full: Final deliverable
   - User satisfaction: Validated
   - Quality gates: All passed
   - Timeline: Within estimate
