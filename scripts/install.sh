@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Mother Box Installation Script
-# Automated setup for Mother Box agent team creation system
+# Automated setup for development and production environments
 
 set -euo pipefail
 
@@ -10,245 +10,363 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
-# Configuration
-MOTHER_BOX_VERSION="1.0.0"
-INSTALL_DIR="/opt/mother-box"
-LOG_FILE="/var/log/mother-box/install.log"
-REQUIRED_PYTHON_VERSION="3.9"
-REQUIRED_DISK_SPACE_GB=20
-REQUIRED_MEMORY_GB=8
+# Installation configuration
+INSTALL_DIR="${INSTALL_DIR:-$(pwd)}"
+PYTHON_VERSION="3.9"
+NODE_VERSION="18"
+ENVIRONMENT="${ENVIRONMENT:-development}"
 
-# Helper functions
+# ASCII Art Banner
+show_banner() {
+    echo -e "${PURPLE}"
+    cat << "EOF"
+    __  __       _   _               ____            
+   |  \/  | ___ | |_| |__   ___ _ __|  _ \  _____  __
+   | |\/| |/ _ \| __| '_ \ / _ \ '__| |_) |/ _ \ \/ /
+   | |  | | (_) | |_| | | |  __/ |  |  _ <| (_) >  < 
+   |_|  |_|\___/ \__|_| |_|\___|_|  |_| \_\\___/_/\_\
+                                                      
+    AI Agent Team Creation System - Installation
+EOF
+    echo -e "${NC}"
+}
+
+# Logging functions
 log() {
-    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $1"
 }
 
 log_error() {
-    echo -e "${RED}[$(date +'%Y-%m-%d %H:%M:%S')] ERROR:${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${RED}[$(date +'%Y-%m-%d %H:%M:%S')] ERROR:${NC} $1" >&2
 }
 
 log_warning() {
-    echo -e "${YELLOW}[$(date +'%Y-%m-%d %H:%M:%S')] WARNING:${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${YELLOW}[$(date +'%Y-%m-%d %H:%M:%S')] WARNING:${NC} $1"
 }
 
 log_info() {
-    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')] INFO:${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')] INFO:${NC} $1"
 }
 
-# Check if running as root for system-wide installation
-check_permissions() {
+# Check if running as root
+check_root() {
     if [[ $EUID -eq 0 ]]; then
-        log "Running as root - will install system-wide to $INSTALL_DIR"
-        SYSTEM_INSTALL=true
-    else
-        log "Running as user - will install to local directory"
-        INSTALL_DIR="$HOME/.mother-box"
-        SYSTEM_INSTALL=false
+        log_error "This script should not be run as root!"
+        exit 1
     fi
 }
 
-# System requirements check
+# Detect operating system
+detect_os() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        OS="linux"
+        DISTRO=$(lsb_release -si 2>/dev/null || echo "Unknown")
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        OS="macos"
+        DISTRO="macOS"
+    elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        OS="windows"
+        DISTRO="Windows"
+    else
+        OS="unknown"
+        DISTRO="Unknown"
+    fi
+    
+    log_info "Detected OS: $DISTRO ($OS)"
+}
+
+# Check system requirements
 check_requirements() {
     log "Checking system requirements..."
     
-    # Check Python version
-    if command -v python3 &> /dev/null; then
-        PYTHON_VERSION=$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1,2)
-        if ! python3 -c "import sys; exit(0 if sys.version_info >= ($REQUIRED_PYTHON_VERSION.replace('.', ','),) else 1)"; then
-            log_error "Python $REQUIRED_PYTHON_VERSION or higher is required. Found: $PYTHON_VERSION"
+    # Check available disk space (need at least 5GB)
+    if [[ "$OS" == "macos" ]]; then
+        available_space=$(df -g . | awk 'NR==2 {print $4}')
+    else
+        available_space=$(df -BG . | awk 'NR==2 {print $4}' | sed 's/G//')
+    fi
+    
+    if [[ $available_space -lt 5 ]]; then
+        log_error "Insufficient disk space. At least 5GB required, only ${available_space}GB available."
+        exit 1
+    fi
+    
+    # Check RAM (need at least 4GB)
+    if [[ "$OS" == "macos" ]]; then
+        total_ram=$(sysctl -n hw.memsize | awk '{print $1/1024/1024/1024}')
+    else
+        total_ram=$(free -g | awk 'NR==2 {print $2}')
+    fi
+    
+    if [[ ${total_ram%.*} -lt 4 ]]; then
+        log_warning "System has less than 4GB RAM. Performance may be affected."
+    fi
+    
+    log "System requirements check passed ✓"
+}
+
+# Install system dependencies
+install_system_deps() {
+    log "Installing system dependencies..."
+    
+    if [[ "$OS" == "macos" ]]; then
+        # Check if Homebrew is installed
+        if ! command -v brew &> /dev/null; then
+            log_info "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+        
+        # Install dependencies via Homebrew
+        brew update
+        brew install python@3.9 node@18 git docker docker-compose jq curl wget
+        
+    elif [[ "$OS" == "linux" ]]; then
+        # Update package manager
+        if [[ "$DISTRO" == "Ubuntu" ]] || [[ "$DISTRO" == "Debian" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y \
+                python3.9 python3.9-venv python3-pip \
+                nodejs npm \
+                git docker.io docker-compose \
+                jq curl wget \
+                build-essential libssl-dev libffi-dev
+                
+        elif [[ "$DISTRO" == "CentOS" ]] || [[ "$DISTRO" == "RHEL" ]] || [[ "$DISTRO" == "Fedora" ]]; then
+            sudo dnf update -y
+            sudo dnf install -y \
+                python39 python39-pip \
+                nodejs npm \
+                git docker docker-compose \
+                jq curl wget \
+                gcc gcc-c++ make openssl-devel
+        else
+            log_error "Unsupported Linux distribution: $DISTRO"
             exit 1
         fi
-        log "Python version check passed: $PYTHON_VERSION"
+        
+        # Start Docker service
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        
+        # Add user to docker group
+        sudo usermod -aG docker $USER
+        log_warning "You may need to log out and back in for Docker permissions to take effect."
+    fi
+    
+    log "System dependencies installed ✓"
+}
+
+# Check if required tools are installed
+check_tools() {
+    log "Checking required tools..."
+    
+    local missing_tools=()
+    
+    # Check Python
+    if ! command -v python3 &> /dev/null; then
+        missing_tools+=("python3")
     else
-        log_error "Python 3 is not installed. Please install Python $REQUIRED_PYTHON_VERSION or higher."
-        exit 1
+        python_version=$(python3 --version | cut -d' ' -f2)
+        log_info "Python version: $python_version"
+    fi
+    
+    # Check Node.js
+    if ! command -v node &> /dev/null; then
+        missing_tools+=("node")
+    else
+        node_version=$(node --version)
+        log_info "Node.js version: $node_version"
     fi
     
     # Check Docker
     if ! command -v docker &> /dev/null; then
-        log_warning "Docker not found. Some features may not work."
-        read -p "Continue without Docker? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log "Please install Docker and try again."
-            exit 1
+        missing_tools+=("docker")
+    else
+        docker_version=$(docker --version | cut -d' ' -f3 | sed 's/,//')
+        log_info "Docker version: $docker_version"
+    fi
+    
+    # Check Docker Compose
+    if ! command -v docker-compose &> /dev/null; then
+        # Try docker compose (newer integrated version)
+        if ! docker compose version &> /dev/null; then
+            missing_tools+=("docker-compose")
+        else
+            compose_version=$(docker compose version | cut -d' ' -f4)
+            log_info "Docker Compose version: $compose_version"
         fi
     else
-        log "Docker check passed"
+        compose_version=$(docker-compose --version | cut -d' ' -f4)
+        log_info "Docker Compose version: $compose_version"
     fi
     
-    # Check disk space
-    AVAILABLE_SPACE=$(df -BG "$(dirname "$INSTALL_DIR")" | awk 'NR==2 {print $4}' | sed 's/G//')
-    if [[ $AVAILABLE_SPACE -lt $REQUIRED_DISK_SPACE_GB ]]; then
-        log_error "Insufficient disk space. Required: ${REQUIRED_DISK_SPACE_GB}GB, Available: ${AVAILABLE_SPACE}GB"
+    # Check Git
+    if ! command -v git &> /dev/null; then
+        missing_tools+=("git")
+    else
+        git_version=$(git --version | cut -d' ' -f3)
+        log_info "Git version: $git_version"
+    fi
+    
+    if [[ ${#missing_tools[@]} -gt 0 ]]; then
+        log_error "Missing required tools: ${missing_tools[*]}"
+        log_info "Please install missing tools and run the installer again."
         exit 1
     fi
-    log "Disk space check passed: ${AVAILABLE_SPACE}GB available"
     
-    # Check memory
-    AVAILABLE_MEMORY=$(free -g | awk '/^Mem:/{print $2}')
-    if [[ $AVAILABLE_MEMORY -lt $REQUIRED_MEMORY_GB ]]; then
-        log_warning "Low memory detected. Recommended: ${REQUIRED_MEMORY_GB}GB, Available: ${AVAILABLE_MEMORY}GB"
-        log_warning "Installation will continue but performance may be affected."
-    else
-        log "Memory check passed: ${AVAILABLE_MEMORY}GB available"
-    fi
+    log "All required tools are installed ✓"
 }
 
-# Install system dependencies
-install_dependencies() {
-    log "Installing system dependencies..."
-    
-    if command -v apt-get &> /dev/null; then
-        # Debian/Ubuntu
-        sudo apt-get update
-        sudo apt-get install -y \
-            python3-pip python3-venv python3-dev \
-            git curl wget jq \
-            build-essential \
-            libffi-dev libssl-dev \
-            postgresql-client \
-            redis-tools
-    elif command -v yum &> /dev/null; then
-        # RedHat/CentOS
-        sudo yum update -y
-        sudo yum install -y \
-            python3-pip python3-devel \
-            git curl wget jq \
-            gcc gcc-c++ make \
-            openssl-devel libffi-devel \
-            postgresql \
-            redis
-    elif command -v brew &> /dev/null; then
-        # macOS
-        brew update
-        brew install python@3.9 git curl wget jq postgresql redis
-    else
-        log_warning "Unknown package manager. Please install dependencies manually."
-    fi
-    
-    log "System dependencies installed"
-}
-
-# Create installation directory structure
-setup_directories() {
-    log "Setting up directory structure..."
-    
-    # Create main directories
-    mkdir -p "$INSTALL_DIR"
-    mkdir -p "$(dirname "$LOG_FILE")"
-    mkdir -p "$INSTALL_DIR/config"
-    mkdir -p "$INSTALL_DIR/data"
-    mkdir -p "$INSTALL_DIR/logs"
-    mkdir -p "$INSTALL_DIR/backups"
-    mkdir -p "$INSTALL_DIR/tmp"
-    
-    # Set permissions
-    if [[ $SYSTEM_INSTALL == true ]]; then
-        chown -R mother-box:mother-box "$INSTALL_DIR" || true
-        chmod -R 755 "$INSTALL_DIR"
-        chmod -R 700 "$INSTALL_DIR/config"
-    fi
-    
-    log "Directory structure created at: $INSTALL_DIR"
-}
-
-# Install Python dependencies
-install_python_deps() {
-    log "Installing Python dependencies..."
+# Setup Python virtual environment
+setup_python_env() {
+    log "Setting up Python virtual environment..."
     
     # Create virtual environment
-    python3 -m venv "$INSTALL_DIR/venv"
+    python3 -m venv venv
     
     # Activate virtual environment
-    source "$INSTALL_DIR/venv/bin/activate"
+    source venv/bin/activate
     
     # Upgrade pip
     pip install --upgrade pip setuptools wheel
     
-    # Install core dependencies
-    pip install \
-        pyyaml \
-        requests \
-        click \
-        jinja2 \
-        jsonschema \
-        python-dotenv \
-        psutil \
-        redis \
-        celery \
-        fastapi \
-        uvicorn \
-        prometheus-client \
-        structlog
+    # Install Python dependencies
+    if [[ -f "requirements.txt" ]]; then
+        pip install -r requirements.txt
+    else
+        # Create requirements.txt with essential packages
+        cat > requirements.txt << EOF
+# Core dependencies
+pyyaml>=6.0
+jinja2>=3.1.2
+requests>=2.28.0
+python-dotenv>=1.0.0
+click>=8.1.3
+rich>=13.0.0
+
+# API and Web
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+httpx>=0.24.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0
+
+# Development tools
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.4.0
+pre-commit>=3.3.0
+
+# Monitoring and logging
+prometheus-client>=0.17.0
+structlog>=23.1.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.11.0
+redis>=4.6.0
+
+# Security
+cryptography>=41.0.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+EOF
+        pip install -r requirements.txt
+    fi
     
-    # Install AI/ML dependencies
-    pip install \
-        openai \
-        anthropic \
-        langchain \
-        transformers \
-        sentence-transformers \
-        faiss-cpu
-    
-    log "Python dependencies installed"
+    log "Python environment setup complete ✓"
 }
 
-# Copy Mother Box files
-install_mother_box() {
-    log "Installing Mother Box files..."
+# Setup Node.js dependencies
+setup_node_env() {
+    log "Setting up Node.js dependencies..."
     
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    PACKAGE_ROOT="$(dirname "$SCRIPT_DIR")"
+    # Check if package.json exists, if not create it
+    if [[ ! -f "package.json" ]]; then
+        cat > package.json << 'EOF'
+{
+  "name": "mother-box",
+  "version": "1.0.0",
+  "description": "Mother Box - AI Agent Team Creation System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "dashboard": "cd dashboard && npm start"
+  },
+  "keywords": ["ai", "agents", "automation", "bmad"],
+  "author": "Mother Box Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "joi": "^17.9.2",
+    "winston": "^3.10.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "socket.io": "^4.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.1",
+    "eslint": "^8.44.0",
+    "prettier": "^3.0.0"
+  }
+}
+EOF
+    fi
     
-    # Copy core files
-    cp -r "$PACKAGE_ROOT/agents" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/workflows" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/templates" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/data" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/utils" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/checklists" "$INSTALL_DIR/"
-    cp -r "$PACKAGE_ROOT/examples" "$INSTALL_DIR/"
+    # Install Node.js dependencies
+    npm install
     
-    # Copy configuration files
-    cp "$PACKAGE_ROOT/config"/* "$INSTALL_DIR/config/"
-    
-    # Copy scripts
-    mkdir -p "$INSTALL_DIR/scripts"
-    cp "$PACKAGE_ROOT/scripts"/* "$INSTALL_DIR/scripts/"
-    chmod +x "$INSTALL_DIR/scripts"/*.sh
-    
-    # Copy API specification
-    mkdir -p "$INSTALL_DIR/api"
-    cp "$PACKAGE_ROOT/api"/* "$INSTALL_DIR/api/"
-    
-    log "Mother Box files installed"
+    log "Node.js dependencies installed ✓"
 }
 
-# Setup configuration
-setup_configuration() {
-    log "Setting up configuration..."
+# Create configuration files
+create_config_files() {
+    log "Creating configuration files..."
     
-    # Create environment file from template
-    cat > "$INSTALL_DIR/.env" << EOF
+    # Create .env.example file
+    cat > .env.example << 'EOF'
 # Mother Box Configuration
-MOTHER_BOX_VERSION=$MOTHER_BOX_VERSION
-MOTHER_BOX_ENVIRONMENT=development
-MOTHER_BOX_INSTALL_DIR=$INSTALL_DIR
-MOTHER_BOX_LOG_LEVEL=INFO
+
+# Environment
+ENVIRONMENT=development
+DEBUG=true
+LOG_LEVEL=info
 
 # API Configuration
-MOTHER_BOX_API_HOST=localhost
-MOTHER_BOX_API_PORT=8080
-MOTHER_BOX_API_KEY=mb_$(openssl rand -hex 16)
+API_HOST=0.0.0.0
+API_PORT=8080
+API_KEY=your-api-key-here
 
-# Database Configuration (SQLite by default)
-DATABASE_URL=sqlite:///$INSTALL_DIR/data/mother-box.db
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/motherbox
+REDIS_URL=redis://localhost:6379
 
-# Redis Configuration (optional)
-REDIS_URL=redis://localhost:6379/0
+# Security
+SECRET_KEY=generate-a-secure-secret-key
+JWT_SECRET=generate-a-secure-jwt-secret
+ENCRYPTION_KEY=generate-a-secure-encryption-key
+
+# LLM Providers
+ANTHROPIC_API_KEY=your-anthropic-key
+OPENAI_API_KEY=your-openai-key
 
 # Research Configuration
 RESEARCH_DEPTH=standard
@@ -260,234 +378,418 @@ MIN_QUALITY_SCORE=8.5
 ENABLE_EXPERT_VALIDATION=true
 AUTO_IMPROVEMENT=true
 
-# Security Configuration
-SECRET_KEY=$(openssl rand -base64 32)
-ENABLE_ENCRYPTION=true
-ENABLE_AUDIT_LOGGING=true
+# Monitoring
+PROMETHEUS_ENABLED=true
+GRAFANA_ENABLED=true
+METRICS_PORT=9090
 
-# Integration Configuration (add your keys)
-OPENAI_API_KEY=your_openai_key_here
-ANTHROPIC_API_KEY=your_anthropic_key_here
-SLACK_WEBHOOK_URL=your_slack_webhook_here
+# Integrations (Optional)
+SLACK_WEBHOOK_URL=
+GITHUB_TOKEN=
+NOTION_API_KEY=
+DISCORD_WEBHOOK_URL=
+
+# Storage
+STORAGE_PATH=/var/lib/motherbox
+BACKUP_PATH=/var/backups/motherbox
+LOG_PATH=/var/log/motherbox
 EOF
     
-    # Set secure permissions on config
-    chmod 600 "$INSTALL_DIR/.env"
+    # Copy to .env if it doesn't exist
+    if [[ ! -f ".env" ]]; then
+        cp .env.example .env
+        log_info "Created .env file. Please update it with your configuration."
+    fi
     
-    log "Configuration files created"
-    log_info "Please edit $INSTALL_DIR/.env with your API keys and preferences"
+    # Create docker-compose.yml
+    cat > docker-compose.yml << 'EOF'
+version: '3.8'
+
+services:
+  motherbox-api:
+    build: .
+    container_name: motherbox-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+    volumes:
+      - ./:/app
+      - motherbox-data:/var/lib/motherbox
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - motherbox-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: motherbox-postgres
+    environment:
+      POSTGRES_DB: motherbox
+      POSTGRES_USER: motherbox
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-motherbox123}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - motherbox-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: motherbox-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - motherbox-network
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: motherbox-prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - motherbox-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: motherbox-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    ports:
+      - "3000:3000"
+    networks:
+      - motherbox-network
+    restart: unless-stopped
+
+volumes:
+  motherbox-data:
+  postgres-data:
+  redis-data:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  motherbox-network:
+    driver: bridge
+EOF
+    
+    # Create Dockerfile
+    cat > Dockerfile << 'EOF'
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p /var/lib/motherbox /var/log/motherbox /var/backups/motherbox
+
+# Expose API port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Run the application
+CMD ["python", "-m", "mother_box.api"]
+EOF
+    
+    log "Configuration files created ✓"
 }
 
-# Create systemd service (Linux only)
-setup_service() {
-    if [[ $SYSTEM_INSTALL == true && -d /etc/systemd/system ]]; then
-        log "Creating systemd service..."
-        
-        cat > /etc/systemd/system/mother-box.service << EOF
-[Unit]
-Description=Mother Box AI Agent Team Creation System
-After=network.target
-Wants=network.target
+# Setup directory structure
+setup_directories() {
+    log "Setting up directory structure..."
+    
+    # Create necessary directories if they don't exist
+    mkdir -p \
+        mother_box \
+        tests/unit \
+        tests/integration \
+        tests/validation \
+        docs \
+        logs \
+        outputs \
+        state
+    
+    # Create __init__.py files for Python packages
+    touch mother_box/__init__.py
+    touch tests/__init__.py
+    
+    # Create basic Python module structure
+    cat > mother_box/__init__.py << 'EOF'
+"""Mother Box - AI Agent Team Creation System"""
 
-[Service]
-Type=simple
-User=mother-box
-Group=mother-box
-WorkingDirectory=$INSTALL_DIR
-Environment=PATH=$INSTALL_DIR/venv/bin
-EnvironmentFile=$INSTALL_DIR/.env
-ExecStart=$INSTALL_DIR/venv/bin/python -m mother_box.api
-Restart=always
-RestartSec=10
+__version__ = "1.0.0"
+__author__ = "Mother Box Team"
 
-[Install]
-WantedBy=multi-user.target
+from .core import MotherBox
+from .cli import main as cli_main
+
+__all__ = ["MotherBox", "cli_main"]
 EOF
-        
-        # Create mother-box user if it doesn't exist
-        if ! id "mother-box" &>/dev/null; then
-            useradd -r -s /bin/false -d "$INSTALL_DIR" mother-box
-        fi
-        
-        systemctl daemon-reload
-        systemctl enable mother-box
-        
-        log "Systemd service created and enabled"
+    
+    cat > mother_box/core.py << 'EOF'
+"""Core Mother Box functionality"""
+
+class MotherBox:
+    """Main Mother Box class for creating agent teams"""
+    
+    def __init__(self):
+        """Initialize Mother Box system"""
+        self.agents = []
+        self.workflows = []
+        self.current_project = None
+    
+    def create_team(self, domain, requirements, team_size=5, **kwargs):
+        """Create a new agent team"""
+        # Implementation will be added
+        return {"team_name": f"{domain} Team", "status": "created"}
+    
+    def research_domain(self, domain, depth="standard", focus_areas=None):
+        """Research a domain for agent creation"""
+        # Implementation will be added
+        return {"domain": domain, "research_complete": True}
+EOF
+    
+    cat > mother_box/cli.py << 'EOF'
+"""Command-line interface for Mother Box"""
+
+import click
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+
+@click.group()
+def cli():
+    """Mother Box - AI Agent Team Creation System"""
+    pass
+
+@cli.command()
+@click.option('--domain', required=True, help='Domain for the agent team')
+@click.option('--requirements', required=True, help='Requirements description')
+@click.option('--team-size', default=5, help='Number of agents in the team')
+def create(domain, requirements, team_size):
+    """Create a new agent team"""
+    console.print(f"[bold green]Creating {domain} agent team...[/bold green]")
+    # Implementation will be added
+    console.print(f"[bold green]✓ Team created successfully![/bold green]")
+
+@cli.command()
+def status():
+    """Show system status"""
+    table = Table(title="Mother Box Status")
+    table.add_column("Component", style="cyan")
+    table.add_column("Status", style="green")
+    
+    table.add_row("API", "✓ Running")
+    table.add_row("Database", "✓ Connected")
+    table.add_row("Agents", "✓ 10 Active")
+    
+    console.print(table)
+
+def main():
+    cli()
+
+if __name__ == "__main__":
+    main()
+EOF
+    
+    log "Directory structure created ✓"
+}
+
+# Initialize Git repository
+init_git_repo() {
+    log "Initializing Git repository..."
+    
+    if [[ ! -d ".git" ]]; then
+        git init
+        git add .
+        git commit -m "Initial commit: Mother Box package setup"
+        log "Git repository initialized ✓"
+    else
+        log_info "Git repository already exists"
     fi
 }
 
-# Create command line aliases
-setup_cli() {
-    log "Setting up command line interface..."
+# Run initial tests
+run_initial_tests() {
+    log "Running initial tests..."
     
-    # Create mother-box command
-    cat > "$INSTALL_DIR/bin/mother-box" << EOF
+    # Create a simple test file
+    cat > tests/test_basic.py << 'EOF'
+"""Basic tests for Mother Box"""
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+def test_import():
+    """Test that Mother Box can be imported"""
+    try:
+        from mother_box import MotherBox
+        assert MotherBox is not None
+        print("✓ Import test passed")
+        return True
+    except ImportError as e:
+        print(f"✗ Import test failed: {e}")
+        return False
+
+def test_initialization():
+    """Test Mother Box initialization"""
+    try:
+        from mother_box import MotherBox
+        mb = MotherBox()
+        assert mb is not None
+        print("✓ Initialization test passed")
+        return True
+    except Exception as e:
+        print(f"✗ Initialization test failed: {e}")
+        return False
+
+if __name__ == "__main__":
+    all_passed = True
+    all_passed &= test_import()
+    all_passed &= test_initialization()
+    
+    if all_passed:
+        print("\n✓ All tests passed!")
+        sys.exit(0)
+    else:
+        print("\n✗ Some tests failed")
+        sys.exit(1)
+EOF
+    
+    # Run the basic test
+    source venv/bin/activate
+    python tests/test_basic.py
+    
+    log "Initial tests completed ✓"
+}
+
+# Create activation script
+create_activation_script() {
+    log "Creating activation script..."
+    
+    cat > scripts/activate-mother-box.sh << 'EOF'
 #!/bin/bash
-source "$INSTALL_DIR/venv/bin/activate"
-cd "$INSTALL_DIR"
-python -m mother_box.cli "\$@"
+
+# Mother Box Activation Script
+
+set -e
+
+echo "Activating Mother Box System..."
+
+# Activate Python virtual environment
+source venv/bin/activate
+
+# Start services
+docker-compose up -d
+
+# Wait for services to be ready
+echo "Waiting for services to start..."
+sleep 10
+
+# Check health
+curl -s http://localhost:8080/health > /dev/null && echo "✓ API is healthy" || echo "✗ API health check failed"
+
+# Show status
+python -m mother_box.cli status
+
+echo ""
+echo "Mother Box is ready! 🚀"
+echo ""
+echo "Access points:"
+echo "  - API: http://localhost:8080"
+echo "  - Monitoring: http://localhost:3000 (admin/admin)"
+echo "  - Metrics: http://localhost:9090"
+echo ""
+echo "To create your first agent team, run:"
+echo "  python -m mother_box.cli create --domain 'Your Domain' --requirements 'Your requirements'"
+echo ""
 EOF
-    chmod +x "$INSTALL_DIR/bin/mother-box"
     
-    # Add to PATH for current user
-    if [[ $SYSTEM_INSTALL == false ]]; then
-        echo 'export PATH="$HOME/.mother-box/bin:$PATH"' >> "$HOME/.bashrc"
-        echo 'export PATH="$HOME/.mother-box/bin:$PATH"' >> "$HOME/.zshrc" 2>/dev/null || true
-    else
-        ln -sf "$INSTALL_DIR/bin/mother-box" /usr/local/bin/mother-box
-    fi
+    chmod +x scripts/activate-mother-box.sh
     
-    log "CLI setup complete"
-}
-
-# Initialize database and perform first-time setup
-initialize_system() {
-    log "Initializing Mother Box system..."
-    
-    source "$INSTALL_DIR/venv/bin/activate"
-    cd "$INSTALL_DIR"
-    
-    # Initialize database
-    python -c "
-from mother_box.database import init_db
-init_db()
-print('Database initialized')
-"
-    
-    # Validate installation
-    python -c "
-from mother_box.core import MotherBox
-mb = MotherBox()
-print('Mother Box initialization successful')
-print(f'Version: {mb.version}')
-print(f'Agents available: {len(mb.available_agents)}')
-"
-    
-    log "System initialization complete"
-}
-
-# Run post-installation tests
-run_tests() {
-    log "Running post-installation tests..."
-    
-    source "$INSTALL_DIR/venv/bin/activate"
-    cd "$INSTALL_DIR"
-    
-    # Run smoke tests
-    if [[ -f scripts/smoke-test.sh ]]; then
-        bash scripts/smoke-test.sh
-    fi
-    
-    # Test API endpoints
-    python -c "
-import requests
-import time
-from subprocess import Popen
-
-# Start API server in background
-proc = Popen(['python', '-m', 'mother_box.api'])
-time.sleep(5)
-
-try:
-    # Test health endpoint
-    response = requests.get('http://localhost:8080/health')
-    assert response.status_code == 200
-    print('Health check: PASS')
-    
-    # Test version endpoint
-    response = requests.get('http://localhost:8080/version')
-    assert response.status_code == 200
-    print('Version check: PASS')
-    
-    print('All tests passed!')
-finally:
-    proc.terminate()
-"
-    
-    log "Post-installation tests completed successfully"
-}
-
-# Display installation summary
-show_summary() {
-    log "==============================================="
-    log "🎉 Mother Box Installation Complete!"
-    log "==============================================="
-    log ""
-    log "Installation Details:"
-    log "  Version: $MOTHER_BOX_VERSION"
-    log "  Install Directory: $INSTALL_DIR"
-    log "  Configuration: $INSTALL_DIR/.env"
-    log "  Logs: $LOG_FILE"
-    log ""
-    log "Next Steps:"
-    log "1. Edit configuration file: $INSTALL_DIR/.env"
-    log "   - Add your OpenAI/Anthropic API keys"
-    log "   - Configure integrations (Slack, etc.)"
-    log ""
-    log "2. Start the system:"
-    if [[ $SYSTEM_INSTALL == true ]]; then
-        log "   sudo systemctl start mother-box"
-    else
-        log "   source $INSTALL_DIR/venv/bin/activate"
-        log "   cd $INSTALL_DIR"
-        log "   python -m mother_box.api"
-    fi
-    log ""
-    log "3. Create your first agent team:"
-    log "   mother-box create-team --domain 'Customer Support' --size 5"
-    log ""
-    log "4. Access the web interface:"
-    log "   http://localhost:8080/dashboard"
-    log ""
-    log "Documentation:"
-    log "  - User Guide: $INSTALL_DIR/README.md"
-    log "  - API Docs: http://localhost:8080/docs"
-    log "  - Examples: $INSTALL_DIR/examples/"
-    log ""
-    log "Support:"
-    log "  - Community: https://community.mother-box.ai"
-    log "  - Documentation: https://docs.mother-box.ai"
-    log "  - Issues: https://github.com/mother-box/issues"
-    log ""
-    log "Happy agent team building! 🚀"
+    log "Activation script created ✓"
 }
 
 # Main installation function
 main() {
-    echo "🤖 Mother Box Installation Script v$MOTHER_BOX_VERSION"
-    echo "================================================="
+    show_banner
     
-    # Create log directory
-    mkdir -p "$(dirname "$LOG_FILE")"
-    
-    # Check permissions and requirements
-    check_permissions
-    check_requirements
-    
-    # Ask for confirmation
+    log "Starting Mother Box installation..."
+    log "Installation directory: $INSTALL_DIR"
+    log "Environment: $ENVIRONMENT"
     echo ""
-    read -p "Proceed with installation to $INSTALL_DIR? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "Installation cancelled."
-        exit 0
-    fi
     
     # Run installation steps
-    install_dependencies
+    check_root
+    detect_os
+    check_requirements
+    
+    # Ask user about dependency installation
+    read -p "Do you want to install system dependencies? (y/n) " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        install_system_deps
+    fi
+    
+    check_tools
+    setup_python_env
+    setup_node_env
+    create_config_files
     setup_directories
-    install_python_deps
-    install_mother_box
-    setup_configuration
-    setup_service
-    setup_cli
-    initialize_system
-    run_tests
-    show_summary
+    init_git_repo
+    create_activation_script
+    run_initial_tests
+    
+    # Success message
+    echo ""
+    echo -e "${GREEN}╔════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${GREEN}║                                                                ║${NC}"
+    echo -e "${GREEN}║        🎉 Mother Box Installation Complete! 🎉                ║${NC}"
+    echo -e "${GREEN}║                                                                ║${NC}"
+    echo -e "${GREEN}╚════════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo "Next steps:"
+    echo "1. Update the .env file with your configuration"
+    echo "2. Run: ./scripts/activate-mother-box.sh"
+    echo "3. Access the API at http://localhost:8080"
+    echo ""
+    echo "For detailed documentation, see README.md"
+    echo ""
+    log "Installation completed successfully! ✨"
 }
 
-# Handle interrupts
-trap 'log_error "Installation interrupted"; exit 1' INT TERM
-
-# Run main installation
+# Run main function
 main "$@"

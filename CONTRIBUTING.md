@@ -1,296 +1,265 @@
 # Contributing to Mother Box
 
-Thank you for your interest in contributing to Mother Box! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Mother Box! We welcome contributions from the community and are grateful for any help you can provide.
 
-## 🚀 Quick Start
+## Code of Conduct
 
+By participating in this project, you agree to abide by our Code of Conduct:
+- Be respectful and inclusive
+- Welcome newcomers and help them get started
+- Focus on constructive criticism
+- Accept feedback gracefully
+- Put the project's best interests first
+
+## How to Contribute
+
+### 1. Reporting Issues
+
+If you find a bug or have a feature request:
+1. Check existing issues to avoid duplicates
+2. Create a new issue using the appropriate template
+3. Provide as much detail as possible
+4. Include steps to reproduce (for bugs)
+5. Add relevant labels
+
+### 2. Suggesting Enhancements
+
+We love new ideas! To suggest an enhancement:
+1. Open a discussion in the Ideas category
+2. Describe the problem you're trying to solve
+3. Explain your proposed solution
+4. Be open to feedback and alternative approaches
+
+### 3. Contributing Code
+
+#### First Time Contributors
+- Look for issues labeled `good-first-issue`
+- Read through the documentation
+- Set up your development environment
+- Ask questions if you need help!
+
+#### Development Process
 1. **Fork the Repository**
    ```bash
    git clone https://github.com/your-username/mother-box-package.git
    cd mother-box-package
    ```
 
-2. **Set Up Development Environment**
+2. **Create a Branch**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements-dev.txt
+   git checkout -b feature/your-feature-name
+   # or
+   git checkout -b fix/issue-number
    ```
 
-3. **Make Your Changes**
-   - Create a new branch: `git checkout -b feature/your-feature-name`
-   - Make your changes
-   - Add tests if applicable
-   - Update documentation
-
-4. **Test Your Changes**
+3. **Set Up Development Environment**
    ```bash
+   ./scripts/install.sh
+   source venv/bin/activate
+   ```
+
+4. **Make Your Changes**
+   - Follow the existing code style
+   - Add tests for new functionality
+   - Update documentation as needed
+   - Keep commits focused and atomic
+
+5. **Test Your Changes**
+   ```bash
+   # Run all tests
    python -m pytest tests/
-   ./scripts/validate.sh
+
+   # Run specific tests
+   python -m pytest tests/unit/test_your_feature.py
+
+   # Check code style
+   flake8 .
+   black --check .
    ```
 
-5. **Submit a Pull Request**
-   - Push your branch: `git push origin feature/your-feature-name`
-   - Create a pull request on GitHub
-   - Provide a clear description of your changes
+6. **Commit Your Changes**
+   ```bash
+   git add .
+   git commit -m "feat: add new feature X
 
-## 🎯 Areas for Contribution
+   - Detailed description of what changed
+   - Why this change was necessary
+   - Any breaking changes or side effects
 
-### High Priority
-- **New Industry Knowledge Maps** - Add domain expertise for new industries
-- **Agent Team Templates** - Pre-built templates for common use cases
-- **Integration Connectors** - Connect to popular business tools
-- **Performance Optimizations** - Improve speed and efficiency
-- **Documentation Improvements** - Better guides and examples
+   Closes #123"
+   ```
 
-### Medium Priority
-- **Language Translations** - Support for non-English domains
-- **Advanced Workflows** - Complex orchestration patterns
-- **Testing Coverage** - Unit and integration tests
-- **Security Enhancements** - Additional hardening measures
+7. **Push to Your Fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-### Beginner Friendly
-- **Example Agent Teams** - Sample outputs and use cases
-- **Tutorial Content** - Step-by-step guides
-- **Bug Fixes** - Small fixes and improvements
-- **Documentation Updates** - Typos, clarifications
+8. **Create a Pull Request**
+   - Use a clear, descriptive title
+   - Reference any related issues
+   - Describe what changes you made and why
+   - Include screenshots for UI changes
+   - Ensure all checks pass
 
-## 📋 Contribution Types
+### 4. Contributing Documentation
 
-### 🧠 Agent Team Templates
-Add new pre-built agent teams for specific industries or use cases.
+Good documentation is crucial! You can help by:
+- Fixing typos and grammar
+- Improving clarity and examples
+- Adding missing documentation
+- Translating documentation
 
-**Structure:**
-```yaml
-team:
-  name: "Your Team Name"
-  domain: "Industry/Use Case"
-  size: 4-8
-  architecture: "Pattern type"
+### 5. Contributing Research & Domain Knowledge
 
-agents:
-  - name: "Agent Name"
-    role: "Specific role"
-    personality: "Authentic traits"
-    capabilities: ["List of skills"]
+Mother Box thrives on domain expertise:
+- Add new industry knowledge maps
+- Improve research methodologies
+- Contribute interview templates
+- Share domain-specific insights
+
+## Coding Standards
+
+### Python Code Style
+- Follow PEP 8
+- Use type hints where appropriate
+- Maximum line length: 100 characters
+- Use descriptive variable names
+- Add docstrings to all functions and classes
+
+Example:
+```python
+def create_agent(
+    name: str,
+    role: str,
+    capabilities: List[str],
+    personality: Optional[Dict[str, Any]] = None
+) -> Agent:
+    """
+    Create a new agent with specified characteristics.
+    
+    Args:
+        name: The agent's unique identifier
+        role: The agent's primary role
+        capabilities: List of agent capabilities
+        personality: Optional personality traits
+        
+    Returns:
+        Agent: The newly created agent instance
+        
+    Raises:
+        ValueError: If name is empty or role is invalid
+    """
+    # Implementation here
 ```
-
-**Location:** `templates/team-templates/`
-
-### 🗺️ Industry Knowledge Maps
-Contribute domain expertise for new industries.
-
-**Required Sections:**
-- Domain overview and complexity factors
-- Key stakeholders and their pain points
-- Core processes and workflows
-- Technology ecosystem
-- Regulatory landscape
-- Domain terminology
-
-**Location:** `data/industry-knowledge-maps.yaml`
-
-### 🔧 Integration Connectors
-Build connections to popular business tools.
-
-**Requirements:**
-- Authentication handling
-- Error handling and retries
-- Rate limiting respect
-- Comprehensive documentation
-- Test coverage
-
-**Location:** `integrations/`
-
-### 📚 Documentation
-Improve guides, tutorials, and API documentation.
-
-**Types:**
-- User guides and tutorials
-- API documentation
-- Architecture explanations
-- Best practices
-- Troubleshooting guides
-
-## 🛡️ Quality Standards
-
-### Code Quality
-- **Python Code:** Follow PEP 8, use type hints, include docstrings
-- **YAML Files:** Consistent formatting, proper validation
-- **Documentation:** Clear, comprehensive, with examples
-
-### Testing Requirements
-- **Unit Tests:** For all new functions and classes
-- **Integration Tests:** For new workflows and integrations
-- **Documentation Tests:** Ensure examples work
-- **Performance Tests:** For optimization contributions
-
-### Security Requirements
-- **No Secrets:** Never commit API keys or credentials
-- **Input Validation:** Validate all external inputs
-- **Error Handling:** Graceful handling of edge cases
-- **Audit Logging:** Log security-relevant events
-
-## 🎨 Style Guidelines
 
 ### YAML Style
-```yaml
-# Use 2-space indentation
-# Be consistent with naming conventions
-# Include comments for complex sections
-example_section:
-  required_field: "value"
-  optional_field: "value"  # Explanation if needed
-  
-  subsection:
-    - item: "First item"
-      description: "What this does"
-    
-    - item: "Second item"
-      description: "What this does"
+- Use 2 spaces for indentation
+- Keep lines under 120 characters
+- Use meaningful keys
+- Add comments for complex structures
+
+### Commit Messages
+Follow the Conventional Commits specification:
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation changes
+- `style:` Code style changes (formatting, etc.)
+- `refactor:` Code refactoring
+- `test:` Adding or updating tests
+- `chore:` Maintenance tasks
+
+## Testing Guidelines
+
+### Writing Tests
+- Write tests for all new functionality
+- Aim for >80% code coverage
+- Use descriptive test names
+- Include both positive and negative test cases
+
+Example:
+```python
+def test_agent_creation_with_valid_data():
+    """Test that an agent is created successfully with valid data."""
+    agent = create_agent(
+        name="test-agent",
+        role="tester",
+        capabilities=["testing", "validation"]
+    )
+    assert agent.name == "test-agent"
+    assert agent.role == "tester"
+    assert "testing" in agent.capabilities
+
+def test_agent_creation_with_empty_name_raises_error():
+    """Test that creating an agent with empty name raises ValueError."""
+    with pytest.raises(ValueError, match="Name cannot be empty"):
+        create_agent(name="", role="tester", capabilities=[])
 ```
 
-### Agent Definition Style
-```yaml
-# Follow BMAD methodology
-# Include rich personality details
-# Provide specific capabilities
-# Use authentic domain language
+## Areas for Contribution
 
-agent_name:
-  personality:
-    traits: "Specific, authentic characteristics"
-    background: "Realistic professional history"
-    communication: "How they actually talk"
-  
-  capabilities:
-    - "Specific, actionable skill"
-    - "Another specific capability"
-  
-  commands:
-    - "*command-name [parameter] - Clear description"
-```
+### High Priority
+- [ ] Multi-language support (i18n)
+- [ ] Additional industry knowledge maps
+- [ ] Performance optimizations
+- [ ] Security enhancements
+- [ ] Integration connectors
 
-### Documentation Style
-- **Headers:** Use descriptive, action-oriented titles
-- **Examples:** Include working code examples
-- **Links:** Use relative links for internal content
-- **Images:** Include alt text and captions
-- **Code Blocks:** Specify language for syntax highlighting
+### Good First Issues
+- [ ] Documentation improvements
+- [ ] Adding unit tests
+- [ ] Bug fixes
+- [ ] Code cleanup
+- [ ] Example templates
 
-## 🔍 Review Process
+### Advanced Contributions
+- [ ] New agent architectures
+- [ ] Advanced workflow patterns
+- [ ] Machine learning enhancements
+- [ ] Real-time collaboration features
 
-### Automated Checks
-All pull requests run automated checks for:
-- Code formatting and style
-- Test coverage
-- Security vulnerabilities
-- Documentation build
-- Performance regression
+## Review Process
 
-### Manual Review
-Maintainers will review:
-- **Code Quality:** Architecture, maintainability, performance
-- **Functionality:** Does it work as intended?
-- **Documentation:** Is it clear and complete?
-- **Testing:** Are there adequate tests?
-- **Security:** Any security implications?
+### What to Expect
+1. **Initial Review** (1-2 days)
+   - A maintainer will review your PR
+   - They may request changes or ask questions
+   - Be patient and responsive
 
-### Review Timeline
-- **Small Changes:** 1-3 days
-- **Medium Changes:** 3-7 days  
-- **Large Changes:** 1-2 weeks
+2. **Testing & Validation**
+   - Automated tests must pass
+   - Code coverage checked
+   - Security scanning performed
 
-## 🐛 Reporting Bugs
+3. **Final Review**
+   - Architecture and design review
+   - Documentation check
+   - Performance impact assessment
 
-### Before Reporting
-1. Check existing issues
-2. Try to reproduce with latest version
-3. Gather relevant information
+4. **Merge**
+   - Once approved, your PR will be merged
+   - You'll be added to our contributors list!
 
-### Bug Report Template
-```markdown
-**Description**
-Clear description of the bug
+## Recognition
 
-**Steps to Reproduce**
-1. Step one
-2. Step two
-3. Step three
+We value all contributions! Contributors are recognized in:
+- The CONTRIBUTORS.md file
+- Release notes
+- Our documentation
+- Annual contributor spotlight
 
-**Expected Behavior**
-What should happen
+## Questions?
 
-**Actual Behavior**
-What actually happens
+If you have questions:
+1. Check the documentation
+2. Search existing issues and discussions
+3. Ask in our Discord community
+4. Create a discussion thread
+5. Email us at contributors@mother-box.ai
 
-**Environment**
-- OS: 
-- Python Version:
-- Mother Box Version:
-- Other relevant info:
+## License
 
-**Additional Context**
-Logs, screenshots, etc.
-```
-
-## 💡 Feature Requests
-
-### Feature Request Template
-```markdown
-**Problem Statement**
-What problem does this solve?
-
-**Proposed Solution**
-How would you like it to work?
-
-**Alternatives Considered**
-Other approaches you considered
-
-**Additional Context**
-Use cases, examples, etc.
-```
-
-## 🏆 Recognition
-
-### Contributor Levels
-- **Contributor:** Made at least one accepted contribution
-- **Regular Contributor:** 5+ contributions over 6 months
-- **Core Contributor:** 20+ contributions, trusted with larger changes
-- **Maintainer:** Long-term contributor with commit access
-
-### Recognition
-- Contributors listed in README and documentation
-- Special badges for significant contributions
-- Invitation to contributor meetings and discussions
-- Swag and recognition for major contributions
-
-## 📞 Getting Help
-
-### Communication Channels
-- **GitHub Discussions:** General questions and ideas
-- **Discord:** Real-time chat and collaboration
-- **Email:** maintainers@mother-box.ai for private matters
-
-### Mentorship
-New contributors can request mentorship for:
-- Understanding the codebase
-- Learning BMAD methodology
-- Guidance on contribution process
-- Technical assistance
-
-## 🎉 Thank You!
-
-Every contribution, no matter how small, makes Mother Box better. We appreciate:
-
-- **Bug Reports:** Help us identify and fix issues
-- **Feature Requests:** Help us understand user needs
-- **Code Contributions:** Direct improvements to the system
-- **Documentation:** Help others understand and use Mother Box
-- **Community Support:** Help other users in discussions
-
-Together, we're building the future of AI-powered business automation!
+By contributing, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-*By contributing to Mother Box, you agree that your contributions will be licensed under the MIT License.*
+Thank you for helping make Mother Box better! 🚀
