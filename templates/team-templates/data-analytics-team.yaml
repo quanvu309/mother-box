@@ -1,16 +1,23 @@
 # Data Analytics Agent Team Template
 # Pre-configured team for data analysis and business intelligence
+#
+# NOTE: This template defines team COMPOSITION and COORDINATION
+# Individual agents should be created using templates/agent-definition-template.md
+# See templates/team-template-guide.md for structure details
 
 team:
   name: "Data Intelligence Squad"
   domain: "Data Analytics and Business Intelligence"
   size: 7
   architecture: "Collaborative mesh with specialized expertise"
+  context_preservation: enabled
+  documentation_strategy: progressive
 
 agents:
   - name: "Analytics Orchestrator"
     id: "analytics-orchestrator"
     role: "Project coordinator and insight synthesizer"
+    agent_definition: "agents/analytics-orchestrator.md"  # Full definition following agent-definition-template.md
     personality:
       traits: "Strategic, business-minded, excellent communicator"
       background: "MBA with 10 years in data strategy"
@@ -144,6 +151,7 @@ agents:
 workflows:
   exploratory_analysis:
     trigger: "New dataset or business question"
+    context_preservation: checkpoint_each_phase
     steps:
       1:
         agent: "business-analyst"
@@ -283,3 +291,33 @@ customization_points:
   analysis_types: ["Descriptive", "Predictive", "Prescriptive"]
   visualization_tools: ["Tableau", "PowerBI", "Looker", "Custom"]
   ml_frameworks: ["Scikit-learn", "TensorFlow", "PyTorch", "AutoML"]
+
+context_preservation:
+  team_level_triggers:
+    - type: workflow_phase_complete
+      action: checkpoint_all_agents
+    - type: data_volume_processed
+      threshold: 1GB
+      action: incremental_doc_out
+    - type: analysis_complexity
+      threshold: high
+      action: full_context_dump
+  
+  agent_handoff_protocol:
+    format: structured_yaml
+    includes:
+      - current_analysis_state
+      - key_findings
+      - pending_questions
+      - next_steps
+    
+  documentation_levels:
+    micro: "Individual calculations and transformations"
+    mini: "Analysis step completion"
+    checkpoint: "Workflow phase boundaries"
+    full: "Complete analysis package"
+  
+  recovery_procedures:
+    context_loss: "Reload from last checkpoint"
+    agent_failure: "Handoff to backup agent with full context"
+    workflow_interruption: "Resume from last completed step"
