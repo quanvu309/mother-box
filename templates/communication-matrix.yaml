@@ -1,0 +1,424 @@
+# Agent Communication Matrix Template
+# Used by Mother Box Architect to design inter-agent communication
+
+document:
+  type: communication-matrix
+  version: 1.0
+  created_by: Mother Box Architect
+  purpose: Define all agent-to-agent communication patterns and protocols
+
+# Matrix Overview
+matrix_overview:
+  team_name:
+    type: text
+    required: true
+    example: "Customer Success Squad"
+  
+  total_agents:
+    type: number
+    required: true
+    range: 2-12
+  
+  communication_style:
+    type: select
+    options: ["Centralized", "Distributed", "Hybrid", "Hierarchical"]
+    required: true
+  
+  primary_protocol:
+    type: select
+    options: ["Synchronous", "Asynchronous", "Event-driven", "Mixed"]
+
+# Communication Channels
+channels:
+  direct_messaging:
+    description: "Point-to-point communication between agents"
+    
+    channel_specs:
+      protocol: ["Request-Response", "Fire-and-forget", "Streaming"]
+      format: ["JSON", "YAML", "Plain text", "Binary"]
+      encryption: ["Required", "Optional", "None"]
+      authentication: ["Token-based", "Certificate", "None"]
+    
+    message_types:
+      - type: "Command"
+        structure:
+          header:
+            from: "sender_id"
+            to: "receiver_id"
+            timestamp: "ISO-8601"
+            correlation_id: "UUID"
+            priority: "1-5"
+          body:
+            command: "action_name"
+            parameters: "object"
+            context: "optional"
+        
+      - type: "Query"
+        structure:
+          query: "question or request"
+          response_format: "expected structure"
+          timeout: "seconds"
+      
+      - type: "Notification"
+        structure:
+          event: "event_type"
+          data: "event_data"
+          severity: "info|warning|error|critical"
+  
+  broadcast_messaging:
+    description: "One-to-many communication"
+    
+    broadcast_types:
+      - type: "All agents"
+        trigger: "System-wide events"
+        example: "Emergency shutdown"
+        
+      - type: "Role-based"
+        trigger: "Role-specific updates"
+        example: "All technical agents: system maintenance"
+        
+      - type: "Capability-based"
+        trigger: "Capability-specific needs"
+        example: "All agents with customer access: GDPR update"
+    
+    subscription_model:
+      method: ["Topic-based", "Pattern-based", "Explicit subscription"]
+      management: "Dynamic subscription/unsubscription"
+      filtering: "Client-side or broker-side"
+  
+  event_bus:
+    description: "Asynchronous event-driven communication"
+    
+    event_categories:
+      - category: "State changes"
+        events: ["agent_activated", "agent_busy", "agent_idle", "agent_error"]
+        
+      - category: "Workflow events"
+        events: ["workflow_started", "step_completed", "decision_made", "workflow_ended"]
+        
+      - category: "Data events"
+        events: ["data_updated", "cache_invalidated", "sync_required"]
+        
+      - category: "System events"
+        events: ["performance_degraded", "resource_exhausted", "security_alert"]
+
+# Communication Matrix
+communication_matrix:
+  structure: "grid"
+  format: |
+    # Read as: FROM (row) sends TO (column)
+    # Legend: 
+    #   C = Command, Q = Query, N = Notification, E = Event
+    #   H = Handoff, S = Status, D = Data, R = Response
+    #   - = No communication, X = Bidirectional
+  
+  example_matrix: |
+    ```
+              | Orch | Analyst | Research | Architect | PM  | Master |
+    ----------|------|---------|----------|-----------|-----|--------|
+    Orch      |  -   |   C,H   |    C,Q   |    Q,N    | S,D |   E    |
+    Analyst   | R,S  |    -    |    Q,D   |     Q     | H,D |   S    |
+    Research  | R,D  |   D,R   |     -    |    D,N    | D,R |   S    |
+    Architect | R,N  |    R    |    Q,R   |     -     | D,N |  Q,S   |
+    PM        | Q,S  |   Q,C   |    Q,C   |    Q,C    |  -  |  S,R   |
+    Master    | C,N  |   C,N   |    C,N   |    C,N    | C,N |   -    |
+    ```
+  
+  detailed_interactions:
+    - from: "orchestrator"
+      to: "analyst"
+      message_types:
+        - type: "Command"
+          examples: ["Begin requirements gathering", "Focus on specific area"]
+        - type: "Handoff"
+          examples: ["New user session", "Requirements ready for analysis"]
+      frequency: "High"
+      criticality: "High"
+      sla: "< 1 second"
+      
+    - from: "analyst"
+      to: "researcher"
+      message_types:
+        - type: "Query"
+          examples: ["Domain best practices?", "Industry standards?"]
+        - type: "Data"
+          examples: ["Requirements document", "User context"]
+      frequency: "Medium"
+      criticality: "Medium"
+      sla: "< 30 seconds"
+
+# Message Patterns
+message_patterns:
+  request_response:
+    pattern: "Synchronous request with expected response"
+    timeout: "30 seconds default"
+    retry_policy:
+      attempts: 3
+      backoff: "exponential"
+      max_delay: "5 seconds"
+    
+    example:
+      request:
+        from: "orchestrator"
+        to: "architect"
+        type: "query"
+        body: "Can this integration pattern work?"
+        timeout: 10
+      
+      response:
+        from: "architect"
+        to: "orchestrator"
+        type: "response"
+        body: "Yes, with modifications: [details]"
+        confidence: 0.85
+  
+  publish_subscribe:
+    pattern: "Asynchronous event publication"
+    delivery: "At least once"
+    ordering: "FIFO per partition"
+    
+    example:
+      publish:
+        from: "researcher"
+        topic: "domain.knowledge.updated"
+        data:
+          domain: "healthcare"
+          update_type: "regulation_change"
+          details: "HIPAA amendment"
+      
+      subscribers: ["analyst", "architect", "master"]
+  
+  command_chain:
+    pattern: "Sequential command execution"
+    error_handling: "Stop on first failure"
+    
+    example:
+      chain:
+        - step: 1
+          from: "orchestrator"
+          to: "analyst"
+          command: "gather_requirements"
+        - step: 2
+          from: "orchestrator"
+          to: "researcher"
+          command: "research_domain"
+        - step: 3
+          from: "orchestrator"
+          to: "pm"
+          command: "synthesize_findings"
+  
+  scatter_gather:
+    pattern: "Parallel requests with aggregated responses"
+    aggregation: "Wait for all or timeout"
+    
+    example:
+      scatter:
+        from: "orchestrator"
+        to: ["analyst", "researcher", "architect"]
+        query: "Feasibility assessment"
+        timeout: 60
+      
+      gather:
+        responses: 3
+        aggregation: "Combine all perspectives"
+        decision: "Proceed if 2/3 positive"
+
+# Priority and QoS
+priority_qos:
+  priority_levels:
+    P1_critical:
+      description: "System critical, immediate processing"
+      examples: ["Security alerts", "System failures"]
+      processing: "Interrupt current work"
+      timeout: "5 seconds"
+      
+    P2_high:
+      description: "Business critical, quick processing"
+      examples: ["Customer escalations", "Production issues"]
+      processing: "Next in queue"
+      timeout: "30 seconds"
+      
+    P3_normal:
+      description: "Standard operations"
+      examples: ["Regular queries", "Status updates"]
+      processing: "Normal queue"
+      timeout: "2 minutes"
+      
+    P4_low:
+      description: "Background tasks"
+      examples: ["Analytics", "Optimization suggestions"]
+      processing: "When idle"
+      timeout: "No guarantee"
+  
+  quality_of_service:
+    delivery_guarantees:
+      - level: "At most once"
+        use_case: "Performance metrics, status updates"
+      - level: "At least once"
+        use_case: "Commands, important notifications"
+      - level: "Exactly once"
+        use_case: "Financial transactions, critical state changes"
+    
+    ordering_guarantees:
+      - level: "No ordering"
+        use_case: "Independent notifications"
+      - level: "Partial ordering"
+        use_case: "Related messages"
+      - level: "Total ordering"
+        use_case: "State machine transitions"
+
+# Failure Handling
+failure_handling:
+  communication_failures:
+    network_timeout:
+      detection: "No response within SLA"
+      handling:
+        - "Retry with exponential backoff"
+        - "Try alternate route"
+        - "Queue for later delivery"
+        - "Alert monitoring"
+    
+    agent_unavailable:
+      detection: "Agent not responding to health check"
+      handling:
+        - "Route to backup agent"
+        - "Queue messages"
+        - "Trigger failover"
+        - "Notify orchestrator"
+    
+    message_corruption:
+      detection: "Checksum mismatch, parsing error"
+      handling:
+        - "Request retransmission"
+        - "Use error correction"
+        - "Log for investigation"
+        - "Use last known good"
+  
+  protocol_violations:
+    unexpected_message:
+      detection: "Message type not in protocol"
+      handling: "Log and ignore, notify sender"
+    
+    out_of_sequence:
+      detection: "Message received out of expected order"
+      handling: "Buffer and reorder, or reject"
+    
+    authorization_failure:
+      detection: "Sender not authorized for operation"
+      handling: "Reject, log security event, alert"
+
+# Performance Optimization
+optimization:
+  batching:
+    when_applicable: "Multiple similar messages"
+    batch_size: "10-100 messages"
+    timeout: "100ms or batch full"
+    benefits: "Reduced overhead, better throughput"
+  
+  caching:
+    cache_points:
+      - location: "Agent level"
+        cache_type: "Response cache"
+        ttl: "5 minutes"
+      - location: "Channel level"
+        cache_type: "Route cache"
+        ttl: "1 hour"
+    
+    invalidation: "Event-based or TTL"
+  
+  compression:
+    when_used: "Large payloads > 10KB"
+    algorithms: ["gzip", "zstd", "lz4"]
+    tradeoff: "CPU vs bandwidth"
+  
+  connection_pooling:
+    pool_size: "10-50 connections"
+    timeout: "30 seconds idle"
+    monitoring: "Pool utilization metrics"
+
+# Monitoring and Metrics
+monitoring:
+  communication_metrics:
+    - metric: "Message rate"
+      measurement: "Messages per second"
+      aggregation: "By type, by agent pair"
+      alert_threshold: ">1000/s or <1/s"
+    
+    - metric: "Latency"
+      measurement: "Time from send to receive"
+      aggregation: "p50, p95, p99"
+      alert_threshold: "p95 > 1 second"
+    
+    - metric: "Error rate"
+      measurement: "Failed messages / total"
+      aggregation: "By error type"
+      alert_threshold: ">1%"
+    
+    - metric: "Queue depth"
+      measurement: "Unprocessed messages"
+      aggregation: "By priority"
+      alert_threshold: ">1000 messages"
+  
+  health_indicators:
+    - indicator: "Agent connectivity"
+      measurement: "Successful health checks"
+      threshold: "All agents responsive"
+    
+    - indicator: "Channel utilization"
+      measurement: "% of capacity used"
+      threshold: "<80% sustained"
+    
+    - indicator: "Message delivery rate"
+      measurement: "Successful deliveries"
+      threshold: ">99.9%"
+
+# Security Considerations
+security:
+  authentication:
+    methods:
+      - "Agent certificates"
+      - "API keys"
+      - "JWT tokens"
+    rotation: "Every 30 days"
+    storage: "Secure vault"
+  
+  authorization:
+    model: "Role-based access control"
+    enforcement: "At channel level"
+    audit: "All authorization decisions logged"
+  
+  encryption:
+    in_transit: "TLS 1.3 minimum"
+    at_rest: "AES-256"
+    key_management: "Hardware security module"
+  
+  audit_trail:
+    what_to_log:
+      - "All commands"
+      - "Authorization failures"
+      - "System events"
+      - "Configuration changes"
+    retention: "90 days minimum"
+    compliance: ["SOC2", "HIPAA", "GDPR"]
+
+# Implementation Guidelines
+implementation:
+  technology_options:
+    message_brokers: ["RabbitMQ", "Kafka", "Redis Pub/Sub"]
+    protocols: ["AMQP", "MQTT", "WebSocket", "gRPC"]
+    serialization: ["JSON", "Protocol Buffers", "MessagePack"]
+  
+  best_practices:
+    - "Use correlation IDs for tracing"
+    - "Implement circuit breakers"
+    - "Version your message formats"
+    - "Document all message types"
+    - "Test failure scenarios"
+    - "Monitor continuously"
+  
+  anti_patterns:
+    - "Chatty communication (too many small messages)"
+    - "Large monolithic messages"
+    - "Synchronous everything"
+    - "No timeout handling"
+    - "Ignoring backpressure"

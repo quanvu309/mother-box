@@ -1,0 +1,302 @@
+# Understanding Phase Workflow
+# Mother Box process for understanding user needs and validating requirements
+
+workflow:
+  name: Understanding Phase
+  version: 1.0
+  duration: 8-20 hours
+  description: Work WITH user to understand and validate agent team requirements
+  
+phases:
+  - name: Initiation
+    duration: 0-1 hours
+    agents:
+      - orchestrator
+    steps:
+      - id: receive-request
+        agent: orchestrator
+        action: Receive and assess user request
+        output: Initial assessment
+      
+      - id: activate-analyst
+        agent: orchestrator
+        action: Activate Analyst for discovery
+        output: Analyst engaged
+      
+      - id: set-context
+        agent: orchestrator
+        action: Provide context to Analyst
+        output: Context transferred
+
+  - name: Discovery
+    duration: 2-4 hours
+    agents:
+      - analyst
+      - orchestrator
+    parallel: false
+    steps:
+      - id: discovery-session
+        agent: analyst
+        action: Conduct discovery session with user
+        tasks:
+          - discovery-session.md
+        output: Discovery notes
+      
+      - id: elicit-requirements
+        agent: analyst
+        action: Use elicitation techniques to extract needs
+        tasks:
+          - advanced-elicitation.md
+        output: Initial requirements
+      
+      - id: identify-gaps
+        agent: analyst
+        action: Identify what needs research
+        output: Research questions
+
+  - name: Research
+    duration: 3-6 hours
+    agents:
+      - researcher
+      - orchestrator
+    parallel: true
+    steps:
+      - id: domain-research
+        agent: researcher
+        action: Investigate domain and industry
+        tasks:
+          - conduct-domain-research.md
+        output: Domain knowledge base
+      
+      - id: role-discovery
+        agent: researcher
+        action: Research authentic roles
+        tasks:
+          - map-industry-roles.md
+        output: Role definitions
+      
+      - id: workflow-mapping
+        agent: researcher
+        action: Map industry workflows
+        tasks:
+          - discover-workflows.md
+        output: Workflow documentation
+      
+      - id: standards-research
+        agent: researcher
+        action: Identify compliance and standards
+        tasks:
+          - investigate-standards.md
+        output: Compliance requirements
+
+  - name: Synthesis
+    duration: 2-4 hours
+    agents:
+      - pm
+      - analyst
+      - researcher
+      - orchestrator
+    steps:
+      - id: gather-inputs
+        agent: pm
+        action: Collect all discovery and research outputs
+        inputs:
+          - Discovery notes
+          - Domain knowledge
+          - Role definitions
+          - Workflow documentation
+        output: Consolidated inputs
+      
+      - id: create-blueprint
+        agent: pm
+        action: Synthesize comprehensive blueprint
+        tasks:
+          - synthesize-blueprint.md
+        output: Team blueprint
+      
+      - id: gap-analysis
+        agent: pm
+        action: Identify any missing pieces
+        tasks:
+          - conduct-gap-analysis.md
+        output: Gap report
+      
+      - id: fill-gaps
+        agent: pm
+        action: Work with team to fill gaps
+        collaboration:
+          - analyst: Clarify requirements
+          - researcher: Additional research
+        output: Complete blueprint
+
+  - name: Quality Review
+    duration: 1-2 hours
+    agents:
+      - master
+      - po
+      - orchestrator
+    steps:
+      - id: master-review
+        agent: master
+        action: Review for BMAD compliance
+        checklist: bmad-compliance.md
+        output: Quality assessment
+      
+      - id: define-success
+        agent: po
+        action: Define success criteria
+        templates:
+          - success-criteria.yaml
+        output: Success metrics
+      
+      - id: quality-gate
+        agent: master
+        action: Quality gate assessment
+        decision:
+          pass: Continue to validation
+          fail: Return to appropriate phase
+        output: Gate decision
+
+  - name: Validation
+    duration: 2-4 hours
+    agents:
+      - analyst
+      - orchestrator
+    steps:
+      - id: prepare-validation
+        agent: analyst
+        action: Prepare validation presentation
+        output: Validation materials
+      
+      - id: user-validation
+        agent: analyst
+        action: Present findings to user
+        interaction: required
+        output: User feedback
+      
+      - id: incorporate-feedback
+        agent: analyst
+        action: Update based on feedback
+        iteration: possible
+        output: Revised requirements
+      
+      - id: final-confirmation
+        agent: analyst
+        action: Get user sign-off
+        required: true
+        output: Confirmed requirements
+
+  - name: Phase Completion
+    duration: 0.5-1 hour
+    agents:
+      - orchestrator
+      - all
+    steps:
+      - id: completion-check
+        agent: orchestrator
+        action: Poll all agents for readiness
+        output: Readiness status
+      
+      - id: package-deliverables
+        agent: orchestrator
+        action: Collect all phase outputs
+        deliverables:
+          - Requirements document
+          - Domain research
+          - Team blueprint
+          - Success criteria
+        output: Phase package
+      
+      - id: transition-gate
+        agent: orchestrator
+        action: Verify readiness for Building Phase
+        criteria:
+          - User validation complete
+          - All documents finalized
+          - Quality gates passed
+          - Team aligned
+        output: Transition decision
+
+quality_gates:
+  - name: Requirements Completeness
+    owner: master
+    criteria:
+      - All user needs documented
+      - Domain research comprehensive
+      - Roles clearly defined
+      - Workflows mapped
+    minimum_score: 8
+
+  - name: User Validation
+    owner: analyst
+    criteria:
+      - User confirms understanding
+      - Requirements accurate
+      - Scope agreed
+      - Success criteria accepted
+    required: true
+
+decision_points:
+  - id: research-depth
+    description: How deep should research go?
+    owner: orchestrator
+    options:
+      - Basic (4 hours)
+      - Standard (6 hours)
+      - Comprehensive (8+ hours)
+    factors:
+      - Domain complexity
+      - User expertise
+      - Timeline constraints
+
+  - id: iteration-needed
+    description: Need another discovery round?
+    owner: analyst
+    trigger: User feedback indicates gaps
+    options:
+      - Minor clarification only
+      - Targeted research needed
+      - Full iteration required
+
+parallel_activities:
+  - group: discovery-research
+    activities:
+      - Analyst discovers with user
+      - Researcher investigates domain
+    coordination: Analyst shares findings with Researcher
+
+error_handling:
+  - error: User unavailable
+    handler: orchestrator
+    action: Pause and reschedule
+  
+  - error: Domain too complex
+    handler: researcher
+    action: Request extended research time
+  
+  - error: Requirements unclear
+    handler: analyst
+    action: Additional elicitation session
+  
+  - error: Quality gate failure
+    handler: master
+    action: Identify issues and remediate
+
+outputs:
+  required:
+    - requirements-document.yaml
+    - domain-knowledge-base.md
+    - team-blueprint.yaml
+    - success-criteria.yaml
+  
+  optional:
+    - research-gaps.md
+    - iteration-notes.md
+    - risk-assessment.md
+
+success_criteria:
+  - Requirements clarity: 90%+
+  - Domain coverage: 95%+
+  - User satisfaction: Validated
+  - Quality gates: All passed
+  - Timeline: Within estimate

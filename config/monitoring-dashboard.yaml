@@ -1,0 +1,545 @@
+# Monitoring Dashboard Configuration for Mother Box
+# Real-time visibility into agent team creation and operations
+
+dashboard:
+  name: "Mother Box Operations Center"
+  refresh_rate: "5 seconds"
+  layout: "responsive-grid"
+  theme: "dark-professional"
+  
+  access_control:
+    admin: ["full_access", "configuration"]
+    operator: ["view", "acknowledge_alerts"]
+    viewer: ["read_only"]
+
+# Main Overview Section
+overview_section:
+  title: "System Overview"
+  position: "top-full-width"
+  height: "200px"
+  
+  widgets:
+    system_health:
+      type: "status-indicator"
+      position: [0, 0]
+      size: "small"
+      data_source: "health_check_endpoint"
+      states:
+        healthy: 
+          color: "green"
+          icon: "check-circle"
+        warning:
+          color: "yellow"
+          icon: "alert-triangle"
+        critical:
+          color: "red"
+          icon: "x-circle"
+          animation: "pulse"
+    
+    active_projects:
+      type: "counter"
+      position: [1, 0]
+      label: "Active Projects"
+      data_source: "projects.active.count"
+      threshold_good: "< 10"
+      threshold_warning: "10-20"
+      threshold_critical: "> 20"
+    
+    agents_online:
+      type: "counter"
+      position: [2, 0]
+      label: "Agents Online"
+      data_source: "agents.online.count"
+      format: "{value}/{total}"
+      threshold_good: "> 90%"
+      threshold_warning: "70-90%"
+      threshold_critical: "< 70%"
+    
+    creation_success_rate:
+      type: "percentage"
+      position: [3, 0]
+      label: "Creation Success Rate"
+      data_source: "metrics.creation.success_rate"
+      period: "24h"
+      format: "{value}%"
+      threshold_good: "> 95%"
+      threshold_warning: "85-95%"
+      threshold_critical: "< 85%"
+
+# Agent Status Grid
+agent_status_section:
+  title: "Mother Box Agent Status"
+  position: "left-half"
+  height: "400px"
+  
+  widgets:
+    agent_grid:
+      type: "status-grid"
+      data_source: "agents.all"
+      columns: 3
+      
+      agent_card:
+        fields:
+          - name: "Agent Name"
+            source: "agent.name"
+            style: "bold"
+          - name: "Status"
+            source: "agent.status"
+            color_map:
+              idle: "gray"
+              working: "blue"
+              error: "red"
+              offline: "dark-gray"
+          - name: "Current Task"
+            source: "agent.current_task"
+            truncate: 50
+          - name: "Workload"
+            source: "agent.workload"
+            type: "progress-bar"
+            max: 100
+          - name: "Last Active"
+            source: "agent.last_active"
+            format: "relative_time"
+      
+      sorting: "status_priority"
+      filtering:
+        enabled: true
+        options: ["all", "active", "idle", "error"]
+
+# Project Pipeline
+project_pipeline_section:
+  title: "Project Pipeline"
+  position: "right-half"
+  height: "400px"
+  
+  widgets:
+    pipeline_view:
+      type: "kanban"
+      data_source: "projects.pipeline"
+      
+      columns:
+        - id: "discovery"
+          title: "Discovery"
+          color: "purple"
+          wip_limit: 5
+        - id: "research"
+          title: "Research"
+          color: "blue"
+          wip_limit: 3
+        - id: "building"
+          title: "Building"
+          color: "orange"
+          wip_limit: 4
+        - id: "validation"
+          title: "Validation"
+          color: "yellow"
+          wip_limit: 3
+        - id: "delivered"
+          title: "Delivered"
+          color: "green"
+          wip_limit: null
+      
+      card_template:
+        title: "{project.name}"
+        subtitle: "{project.client}"
+        badges:
+          - "{project.agent_count} agents"
+          - "{project.priority}"
+        progress: "{project.completion}%"
+        assignee: "{project.lead_agent}"
+        age: "{project.age_hours}h"
+      
+      metrics:
+        cycle_time: true
+        throughput: true
+        wip_violations: true
+
+# Performance Metrics
+performance_section:
+  title: "Performance Metrics"
+  position: "bottom-left-quarter"
+  height: "300px"
+  
+  widgets:
+    response_time_chart:
+      type: "line-chart"
+      title: "Response Times"
+      data_source: "metrics.response_time"
+      period: "1h"
+      aggregation: "1min"
+      
+      series:
+        - name: "p50"
+          color: "green"
+          style: "solid"
+        - name: "p95"
+          color: "yellow"
+          style: "dashed"
+        - name: "p99"
+          color: "red"
+          style: "dotted"
+      
+      y_axis:
+        label: "Response Time (ms)"
+        scale: "logarithmic"
+        min: 10
+        max: 10000
+      
+      annotations:
+        - value: 1000
+          label: "Target"
+          color: "gray"
+          style: "dashed"
+    
+    throughput_gauge:
+      type: "gauge"
+      title: "Message Throughput"
+      data_source: "metrics.messages_per_second"
+      min: 0
+      max: 1000
+      
+      zones:
+        - range: [0, 100]
+          color: "red"
+          label: "Low"
+        - range: [100, 500]
+          color: "yellow"
+          label: "Normal"
+        - range: [500, 1000]
+          color: "green"
+          label: "High"
+      
+      target: 400
+      current_value:
+        size: "large"
+        format: "{value} msg/s"
+
+# Resource Utilization
+resource_section:
+  title: "Resource Utilization"
+  position: "bottom-center-quarter"
+  height: "300px"
+  
+  widgets:
+    cpu_usage:
+      type: "area-chart"
+      title: "CPU Usage"
+      data_source: "resources.cpu"
+      period: "30min"
+      stack: true
+      
+      series:
+        - name: "Orchestrator"
+          color: "purple"
+        - name: "Agents"
+          color: "blue"
+        - name: "System"
+          color: "gray"
+      
+      y_axis:
+        label: "CPU %"
+        max: 100
+      
+      threshold_line:
+        value: 80
+        label: "Warning"
+        color: "orange"
+    
+    memory_usage:
+      type: "donut-chart"
+      title: "Memory Distribution"
+      data_source: "resources.memory"
+      
+      segments:
+        - name: "Agent Cache"
+          color: "blue"
+        - name: "State Storage"
+          color: "green"
+        - name: "Message Queues"
+          color: "yellow"
+        - name: "System"
+          color: "gray"
+        - name: "Free"
+          color: "light-gray"
+      
+      center_text: "{total_used}/{total} GB"
+      show_legend: true
+
+# Quality Metrics
+quality_section:
+  title: "Quality Metrics"
+  position: "bottom-right-quarter"
+  height: "300px"
+  
+  widgets:
+    quality_scores:
+      type: "bar-chart"
+      title: "Agent Quality Scores"
+      data_source: "quality.scores.by_project"
+      period: "7d"
+      
+      bars:
+        orientation: "horizontal"
+        color_scale:
+          - value: [0, 60]
+            color: "red"
+          - value: [60, 80]
+            color: "yellow"
+          - value: [80, 100]
+            color: "green"
+      
+      target_line:
+        value: 85
+        label: "Target"
+      
+      sorting: "value_desc"
+      limit: 10
+    
+    validation_stats:
+      type: "stat-cards"
+      title: "Validation Statistics"
+      
+      cards:
+        - label: "Tests Passed"
+          value: "{validation.passed}"
+          total: "{validation.total}"
+          format: "{value}/{total}"
+          icon: "check"
+          color: "green"
+        
+        - label: "Tests Failed"
+          value: "{validation.failed}"
+          format: "{value}"
+          icon: "x"
+          color: "red"
+        
+        - label: "Coverage"
+          value: "{validation.coverage}"
+          format: "{value}%"
+          icon: "shield"
+          color: "blue"
+
+# Alert Panel
+alert_panel:
+  title: "Active Alerts"
+  position: "right-sidebar"
+  width: "300px"
+  height: "full"
+  
+  configuration:
+    max_alerts: 50
+    auto_acknowledge: "30min"
+    sound_enabled: true
+    
+    severity_levels:
+      critical:
+        color: "red"
+        icon: "alert-circle"
+        sound: "alarm.mp3"
+        priority: 1
+      
+      warning:
+        color: "yellow"
+        icon: "alert-triangle"
+        sound: "warning.mp3"
+        priority: 2
+      
+      info:
+        color: "blue"
+        icon: "info-circle"
+        sound: null
+        priority: 3
+  
+  alert_template:
+    header: "{severity} - {category}"
+    title: "{alert.title}"
+    time: "{alert.timestamp}"
+    message: "{alert.description}"
+    actions:
+      - "Acknowledge"
+      - "Investigate"
+      - "Snooze"
+      - "Escalate"
+  
+  filters:
+    - "All"
+    - "Critical Only"
+    - "Unacknowledged"
+    - "My Alerts"
+
+# Activity Feed
+activity_feed:
+  title: "Activity Feed"
+  position: "bottom-full-width"
+  height: "200px"
+  
+  configuration:
+    max_items: 100
+    auto_scroll: true
+    
+    event_types:
+      - type: "project_started"
+        icon: "play-circle"
+        color: "green"
+        template: "Project '{name}' started by {initiator}"
+      
+      - type: "agent_created"
+        icon: "user-plus"
+        color: "blue"
+        template: "Agent '{agent_name}' created for {project}"
+      
+      - type: "validation_complete"
+        icon: "check-square"
+        color: "green"
+        template: "Validation complete: {score}/100 for {project}"
+      
+      - type: "error_occurred"
+        icon: "x-circle"
+        color: "red"
+        template: "Error in {component}: {error_message}"
+      
+      - type: "handoff_complete"
+        icon: "arrow-right"
+        color: "purple"
+        template: "{from_agent} → {to_agent} handoff complete"
+  
+  filters:
+    enabled: true
+    options:
+      - "All Events"
+      - "Errors Only"
+      - "Project Events"
+      - "Agent Events"
+
+# Custom Dashboards
+custom_dashboards:
+  agent_deep_dive:
+    title: "Agent Deep Dive"
+    trigger: "click_on_agent"
+    
+    layout:
+      - widget: "agent_details"
+        type: "info-panel"
+      - widget: "agent_history"
+        type: "timeline"
+      - widget: "agent_metrics"
+        type: "multi-chart"
+      - widget: "agent_logs"
+        type: "log-viewer"
+  
+  project_detail:
+    title: "Project Detail"
+    trigger: "click_on_project"
+    
+    layout:
+      - widget: "project_summary"
+        type: "info-panel"
+      - widget: "project_timeline"
+        type: "gantt-chart"
+      - widget: "project_agents"
+        type: "network-graph"
+      - widget: "project_metrics"
+        type: "dashboard"
+
+# Data Sources
+data_sources:
+  primary:
+    type: "websocket"
+    url: "ws://motherbox-api/metrics"
+    reconnect: true
+    buffer_size: 1000
+  
+  secondary:
+    type: "rest"
+    url: "http://motherbox-api/api/v1"
+    polling_interval: "5s"
+    cache_ttl: "1s"
+  
+  logs:
+    type: "elasticsearch"
+    url: "http://elasticsearch:9200"
+    index: "motherbox-logs-*"
+    refresh: "real-time"
+
+# Alert Rules
+alert_rules:
+  - name: "Agent Offline"
+    condition: "agent.status == 'offline' for 5min"
+    severity: "warning"
+    notification: ["dashboard", "email"]
+  
+  - name: "Creation Failure"
+    condition: "project.status == 'failed'"
+    severity: "critical"
+    notification: ["dashboard", "email", "slack"]
+  
+  - name: "High Error Rate"
+    condition: "error_rate > 5% for 10min"
+    severity: "warning"
+    notification: ["dashboard"]
+  
+  - name: "Resource Exhaustion"
+    condition: "cpu > 90% or memory > 90%"
+    severity: "critical"
+    notification: ["dashboard", "email", "pager"]
+  
+  - name: "Quality Below Threshold"
+    condition: "quality_score < 70"
+    severity: "warning"
+    notification: ["dashboard", "email"]
+
+# Export Configuration
+export:
+  formats:
+    - pdf
+    - csv
+    - json
+  
+  scheduled_reports:
+    daily_summary:
+      time: "09:00"
+      recipients: ["team@company.com"]
+      content: ["overview", "quality", "alerts"]
+    
+    weekly_detailed:
+      day: "monday"
+      time: "08:00"
+      recipients: ["management@company.com"]
+      content: ["full_dashboard", "trends", "recommendations"]
+
+# Mobile Configuration
+mobile:
+  enabled: true
+  responsive_breakpoints:
+    phone: "< 768px"
+    tablet: "768px - 1024px"
+    desktop: "> 1024px"
+  
+  simplified_view:
+    show: ["overview", "alerts", "pipeline"]
+    hide: ["detailed_charts", "activity_feed"]
+  
+  touch_optimized: true
+  gesture_support: true
+
+# Theme Configuration
+theme:
+  colors:
+    primary: "#6B46C1"  # Purple
+    success: "#10B981"  # Green
+    warning: "#F59E0B"  # Yellow
+    danger: "#EF4444"   # Red
+    info: "#3B82F6"     # Blue
+    background: "#1F2937"
+    surface: "#374151"
+    text: "#F9FAFB"
+  
+  fonts:
+    heading: "Inter, sans-serif"
+    body: "Inter, sans-serif"
+    mono: "JetBrains Mono, monospace"
+  
+  animations:
+    enabled: true
+    duration: "200ms"
+    easing: "ease-in-out"

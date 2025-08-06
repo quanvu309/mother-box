@@ -1,0 +1,945 @@
+openapi: 3.1.0
+info:
+  title: Mother Box API
+  description: RESTful API for Mother Box agent team creation and management
+  version: 1.0.0
+  contact:
+    name: Mother Box Support
+    email: support@motherbox.io
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.motherbox.io/v1
+    description: Production server
+  - url: https://staging-api.motherbox.io/v1
+    description: Staging server
+  - url: http://localhost:8080/v1
+    description: Local development
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Projects
+    description: Agent team project management
+  - name: Agents
+    description: Individual agent operations
+  - name: Workflows
+    description: Workflow management
+  - name: Execution
+    description: Command execution and task management
+  - name: Monitoring
+    description: System monitoring and metrics
+  - name: Admin
+    description: Administrative operations
+
+paths:
+  /projects:
+    get:
+      tags: [Projects]
+      summary: List all projects
+      operationId: listProjects
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, completed, failed, archived]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectSummary'
+                  total:
+                    type: integer
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+    
+    post:
+      tags: [Projects]
+      summary: Create new agent team project
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /projects/{projectId}:
+    get:
+      tags: [Projects]
+      summary: Get project details
+      operationId: getProject
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    put:
+      tags: [Projects]
+      summary: Update project
+      operationId: updateProject
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+      responses:
+        '200':
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    
+    delete:
+      tags: [Projects]
+      summary: Delete project
+      operationId: deleteProject
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '204':
+          description: Project deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /projects/{projectId}/agents:
+    get:
+      tags: [Agents]
+      summary: List project agents
+      operationId: listProjectAgents
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: List of agents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Agent'
+    
+    post:
+      tags: [Agents]
+      summary: Create new agent
+      operationId: createAgent
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRequest'
+      responses:
+        '201':
+          description: Agent created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+
+  /projects/{projectId}/agents/{agentId}:
+    get:
+      tags: [Agents]
+      summary: Get agent details
+      operationId: getAgent
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+    
+    put:
+      tags: [Agents]
+      summary: Update agent
+      operationId: updateAgent
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/agentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentUpdate'
+      responses:
+        '200':
+          description: Agent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+    
+    delete:
+      tags: [Agents]
+      summary: Delete agent
+      operationId: deleteAgent
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '204':
+          description: Agent deleted
+
+  /projects/{projectId}/agents/{agentId}/execute:
+    post:
+      tags: [Execution]
+      summary: Execute agent command
+      operationId: executeCommand
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/agentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [command]
+              properties:
+                command:
+                  type: string
+                  example: "*analyze requirements"
+                parameters:
+                  type: object
+                context:
+                  type: object
+                timeout:
+                  type: integer
+                  description: Timeout in seconds
+                  default: 30
+      responses:
+        '200':
+          description: Command executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+        '202':
+          description: Command accepted for async execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  executionId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [queued, processing]
+
+  /projects/{projectId}/workflows:
+    get:
+      tags: [Workflows]
+      summary: List project workflows
+      operationId: listWorkflows
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: List of workflows
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Workflow'
+    
+    post:
+      tags: [Workflows]
+      summary: Create workflow
+      operationId: createWorkflow
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowRequest'
+      responses:
+        '201':
+          description: Workflow created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+
+  /projects/{projectId}/workflows/{workflowId}/execute:
+    post:
+      tags: [Workflows]
+      summary: Execute workflow
+      operationId: executeWorkflow
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/workflowId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  type: object
+                async:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Workflow executed synchronously
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowExecution'
+        '202':
+          description: Workflow started asynchronously
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  executionId:
+                    type: string
+
+  /executions/{executionId}:
+    get:
+      tags: [Execution]
+      summary: Get execution status
+      operationId: getExecution
+      parameters:
+        - name: executionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Execution details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Execution'
+
+  /metrics:
+    get:
+      tags: [Monitoring]
+      summary: Get system metrics
+      operationId: getMetrics
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 24h
+      responses:
+        '200':
+          description: System metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metrics'
+
+  /health:
+    get:
+      tags: [Monitoring]
+      summary: Health check
+      operationId: healthCheck
+      security: []
+      responses:
+        '200':
+          description: System healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  version:
+                    type: string
+                  uptime:
+                    type: integer
+                  components:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        message:
+                          type: string
+
+  /admin/mother-box/activate:
+    post:
+      tags: [Admin]
+      summary: Activate Mother Box team
+      operationId: activateMotherBox
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Mother Box activated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  agents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        status:
+                          type: string
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      schema:
+        type: string
+    
+    workflowId:
+      name: workflowId
+      in: path
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    ProjectRequest:
+      type: object
+      required: [name, domain, requirements]
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        domain:
+          type: string
+        requirements:
+          type: object
+          properties:
+            description:
+              type: string
+            goals:
+              type: array
+              items:
+                type: string
+            constraints:
+              type: array
+              items:
+                type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    
+    Project:
+      allOf:
+        - $ref: '#/components/schemas/ProjectRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              type: string
+              enum: [initializing, discovery, building, validating, completed, failed]
+            phase:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/AgentSummary'
+            workflows:
+              type: array
+              items:
+                type: string
+    
+    ProjectSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+        agentCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    
+    ProjectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        requirements:
+          type: object
+        metadata:
+          type: object
+    
+    AgentRequest:
+      type: object
+      required: [name, role]
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+        personality:
+          type: object
+          properties:
+            traits:
+              type: string
+            background:
+              type: string
+            communication:
+              type: string
+        capabilities:
+          type: array
+          items:
+            type: string
+        commands:
+          type: array
+          items:
+            type: string
+    
+    Agent:
+      allOf:
+        - $ref: '#/components/schemas/AgentRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+            status:
+              type: string
+              enum: [created, training, active, idle, error, offline]
+            qualityScore:
+              type: number
+              minimum: 0
+              maximum: 100
+            createdAt:
+              type: string
+              format: date-time
+            lastActive:
+              type: string
+              format: date-time
+    
+    AgentSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+    
+    AgentUpdate:
+      type: object
+      properties:
+        personality:
+          type: object
+        capabilities:
+          type: array
+          items:
+            type: string
+        commands:
+          type: array
+          items:
+            type: string
+    
+    WorkflowRequest:
+      type: object
+      required: [name, steps]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        trigger:
+          type: string
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              agent:
+                type: string
+              action:
+                type: string
+              input:
+                type: object
+              conditions:
+                type: array
+                items:
+                  type: string
+    
+    Workflow:
+      allOf:
+        - $ref: '#/components/schemas/WorkflowRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+            status:
+              type: string
+              enum: [draft, active, disabled]
+            version:
+              type: integer
+            createdAt:
+              type: string
+              format: date-time
+            lastExecuted:
+              type: string
+              format: date-time
+            executionCount:
+              type: integer
+    
+    WorkflowExecution:
+      type: object
+      properties:
+        id:
+          type: string
+        workflowId:
+          type: string
+        status:
+          type: string
+          enum: [running, completed, failed, cancelled]
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              stepId:
+                type: string
+              agent:
+                type: string
+              status:
+                type: string
+              output:
+                type: object
+              error:
+                type: string
+        output:
+          type: object
+        error:
+          type: string
+    
+    CommandResponse:
+      type: object
+      properties:
+        executionId:
+          type: string
+        command:
+          type: string
+        status:
+          type: string
+          enum: [success, error, timeout]
+        output:
+          type: object
+        error:
+          type: string
+        duration:
+          type: integer
+          description: Duration in milliseconds
+    
+    Execution:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [command, workflow]
+        status:
+          type: string
+          enum: [queued, processing, completed, failed, cancelled]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        result:
+          type: object
+        error:
+          type: string
+    
+    Metrics:
+      type: object
+      properties:
+        period:
+          type: string
+        projects:
+          type: object
+          properties:
+            total:
+              type: integer
+            active:
+              type: integer
+            completed:
+              type: integer
+            successRate:
+              type: number
+        agents:
+          type: object
+          properties:
+            total:
+              type: integer
+            active:
+              type: integer
+            averageQualityScore:
+              type: number
+        executions:
+          type: object
+          properties:
+            total:
+              type: integer
+            successful:
+              type: integer
+            failed:
+              type: integer
+            averageDuration:
+              type: integer
+        system:
+          type: object
+          properties:
+            cpuUsage:
+              type: number
+            memoryUsage:
+              type: number
+            activeConnections:
+              type: integer
+            queueDepth:
+              type: integer
+    
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+        requestId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      headers:
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+webhooks:
+  projectStatusChanged:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  enum: [project.status.changed]
+                projectId:
+                  type: string
+                oldStatus:
+                  type: string
+                newStatus:
+                  type: string
+                timestamp:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: Webhook processed successfully
+  
+  agentStatusChanged:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  enum: [agent.status.changed]
+                projectId:
+                  type: string
+                agentId:
+                  type: string
+                oldStatus:
+                  type: string
+                newStatus:
+                  type: string
+                timestamp:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: Webhook processed successfully

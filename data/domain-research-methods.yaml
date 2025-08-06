@@ -1,0 +1,523 @@
+# Domain Research Methods for Mother Box
+# Comprehensive methodologies for deep domain understanding
+
+research_framework:
+  primary_objectives:
+    - "Understand domain-specific terminology and jargon"
+    - "Map roles, responsibilities, and hierarchies"
+    - "Identify processes, workflows, and pain points"
+    - "Discover tools, systems, and integrations"
+    - "Learn industry standards and best practices"
+    - "Capture cultural norms and unwritten rules"
+
+# Phase 1: Initial Domain Reconnaissance
+initial_reconnaissance:
+  duration: "2-4 hours"
+  goal: "Get oriented and understand domain boundaries"
+  
+  desktop_research:
+    industry_overview:
+      sources:
+        - "Industry association websites"
+        - "Government industry classifications (NAICS, SIC)"
+        - "Market research reports (IBISWorld, Statista)"
+        - "Trade publications and magazines"
+        - "Wikipedia and domain-specific wikis"
+      
+      data_to_collect:
+        - "Market size and growth rate"
+        - "Major players and market share"
+        - "Key trends and disruptions"
+        - "Regulatory landscape"
+        - "Technology adoption patterns"
+      
+      research_template:
+        industry_name: "Specific industry or domain"
+        size_metrics:
+          revenue: "$X billion globally"
+          employees: "X million workers"
+          companies: "X thousand companies"
+        
+        growth_trends:
+          historical: "X% CAGR over 5 years"
+          projected: "X% expected growth"
+          drivers: ["Technology adoption", "Regulation", "Market forces"]
+        
+        key_segments:
+          - segment: "Enterprise (1000+ employees)"
+            characteristics: "Complex needs, long sales cycles"
+          - segment: "SMB (50-1000 employees)"
+            characteristics: "Cost-sensitive, standardized solutions"
+  
+  terminology_mining:
+    glossary_sources:
+      - "Industry dictionaries and glossaries"
+      - "Professional certification study guides"
+      - "Software vendor documentation"
+      - "Training materials and courses"
+      - "Job descriptions and postings"
+    
+    extraction_method:
+      automated:
+        - "Web scraping of glossary pages"
+        - "PDF text extraction from whitepapers"
+        - "API calls to industry databases"
+        - "Natural language processing for term frequency"
+      
+      manual:
+        - "Expert-curated term lists"
+        - "Context-specific definitions"
+        - "Relationship mapping between terms"
+        - "Usage examples and scenarios"
+    
+    term_categorization:
+      core_concepts: "Fundamental domain ideas"
+      processes: "Workflow and procedure terms"
+      tools: "Software and technology names"
+      roles: "Job titles and responsibilities"
+      metrics: "KPIs and measurement terms"
+      regulations: "Compliance and legal terms"
+
+# Phase 2: Expert Interview Protocol
+expert_interviews:
+  duration: "4-8 hours"
+  goal: "Get insider knowledge from domain practitioners"
+  
+  expert_identification:
+    target_profiles:
+      - profile: "Senior Practitioner"
+        experience: "10+ years in domain"
+        role: "Individual contributor or team lead"
+        value: "Day-to-day operational knowledge"
+      
+      - profile: "Domain Architect"
+        experience: "15+ years, multiple companies"
+        role: "Senior architect or principal"
+        value: "System design and integration patterns"
+      
+      - profile: "Industry Consultant"
+        experience: "Cross-industry exposure"
+        role: "External consultant or advisor"
+        value: "Best practices and benchmarking"
+      
+      - profile: "Technology Vendor"
+        experience: "Product specialist"
+        role: "Solution architect or sales engineer"
+        value: "Tool capabilities and limitations"
+    
+    sourcing_strategies:
+      - "LinkedIn professional network search"
+      - "Industry conference speaker lists"
+      - "Professional association directories"
+      - "Company team pages and about sections"
+      - "GitHub contributors to domain projects"
+      - "Stack Overflow domain tag contributors"
+  
+  interview_structure:
+    preparation:
+      - "Research interviewee's background"
+      - "Prepare domain-specific questions"
+      - "Set up recording (with permission)"
+      - "Prepare follow-up question bank"
+    
+    opening: # 5 minutes
+      - "Introduction and purpose"
+      - "Background and experience confirmation"
+      - "Permission to record"
+      - "Timeline and structure overview"
+    
+    domain_landscape: # 15 minutes
+      questions:
+        - "How would you describe [domain] to someone completely new?"
+        - "What are the 3-5 core concepts everyone must understand?"
+        - "What are the biggest misconceptions outsiders have?"
+        - "How has the field changed in the last 5 years?"
+    
+    daily_workflow: # 20 minutes
+      questions:
+        - "Walk me through a typical day/week in your role"
+        - "What tools do you use most frequently?"
+        - "What's the most challenging part of your job?"
+        - "What decisions do you make regularly?"
+        - "Who do you interact with most?"
+    
+    problem_solving: # 15 minutes
+      questions:
+        - "Describe a recent complex problem you solved"
+        - "What was your thought process?"
+        - "What resources did you consult?"
+        - "What would a junior person have done wrong?"
+    
+    domain_expertise: # 20 minutes
+      questions:
+        - "What separates good practitioners from great ones?"
+        - "What are the unwritten rules of the field?"
+        - "What do only experienced people know?"
+        - "What patterns do you see that others miss?"
+    
+    tools_and_systems: # 15 minutes
+      questions:
+        - "What tools are essential vs. nice-to-have?"
+        - "How do systems integrate in your environment?"
+        - "What are common integration pain points?"
+        - "What would your ideal toolchain look like?"
+    
+    future_trends: # 10 minutes
+      questions:
+        - "Where is the industry heading?"
+        - "What skills are becoming more/less important?"
+        - "What new challenges are emerging?"
+        - "What would you advise someone entering the field?"
+    
+    validation_questions: # 10 minutes
+      - "Based on our research, we think [key insight]. Does that match your experience?"
+      - "We're seeing [trend/pattern]. How accurate is that?"
+      - "What did I not ask that I should have?"
+
+# Phase 3: Observational Research
+observational_research:
+  duration: "6-12 hours"
+  goal: "See the domain in action, capture tacit knowledge"
+  
+  job_shadowing:
+    preparation:
+      - "Identify willing participants"
+      - "Define observation scope"
+      - "Prepare observation framework"
+      - "Set up documentation method"
+    
+    observation_framework:
+      context_capture:
+        - "Physical/digital environment"
+        - "Available tools and resources"
+        - "Time pressures and constraints"
+        - "Communication channels"
+        - "Information sources accessed"
+      
+      behavior_patterns:
+        - "Decision-making triggers"
+        - "Problem-solving approaches"
+        - "Information gathering methods"
+        - "Quality checking processes"
+        - "Error handling procedures"
+      
+      interaction_mapping:
+        - "Who they talk to and why"
+        - "How communication happens"
+        - "What information is exchanged"
+        - "Formal vs informal channels"
+        - "Escalation patterns"
+      
+      knowledge_application:
+        - "What expertise is applied when"
+        - "How experience guides decisions"
+        - "What shortcuts are taken"
+        - "What gets double-checked"
+        - "What patterns are recognized"
+  
+  workflow_documentation:
+    method: "Process mining and mapping"
+    
+    data_collection:
+      - "Screen recordings of digital work"
+      - "Time-stamped activity logs"
+      - "Decision point documentation"
+      - "Exception handling examples"
+      - "Quality gate observations"
+    
+    process_mapping:
+      standard_workflow:
+        - step: "Trigger event"
+          details: "What initiates the process"
+        - step: "Information gathering"
+          details: "What data is collected and how"
+        - step: "Analysis/processing"
+          details: "How decisions are made"
+        - step: "Action/output"
+          details: "What is produced"
+        - step: "Validation"
+          details: "How quality is ensured"
+        - step: "Handoff/completion"
+          details: "How work is transferred"
+      
+      exception_handling:
+        - "What can go wrong at each step"
+        - "How errors are detected"
+        - "Recovery procedures"
+        - "Escalation criteria"
+        - "Prevention measures"
+
+# Phase 4: Community Immersion
+community_research:
+  duration: "Ongoing, 2-3 hours/week for 4 weeks"
+  goal: "Understand community culture, unwritten rules, and emerging trends"
+  
+  online_communities:
+    platforms:
+      professional:
+        - "LinkedIn groups and discussions"
+        - "Industry-specific forums"
+        - "Reddit subreddits"
+        - "Discord/Slack communities"
+        - "Stack Overflow tags"
+      
+      social:
+        - "Twitter industry hashtags"
+        - "YouTube channel comments"
+        - "Facebook groups"
+        - "Clubhouse rooms"
+    
+    research_activities:
+      passive_observation:
+        - "Read posts and discussions for 30min daily"
+        - "Identify recurring themes and concerns"
+        - "Note language patterns and jargon usage"
+        - "Track trending topics and debates"
+      
+      active_participation:
+        - "Ask thoughtful questions"
+        - "Share relevant insights"
+        - "Engage in discussions"
+        - "Build relationships with experts"
+    
+    data_extraction:
+      sentiment_analysis:
+        - "What frustrates practitioners most?"
+        - "What are they excited about?"
+        - "What do they fear or worry about?"
+        - "What do they celebrate?"
+      
+      knowledge_gaps:
+        - "What questions come up repeatedly?"
+        - "What concepts confuse people?"
+        - "What skills are hard to learn?"
+        - "What mistakes are common?"
+      
+      tribal_knowledge:
+        - "What do insiders joke about?"
+        - "What shortcuts do people share?"
+        - "What warnings do experienced people give?"
+        - "What stories get told repeatedly?"
+
+# Phase 5: Competitive Intelligence
+competitive_research:
+  duration: "4-6 hours"
+  goal: "Understand solution landscape and positioning"
+  
+  solution_mapping:
+    categories:
+      - category: "Enterprise Solutions"
+        characteristics: "Comprehensive, expensive, complex"
+        examples: ["Solution A", "Solution B"]
+        strengths: ["Feature complete", "Scalable"]
+        weaknesses: ["Complex", "Expensive"]
+      
+      - category: "SMB Solutions"
+        characteristics: "Focused, affordable, simple"
+        examples: ["Solution C", "Solution D"]
+        strengths: ["Easy to use", "Cost-effective"]
+        weaknesses: ["Limited features", "Scale constraints"]
+    
+    feature_analysis:
+      core_capabilities:
+        - "Must-have features for any solution"
+        - "Standard features expected by users"
+        - "Advanced features for power users"
+        - "Integration requirements"
+      
+      differentiation_points:
+        - "What makes solutions unique?"
+        - "How do vendors position themselves?"
+        - "What are key competitive advantages?"
+        - "Where do solutions fall short?"
+  
+  user_feedback_analysis:
+    sources:
+      - "G2, Capterra, TrustRadius reviews"
+      - "App store ratings and comments"
+      - "Social media mentions"
+      - "Case studies and testimonials"
+      - "Support forum complaints"
+    
+    analysis_framework:
+      satisfaction_drivers:
+        - "What users love most"
+        - "What exceeds expectations"
+        - "What creates loyalty"
+        - "What drives recommendations"
+      
+      dissatisfaction_sources:
+        - "Common complaints"
+        - "Unmet needs"
+        - "Usability issues"
+        - "Performance problems"
+      
+      feature_requests:
+        - "What do users want added?"
+        - "What integrations are requested?"
+        - "What improvements are suggested?"
+        - "What alternatives do users consider?"
+
+# Phase 6: Regulatory and Compliance Research
+compliance_research:
+  duration: "2-4 hours"
+  goal: "Understand regulatory constraints and requirements"
+  
+  regulatory_landscape:
+    identification:
+      - "Industry-specific regulations"
+      - "Data protection requirements"
+      - "Security standards"
+      - "Professional licensing needs"
+      - "International compliance factors"
+    
+    impact_analysis:
+      - "How regulations affect daily work"
+      - "Compliance reporting requirements"
+      - "Audit and assessment needs"
+      - "Penalty and risk factors"
+      - "Future regulatory trends"
+  
+  standards_and_frameworks:
+    categories:
+      technical_standards:
+        - "Protocol specifications"
+        - "Data format standards"
+        - "API specifications"
+        - "Security frameworks"
+      
+      process_standards:
+        - "Quality management (ISO)"
+        - "Project management (PMI)"
+        - "Service management (ITIL)"
+        - "Risk management frameworks"
+      
+      compliance_frameworks:
+        - "SOC 2, ISO 27001 for security"
+        - "GDPR, CCPA for privacy"
+        - "SOX for financial controls"
+        - "HIPAA for healthcare"
+
+# Data Synthesis and Validation
+synthesis_methods:
+  triangulation:
+    method: "Cross-validate findings from multiple sources"
+    process:
+      1: "Compare expert interview insights"
+      2: "Validate against observational data"
+      3: "Check against community discussions"
+      4: "Verify with published research"
+    
+    confidence_levels:
+      high: "Confirmed by 3+ independent sources"
+      medium: "Confirmed by 2 sources"
+      low: "Single source, needs validation"
+  
+  pattern_identification:
+    techniques:
+      - "Thematic analysis of qualitative data"
+      - "Frequency analysis of terminology"
+      - "Process mapping and comparison"
+      - "Pain point clustering"
+      - "Solution gap analysis"
+    
+    validation_methods:
+      - "Expert review sessions"
+      - "Community feedback on findings"
+      - "Pilot testing with practitioners"
+      - "Academic literature comparison"
+
+# Output Templates and Deliverables
+research_outputs:
+  domain_profile:
+    sections:
+      - "Executive summary"
+      - "Domain landscape overview"
+      - "Key roles and responsibilities"
+      - "Core processes and workflows"
+      - "Technology stack and tools"
+      - "Pain points and opportunities"
+      - "Cultural factors and norms"
+      - "Future trends and challenges"
+  
+  persona_research:
+    practitioner_profiles:
+      - "Demographics and background"
+      - "Daily activities and responsibilities"
+      - "Goals and motivations"
+      - "Pain points and frustrations"
+      - "Tools and resources used"
+      - "Decision-making processes"
+      - "Success metrics and KPIs"
+      - "Learning and development needs"
+  
+  terminology_database:
+    structure:
+      term: "Domain-specific word or phrase"
+      definition: "Clear, actionable definition"
+      context: "When and how it's used"
+      synonyms: "Alternative terms"
+      related_terms: "Connected concepts"
+      usage_examples: "Real-world sentences"
+      expertise_level: "Beginner/Intermediate/Expert"
+      frequency: "How often it's used"
+
+# Quality Assurance Framework
+quality_gates:
+  completeness_check:
+    - "All planned research activities completed"
+    - "Target number of expert interviews conducted"
+    - "Community immersion time logged"
+    - "Competitive analysis coverage adequate"
+  
+  accuracy_validation:
+    - "Expert review of key findings"
+    - "Community feedback on insights"
+    - "Cross-reference with authoritative sources"
+    - "Fact-checking of specific claims"
+  
+  utility_assessment:
+    - "Findings actionable for agent creation"
+    - "Sufficient detail for personality development"
+    - "Clear understanding of user needs"
+    - "Identified opportunities for value creation"
+
+# Research Ethics and Best Practices
+ethical_guidelines:
+  expert_interviews:
+    - "Obtain informed consent"
+    - "Respect confidentiality agreements"
+    - "Provide value in exchange for time"
+    - "Share findings when appropriate"
+  
+  observational_research:
+    - "Get explicit permission before shadowing"
+    - "Protect sensitive information observed"
+    - "Avoid disrupting normal operations"
+    - "Respect workplace policies"
+  
+  community_participation:
+    - "Be transparent about research purposes"
+    - "Contribute value to communities"
+    - "Respect community norms and rules"
+    - "Avoid extractive behavior"
+
+# Success Metrics
+research_effectiveness:
+  quantitative_metrics:
+    - "Hours of research conducted"
+    - "Number of experts interviewed"
+    - "Community posts analyzed"
+    - "Terminology items catalogued"
+  
+  qualitative_indicators:
+    - "Depth of domain understanding"
+    - "Quality of agent personalities created"
+    - "Accuracy of domain knowledge"
+    - "Authenticity of agent responses"
+  
+  outcome_measures:
+    - "Agent validation scores from domain experts"
+    - "User acceptance of created agents"
+    - "Business value delivered by insights"
+    - "Time saved in agent creation process"

@@ -1,0 +1,235 @@
+# Mother Box Team Configuration
+# Complete meta-team for creating custom agent teams
+
+team:
+  name: Mother Box
+  version: 1.0.0
+  description: Meta-team that creates custom agent teams through deep research and BMAD methodology
+  purpose: Transform vague requirements into domain-authentic, fully-functional agent teams
+  
+agents:
+  leadership:
+    orchestrator:
+      file: agents/orchestrator.md
+      role: Process Coordinator & State Manager
+      phase: both
+      critical: true
+      activation: "*agent mb-orchestrator"
+    
+    master:
+      file: agents/master.md
+      role: Methodology Guardian & Quality Authority
+      phase: both
+      critical: true
+      activation: "*agent mb-master"
+  
+  understanding_team:
+    analyst:
+      file: agents/analyst.md
+      role: Trusted Advisor & Requirements Expert
+      phase: understanding
+      critical: true
+      activation: "*agent mb-analyst"
+    
+    researcher:
+      file: agents/researcher.md
+      role: Domain Investigation Specialist
+      phase: understanding
+      critical: true
+      activation: "*agent mb-researcher"
+  
+  synthesis_team:
+    pm:
+      file: agents/pm.md
+      role: Documentation Hub & Blueprint Creator
+      phase: both
+      critical: true
+      activation: "*agent mb-pm"
+    
+    po:
+      file: agents/po.md
+      role: Success Definition & Value Guardian
+      phase: both
+      critical: true
+      activation: "*agent mb-po"
+  
+  building_team:
+    architect:
+      file: agents/architect.md
+      role: System Designer & Integration Expert
+      phase: building
+      critical: true
+      activation: "*agent mb-architect"
+    
+    agent_creator:
+      file: agents/agent-creator.md
+      role: Agent Writer & Persona Crafter
+      phase: building
+      critical: true
+      activation: "*agent mb-creator"
+    
+    validator:
+      file: agents/validator.md
+      role: Quality Reviewer & Integration Tester
+      phase: building
+      critical: true
+      activation: "*agent mb-validator"
+  
+  specialist:
+    prompt_specialist:
+      file: agents/prompt-specialist.md
+      role: LLM Psychology Expert & Prompt Optimizer
+      phase: building
+      critical: true
+      activation: "*agent mb-prompt"
+
+communication:
+  patterns:
+    direct:
+      format: "@{agent_name}: {message}"
+      example: "@analyst: Need clarification on requirement X"
+    
+    broadcast:
+      format: "@team: {announcement}"
+      example: "@team: Moving to Building Phase"
+    
+    handoff:
+      format: "HANDOFF from {source} to {target}"
+      includes:
+        - context
+        - completed_work
+        - remaining_work
+        - dependencies
+    
+    event:
+      format: "EVENT: {event_type}"
+      handlers: [list_of_agents]
+
+workflows:
+  understanding:
+    file: workflows/understanding-phase.yaml
+    duration: 8-20 hours
+    agents_involved:
+      - orchestrator
+      - analyst
+      - researcher
+      - pm
+      - master
+      - po
+    
+  building:
+    file: workflows/building-phase.yaml
+    duration: 16-36 hours
+    agents_involved:
+      - orchestrator
+      - pm
+      - architect
+      - agent_creator
+      - validator
+      - master
+      - po
+      - prompt_specialist
+
+dependencies:
+  internal:
+    - Each agent depends on orchestrator for coordination
+    - Building team depends on understanding team outputs
+    - Validator depends on creator outputs
+    - All depend on master for quality standards
+  
+  external:
+    - BMAD framework
+    - LLM with sufficient context window
+    - User availability for validation
+
+quality_gates:
+  understanding_complete:
+    owner: master
+    criteria:
+      - Requirements documented
+      - Research comprehensive
+      - User validated
+      - Blueprint approved
+    
+  building_ready:
+    owner: master
+    criteria:
+      - All inputs available
+      - Team aligned
+      - Resources allocated
+    
+  delivery_ready:
+    owner: master
+    criteria:
+      - All components created
+      - Integration tested
+      - Quality validated
+      - Package complete
+
+activation_sequence:
+  1_initial:
+    - Load orchestrator first
+    - Orchestrator performs roll-call
+    - Verify all agents responsive
+  
+  2_understanding:
+    - Orchestrator activates analyst
+    - Analyst begins discovery
+    - Researcher activated in parallel
+    - PM synthesizes findings
+    - Master reviews quality
+    - PO defines success
+  
+  3_building:
+    - PM presents blueprint
+    - Architect designs system
+    - Prompt specialist prepares patterns
+    - Agent creator writes agents
+    - Validator reviews quality
+    - Master approves delivery
+
+success_metrics:
+  quality:
+    - BMAD compliance: 100%
+    - Quality score: 9+/10
+    - User satisfaction: Validated
+  
+  efficiency:
+    - Timeline adherence: 90%+
+    - First-time success: 85%+
+    - Rework rate: <10%
+  
+  value:
+    - ROI achieved: Yes
+    - Problems solved: 100%
+    - Adoption rate: High
+
+configuration:
+  context_management:
+    method: shared_state_object
+    persistence: across_phases
+    format: structured_json
+  
+  error_handling:
+    strategy: graceful_degradation
+    escalation: orchestrator_then_human
+    recovery: checkpoint_based
+  
+  parallel_processing:
+    enabled: true
+    coordination: orchestrator_managed
+    synchronization: phase_boundaries
+
+usage:
+  start_command: "*agent mb-orchestrator"
+  first_action: "*start-project"
+  help_available: "*help from any agent"
+  status_check: "*status from orchestrator"
+
+notes:
+  - All agents follow BMAD format standards
+  - Commands require * prefix
+  - Numbered options for user selection
+  - Quality gates are mandatory
+  - User validation required before building
+  - Complete packages delivered, not partial solutions

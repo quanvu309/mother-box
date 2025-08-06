@@ -1,0 +1,494 @@
+# Domain Knowledge Base Template
+# Used by Mother Box Researcher to compile comprehensive domain understanding
+
+document:
+  type: domain-knowledge-base
+  version: 1.0
+  created_by: Mother Box Researcher
+  purpose: Capture deep domain knowledge for authentic agent creation
+
+# Domain Overview
+domain_overview:
+  name:
+    type: text
+    required: true
+    example: "Enterprise Software Development"
+  
+  industry:
+    type: text
+    required: true
+    example: "Technology / B2B SaaS"
+  
+  maturity:
+    type: select
+    options: ["Emerging", "Growing", "Mature", "Transforming"]
+    required: true
+  
+  size:
+    market_size: "Dollar value or user count"
+    growth_rate: "Annual percentage"
+    key_players: "List of major companies"
+  
+  description:
+    type: text
+    min_length: 200
+    prompt: "Comprehensive domain description including scope, boundaries, and characteristics"
+
+# Core Concepts
+core_concepts:
+  fundamental_principles:
+    structure: list
+    required: true
+    min_items: 5
+    format:
+      principle:
+        type: text
+        example: "Continuous Integration/Continuous Deployment"
+      
+      definition:
+        type: text
+        example: "Automated process of integrating code changes and deploying to production"
+      
+      importance:
+        type: text
+        example: "Reduces integration problems and enables rapid delivery"
+      
+      common_misunderstandings:
+        type: list
+        items: "What people often get wrong"
+  
+  domain_models:
+    structure: list
+    format:
+      model_name:
+        type: text
+        example: "Software Development Lifecycle"
+      
+      components:
+        type: list
+        items: "Key components of the model"
+      
+      relationships:
+        type: text
+        example: "How components interact"
+      
+      variations:
+        type: list
+        items: "Different approaches or schools of thought"
+
+# Terminology Glossary
+terminology:
+  technical_terms:
+    structure: dictionary
+    format:
+      term:
+        type: text
+        example: "API"
+      
+      definition:
+        type: text
+        example: "Application Programming Interface"
+      
+      context:
+        type: text
+        example: "Used when discussing system integration"
+      
+      synonyms:
+        type: list
+        items: "Alternative terms"
+      
+      related_terms:
+        type: list
+        items: "Connected concepts"
+      
+      usage_example:
+        type: text
+        example: "We need to design the API before starting frontend development"
+  
+  domain_specific_acronyms:
+    structure: list
+    format:
+      acronym: "SLA"
+      expansion: "Service Level Agreement"
+      meaning: "Contractual performance guarantees"
+      typical_values: "99.9% uptime"
+  
+  jargon_phrases:
+    structure: list
+    format:
+      phrase: "Technical debt"
+      meaning: "Implied cost of rework from choosing easy solution"
+      when_used: "Discussing trade-offs in development"
+      emotional_weight: "Usually negative, implies future problems"
+
+# Roles and Responsibilities
+roles:
+  standard_roles:
+    structure: list
+    required: true
+    format:
+      title:
+        type: text
+        example: "Software Architect"
+      
+      alternate_titles:
+        type: list
+        items: ["Solution Architect", "Technical Architect"]
+      
+      primary_responsibilities:
+        type: list
+        min_items: 5
+        items: "Key job duties"
+      
+      typical_background:
+        education: "Common educational paths"
+        experience: "Years and type of experience"
+        certifications: "Relevant certifications"
+      
+      key_skills:
+        technical: "Technical competencies"
+        soft: "Interpersonal skills"
+        tools: "Software/platforms used"
+      
+      success_metrics:
+        type: list
+        items: "How performance is measured"
+      
+      daily_activities:
+        type: list
+        items: "What they actually do each day"
+      
+      pain_points:
+        type: list
+        items: "Common frustrations"
+      
+      motivations:
+        type: list
+        items: "What drives them"
+  
+  role_interactions:
+    structure: matrix
+    format:
+      from_role: "Developer"
+      to_role: "QA Engineer"
+      interaction_type: "Code handoff for testing"
+      frequency: "Multiple times daily"
+      communication_style: "Technical, detail-oriented"
+      common_conflicts: "Disagreement on bug severity"
+      collaboration_patterns: "Pair debugging sessions"
+
+# Processes and Workflows
+processes:
+  standard_workflows:
+    structure: list
+    format:
+      workflow_name:
+        type: text
+        example: "Feature Development"
+      
+      stages:
+        type: ordered_list
+        items:
+          stage_name: "Requirements gathering"
+          duration: "1-2 weeks"
+          participants: ["Product Manager", "Architect", "Lead Dev"]
+          deliverables: ["Requirements doc", "Technical spec"]
+          gate_criteria: "Stakeholder approval"
+      
+      variations:
+        type: list
+        items: "Different approaches by company size/type"
+      
+      best_practices:
+        type: list
+        items: "Industry-recognized approaches"
+      
+      common_pitfalls:
+        type: list
+        items: "What often goes wrong"
+      
+      tools_used:
+        type: list
+        items: "Software/platforms typically involved"
+  
+  decision_frameworks:
+    structure: list
+    format:
+      decision_type: "Technology selection"
+      factors_considered: ["Cost", "Scalability", "Team expertise"]
+      typical_process: "RFP → POC → Evaluation → Decision"
+      stakeholders: ["CTO", "Architect", "Dev Team"]
+      timeline: "4-8 weeks"
+      documentation: "Decision record template"
+
+# Industry Standards
+standards:
+  regulatory_requirements:
+    structure: list
+    format:
+      regulation:
+        name: "GDPR"
+        full_name: "General Data Protection Regulation"
+        scope: "Personal data handling in EU"
+        key_requirements: ["Consent", "Right to deletion", "Data portability"]
+        penalties: "Up to 4% of global revenue"
+        compliance_activities: ["Data mapping", "Privacy assessment", "Training"]
+  
+  industry_standards:
+    structure: list
+    format:
+      standard:
+        name: "ISO 27001"
+        category: "Information Security"
+        purpose: "Security management system"
+        certification_process: "Audit → Remediation → Certification"
+        maintenance: "Annual audits"
+        benefits: "Customer trust, compliance"
+  
+  best_practices:
+    structure: list
+    format:
+      practice:
+        name: "Code reviews"
+        description: "Peer review of code changes"
+        adoption_level: "Universal in mature teams"
+        implementation: "Pull request workflow"
+        benefits: ["Quality", "Knowledge sharing", "Mentoring"]
+        metrics: ["Review time", "Defect detection rate"]
+
+# Tools and Technologies
+tools:
+  categories:
+    structure: list
+    format:
+      category:
+        name: "Version Control"
+        purpose: "Code management and collaboration"
+        
+        market_leaders:
+          - tool: "Git/GitHub"
+            market_share: "85%"
+            strengths: ["Distributed", "Branch management"]
+            weaknesses: ["Learning curve", "Large file handling"]
+            typical_users: "All developers"
+          
+          - tool: "GitLab"
+            market_share: "10%"
+            strengths: ["Integrated CI/CD", "Self-hosted option"]
+            weaknesses: ["Resource intensive"]
+            typical_users: "Enterprises"
+        
+        emerging_tools:
+          type: list
+          items: "New or growing alternatives"
+        
+        selection_criteria:
+          type: list
+          items: "How organizations choose"
+        
+        integration_requirements:
+          type: list
+          items: "What it must connect with"
+
+# Domain Patterns
+patterns:
+  problem_patterns:
+    structure: list
+    format:
+      pattern_name: "N+1 Query Problem"
+      description: "Database performance issue in ORMs"
+      symptoms: ["Slow page loads", "High database CPU"]
+      root_cause: "Lazy loading in loops"
+      solutions: ["Eager loading", "Query optimization", "Caching"]
+      prevention: "Code review, performance testing"
+  
+  solution_patterns:
+    structure: list
+    format:
+      pattern_name: "Circuit Breaker"
+      problem_solved: "Cascading failures in microservices"
+      implementation: "Monitor failures, open circuit on threshold"
+      benefits: ["Prevents system overload", "Graceful degradation"]
+      trade_offs: ["Added complexity", "Requires tuning"]
+      when_to_use: "External service dependencies"
+  
+  anti_patterns:
+    structure: list
+    format:
+      anti_pattern: "Big Ball of Mud"
+      description: "Unstructured, sprawling codebase"
+      how_it_happens: "Lack of architecture, time pressure"
+      consequences: ["Unmaintainable", "High defect rate", "Slow delivery"]
+      remediation: ["Gradual refactoring", "Boundary definition"]
+      prevention: ["Architecture governance", "Code reviews"]
+
+# Communication Patterns
+communication:
+  formal_channels:
+    structure: list
+    items:
+      channel: "Architecture Review Board"
+      purpose: "Major technical decisions"
+      frequency: "Weekly or as needed"
+      participants: "Senior architects, CTOs"
+      outputs: "Decision records"
+  
+  informal_channels:
+    structure: list
+    items:
+      channel: "Slack #dev channel"
+      purpose: "Quick questions, debugging help"
+      tone: "Casual, helpful"
+      etiquette: "Search before asking"
+  
+  documentation_styles:
+    structure: list
+    format:
+      type: "Technical Specification"
+      audience: "Development team"
+      sections: ["Overview", "Requirements", "Design", "Testing"]
+      tone: "Formal, precise"
+      tools: ["Confluence", "Markdown", "Google Docs"]
+  
+  meeting_types:
+    structure: list
+    format:
+      meeting: "Sprint Planning"
+      purpose: "Plan upcoming work"
+      frequency: "Bi-weekly"
+      duration: "2-4 hours"
+      participants: ["Product Owner", "Scrum Master", "Dev Team"]
+      outputs: ["Sprint backlog", "Commitment"]
+
+# Cultural Aspects
+culture:
+  values:
+    structure: list
+    items:
+      value: "Ship fast, iterate"
+      meaning: "Release early, improve based on feedback"
+      behaviors: ["Daily deployments", "Feature flags", "A/B testing"]
+      tensions: "Quality vs. speed trade-offs"
+  
+  unwritten_rules:
+    structure: list
+    items:
+      rule: "Don't deploy on Fridays"
+      reasoning: "Avoid weekend emergencies"
+      exceptions: "Critical fixes"
+      enforcement: "Social pressure"
+  
+  status_symbols:
+    structure: list
+    items:
+      symbol: "Shipped major feature"
+      significance: "Technical competence proof"
+      recognition: "Team shout-out, bonus"
+  
+  tribal_knowledge:
+    structure: list
+    items:
+      knowledge: "System X has undocumented quirk Y"
+      how_learned: "Experience, mentoring"
+      documentation: "Usually verbal or in old tickets"
+      importance: "Critical for troubleshooting"
+
+# Evolution and Trends
+evolution:
+  historical_context:
+    structure: timeline
+    format:
+      period: "2010-2015"
+      characteristics: ["Monoliths", "Waterfall", "On-premise"]
+      key_changes: ["Move to cloud", "Agile adoption"]
+      drivers: ["Cost reduction", "Speed to market"]
+  
+  current_state:
+    maturity_indicators: ["CI/CD adoption", "Cloud native", "DevOps"]
+    common_challenges: ["Technical debt", "Skill gaps", "Tool sprawl"]
+    opportunities: ["AI integration", "Automation", "Platform engineering"]
+  
+  future_trends:
+    structure: list
+    format:
+      trend: "AI-assisted development"
+      timeline: "1-3 years"
+      impact: "30-50% productivity gain"
+      adoption_barriers: ["Trust", "Quality concerns", "Training"]
+      early_adopters: "Tech giants, startups"
+
+# Knowledge Sources
+sources:
+  authoritative_sources:
+    structure: list
+    format:
+      source:
+        name: "Martin Fowler's Blog"
+        type: "Thought leadership"
+        topics: ["Architecture", "Patterns", "Refactoring"]
+        credibility: "Industry standard reference"
+        update_frequency: "Monthly"
+  
+  communities:
+    structure: list
+    format:
+      community:
+        name: "Stack Overflow"
+        purpose: "Q&A, problem-solving"
+        size: "20M+ developers"
+        culture: "Helpful but demanding quality"
+        value: "Practical solutions"
+  
+  learning_resources:
+    structure: list
+    format:
+      resource:
+        type: "Online course platform"
+        examples: ["Coursera", "Udemy", "Pluralsight"]
+        topics: "Full stack coverage"
+        typical_user: "Junior to mid-level"
+        certification: "Available for some"
+
+# Quality Indicators
+quality_indicators:
+  maturity_markers:
+    structure: list
+    items:
+      marker: "Automated testing coverage >80%"
+      significance: "Quality-focused culture"
+      achievement_path: "Gradual increase, tooling investment"
+  
+  red_flags:
+    structure: list
+    items:
+      flag: "No version control"
+      severity: "Critical"
+      implications: "High risk, poor practices"
+      remediation: "Immediate Git implementation"
+  
+  excellence_indicators:
+    structure: list
+    items:
+      indicator: "Sub-second deployments"
+      what_it_means: "Excellent automation and architecture"
+      how_achieved: "Years of optimization"
+      benefits: "Rapid iteration, quick fixes"
+
+# Metadata
+metadata:
+  research_method:
+    sources_consulted: "Number and types"
+    interviews_conducted: "Role types interviewed"
+    documents_reviewed: "Reports, standards, papers"
+    confidence_level: "High/Medium/Low"
+    gaps_identified: "Areas needing more research"
+  
+  validation:
+    reviewed_by: "Domain experts consulted"
+    feedback_incorporated: "Changes made"
+    last_validated: "Date"
+  
+  maintenance:
+    update_frequency: "Quarterly"
+    change_triggers: "Major industry shifts"
+    version_control: "Git repository"

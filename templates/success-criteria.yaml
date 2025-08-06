@@ -1,0 +1,398 @@
+# Success Criteria Template
+# Used by Mother Box PO to define measurable success for agent teams
+
+document:
+  type: success-criteria
+  version: 1.0
+  created_by: Mother Box Product Owner
+  purpose: Define clear, measurable success metrics and acceptance criteria
+
+# Project Context
+project_context:
+  project_name:
+    type: text
+    required: true
+  
+  domain:
+    type: text
+    required: true
+  
+  stakeholders:
+    type: list
+    items:
+      name: "Stakeholder name"
+      role: "Their role"
+      interest: "What they care about"
+
+# Problem Statement
+problem_statement:
+  current_situation:
+    description:
+      type: text
+      required: true
+      min_length: 100
+      prompt: "Describe the current problematic situation"
+    
+    pain_points:
+      type: list
+      min_items: 3
+      format:
+        issue: "Specific problem"
+        impact: "Business impact"
+        frequency: "How often occurs"
+        cost: "Estimated cost/loss"
+  
+  desired_outcome:
+    vision:
+      type: text
+      required: true
+      prompt: "Describe the ideal future state"
+    
+    transformations:
+      type: list
+      format:
+        from: "Current state"
+        to: "Future state"
+        benefit: "Value created"
+
+# Success Metrics
+success_metrics:
+  quantitative_metrics:
+    structure: list
+    required: true
+    min_items: 3
+    
+    metric_definition:
+      name:
+        type: text
+        required: true
+        example: "First Contact Resolution Rate"
+      
+      current_baseline:
+        value: number_or_text
+        source: "How measured today"
+        date: "When measured"
+      
+      target:
+        value: number_or_text
+        rationale: "Why this target"
+        stretch_goal: "Ambitious target"
+      
+      measurement_method:
+        type: text
+        required: true
+        example: "Calculate % of tickets resolved without escalation"
+      
+      measurement_frequency:
+        type: select
+        options: ["Real-time", "Daily", "Weekly", "Monthly", "Quarterly"]
+      
+      data_source:
+        type: text
+        example: "Zendesk Analytics"
+      
+      calculation_formula:
+        type: text
+        example: "(Resolved on First Contact / Total Tickets) × 100"
+      
+      success_threshold:
+        minimum: "Minimum acceptable"
+        target: "Goal to achieve"
+        exceptional: "Exceeds expectations"
+      
+      timeline:
+        start_tracking: date
+        first_milestone: "30 days - X%"
+        second_milestone: "60 days - Y%"
+        final_target: "90 days - Z%"
+  
+  qualitative_metrics:
+    structure: list
+    required: true
+    min_items: 2
+    
+    metric_definition:
+      name:
+        type: text
+        example: "User Satisfaction"
+      
+      current_state:
+        description: "Current situation"
+        evidence: "How we know"
+      
+      desired_state:
+        description: "Target situation"
+        indicators: "What we'll observe"
+      
+      measurement_approach:
+        type: text
+        example: "Monthly user surveys with NPS scoring"
+      
+      success_indicators:
+        type: list
+        items: "Observable behavior or feedback"
+      
+      evaluation_criteria:
+        type: text
+        example: "Positive feedback in >80% of interactions"
+
+# Acceptance Criteria
+acceptance_criteria:
+  functional_acceptance:
+    structure: list
+    required: true
+    format: given_when_then
+    
+    criterion:
+      given:
+        type: text
+        prompt: "Initial context/setup"
+        example: "Given a customer submits a support ticket"
+      
+      when:
+        type: text
+        prompt: "Action or trigger"
+        example: "When the ticket is processed by the agent team"
+      
+      then:
+        type: text
+        prompt: "Expected outcome"
+        example: "Then response is sent within 2 minutes"
+      
+      acceptance_test:
+        type: text
+        prompt: "How to verify"
+        example: "Submit 10 test tickets and measure response times"
+  
+  non_functional_acceptance:
+    performance:
+      response_time: "Maximum acceptable"
+      throughput: "Minimum required"
+      concurrent_users: "Must support"
+    
+    reliability:
+      availability: "Uptime requirement"
+      error_rate: "Maximum acceptable"
+      recovery_time: "Maximum downtime"
+    
+    usability:
+      learning_curve: "Time to proficiency"
+      user_errors: "Maximum error rate"
+      satisfaction: "Minimum score"
+    
+    security:
+      authentication: "Requirements"
+      authorization: "Access control"
+      audit: "Logging requirements"
+
+# Value Metrics
+value_metrics:
+  roi_calculation:
+    benefits:
+      cost_savings:
+        type: list
+        format:
+          area: "Where saved"
+          amount: "Dollar value"
+          calculation: "How calculated"
+      
+      revenue_increase:
+        type: list
+        format:
+          source: "Revenue source"
+          amount: "Dollar value"
+          calculation: "How calculated"
+      
+      efficiency_gains:
+        type: list
+        format:
+          process: "What's improved"
+          time_saved: "Hours/days"
+          value: "Dollar equivalent"
+      
+      risk_reduction:
+        type: list
+        format:
+          risk: "What's avoided"
+          probability: "Likelihood"
+          impact: "Potential cost"
+          value: "Risk value reduced"
+    
+    costs:
+      development:
+        hours: "Estimated hours"
+        rate: "Cost per hour"
+        total: "Total cost"
+      
+      implementation:
+        training: "Training costs"
+        setup: "Setup costs"
+        migration: "Migration costs"
+      
+      ongoing:
+        maintenance: "Monthly cost"
+        support: "Support cost"
+        infrastructure: "Running costs"
+    
+    calculations:
+      total_benefit: "Sum of all benefits"
+      total_cost: "Sum of all costs"
+      net_value: "Benefits - Costs"
+      roi_percentage: "(Net Value / Costs) × 100"
+      payback_period: "Months to break even"
+      three_year_value: "Projected 3-year return"
+
+# Milestone Definitions
+milestones:
+  structure: list
+  required: true
+  
+  milestone:
+    name:
+      type: text
+      example: "Phase 1 Complete"
+    
+    date:
+      type: date
+      required: true
+    
+    deliverables:
+      type: list
+      items: "Specific deliverable"
+    
+    success_criteria:
+      type: list
+      items: "Must be true to pass"
+    
+    metrics_checkpoint:
+      type: list
+      format:
+        metric: "Metric name"
+        target: "Target at this milestone"
+        actual: "Space for actual"
+    
+    go_no_go:
+      decision_criteria: "What determines go/no-go"
+      decision_maker: "Who decides"
+
+# Risk-Adjusted Success
+risk_adjusted:
+  identified_risks:
+    structure: list
+    format:
+      risk: "Risk description"
+      probability: "Low/Medium/High"
+      impact_on_success: "How it affects metrics"
+      mitigation: "How to address"
+      adjusted_target: "Modified target if risk occurs"
+
+# Stakeholder Agreement
+stakeholder_agreement:
+  structure: list
+  format:
+    stakeholder:
+      name: text
+      role: text
+      
+      agrees_to:
+        metrics: "Which metrics they care about"
+        targets: "Targets they accept"
+        timeline: "Timeline they support"
+      
+      concerns:
+        type: list
+        items: "Specific concerns"
+      
+      sign_off:
+        confirmed: boolean
+        date: datetime
+        conditions: "Any conditions"
+
+# Success Tracking Plan
+tracking_plan:
+  dashboard:
+    location: "Where dashboard exists"
+    update_frequency: "How often updated"
+    access: "Who can view"
+  
+  reporting:
+    cadence: "Weekly/Monthly"
+    format: "Report structure"
+    distribution: "Who receives"
+  
+  review_meetings:
+    frequency: "How often"
+    participants: "Who attends"
+    agenda: "Standard agenda"
+  
+  escalation:
+    triggers: "What triggers escalation"
+    process: "Escalation process"
+    contacts: "Who to contact"
+
+# Definition of Done
+definition_of_done:
+  agent_team_ready:
+    checklist:
+      - "All agents created and tested"
+      - "Integration points verified"
+      - "Workflows executable end-to-end"
+      - "Error handling implemented"
+      - "Documentation complete"
+  
+  success_metrics_met:
+    checklist:
+      - "All quantitative metrics achieved"
+      - "Qualitative metrics positive"
+      - "ROI targets met"
+      - "Stakeholder satisfaction confirmed"
+  
+  operational_readiness:
+    checklist:
+      - "Monitoring in place"
+      - "Support plan defined"
+      - "Training completed"
+      - "Rollback plan exists"
+
+# Post-Launch Success
+post_launch:
+  30_day_review:
+    metrics_review: "Check all metrics"
+    user_feedback: "Gather feedback"
+    adjustments: "Identify needed changes"
+  
+  60_day_review:
+    trend_analysis: "Analyze trends"
+    optimization: "Optimization opportunities"
+    expansion: "Expansion possibilities"
+  
+  90_day_review:
+    full_assessment: "Complete evaluation"
+    lessons_learned: "Document learnings"
+    future_roadmap: "Plan next phase"
+
+# Metadata
+metadata:
+  version:
+    type: string
+    default: "1.0"
+  
+  created_date:
+    type: datetime
+    auto_populate: true
+  
+  last_modified:
+    type: datetime
+    auto_populate: true
+  
+  created_by:
+    type: string
+    auto_populate: from_agent
+  
+  approved_by:
+    type: string
+    required_for: final
+  
+  status:
+    type: select
+    options: ["Draft", "Review", "Approved", "Active", "Achieved"]

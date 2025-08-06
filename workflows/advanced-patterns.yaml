@@ -1,0 +1,455 @@
+# Advanced Workflow Patterns for Mother Box
+# Complex orchestration patterns for sophisticated agent team creation
+
+patterns:
+  # Parallel Discovery Pattern
+  parallel_discovery:
+    name: "Parallel Requirements Discovery"
+    when_to_use: "Multiple stakeholders with different perspectives"
+    description: "Simultaneously gather requirements from different viewpoints"
+    
+    workflow:
+      trigger: "Multiple stakeholder groups identified"
+      
+      parallel_tracks:
+        track_1:
+          agent: analyst
+          focus: "Business requirements"
+          stakeholders: ["Product owners", "Business analysts"]
+          duration: "2-3 hours"
+          
+        track_2:
+          agent: researcher
+          focus: "Technical constraints"
+          stakeholders: ["Architects", "Engineers"]
+          duration: "2-3 hours"
+          
+        track_3:
+          agent: po
+          focus: "Value metrics"
+          stakeholders: ["Executives", "Finance"]
+          duration: "1-2 hours"
+      
+      convergence:
+        coordinator: pm
+        action: "Synthesize parallel findings"
+        output: "Unified requirements document"
+        conflict_resolution: "Escalate to orchestrator"
+      
+      benefits:
+        - "3x faster discovery"
+        - "Multiple perspectives captured"
+        - "Conflicts identified early"
+        - "Stakeholder buy-in improved"
+
+  # Iterative Refinement Pattern
+  iterative_refinement:
+    name: "Progressive Agent Enhancement"
+    when_to_use: "Complex domains requiring deep specialization"
+    description: "Build agents in iterations with continuous improvement"
+    
+    workflow:
+      iterations:
+        iteration_1:
+          goal: "Basic functionality"
+          duration: "1 day"
+          steps:
+            1: "Create skeleton agents"
+            2: "Basic personality traits"
+            3: "Core commands only"
+            4: "Simple workflows"
+          validation: "Can handle happy path"
+          
+        iteration_2:
+          goal: "Domain expertise"
+          duration: "2 days"
+          steps:
+            1: "Deep research integration"
+            2: "Terminology refinement"
+            3: "Expert knowledge injection"
+            4: "Edge case handling"
+          validation: "Passes domain expert review"
+          
+        iteration_3:
+          goal: "Integration excellence"
+          duration: "1 day"
+          steps:
+            1: "Handoff optimization"
+            2: "State management tuning"
+            3: "Error recovery enhancement"
+            4: "Performance optimization"
+          validation: "Integration tests pass 95%+"
+      
+      feedback_loops:
+        - source: "User testing"
+          frequency: "After each iteration"
+          incorporation: "Next iteration planning"
+        
+        - source: "Quality gates"
+          frequency: "Continuous"
+          incorporation: "Immediate fixes"
+
+  # Domain Expertise Injection Pattern
+  expertise_injection:
+    name: "Expert Knowledge Transfer"
+    when_to_use: "Highly specialized or regulated domains"
+    description: "Systematically transfer expert knowledge into agents"
+    
+    workflow:
+      preparation:
+        agent: researcher
+        actions:
+          - "Interview domain experts"
+          - "Shadow expert workflows"
+          - "Document decision trees"
+          - "Capture edge cases"
+        duration: "1-2 days"
+      
+      knowledge_extraction:
+        parallel:
+          - agent: analyst
+            focus: "Explicit knowledge"
+            method: "Structured interviews"
+            output: "Decision matrices"
+          
+          - agent: researcher
+            focus: "Tacit knowledge"
+            method: "Observation and scenarios"
+            output: "Pattern library"
+          
+          - agent: pm
+            focus: "Process knowledge"
+            method: "Workflow mapping"
+            output: "Process diagrams"
+      
+      knowledge_encoding:
+        agent: agent-creator
+        steps:
+          1: "Map knowledge to agent capabilities"
+          2: "Create decision frameworks"
+          3: "Encode heuristics"
+          4: "Build expertise verification"
+        validation: validator
+      
+      expert_validation:
+        method: "Expert reviews agent responses"
+        criteria: "Would I give this answer?"
+        iterations: "Until 90% agreement"
+
+  # Failover Orchestration Pattern
+  failover_orchestration:
+    name: "Resilient Team Building"
+    when_to_use: "Mission-critical agent teams"
+    description: "Build redundancy and failover into team creation"
+    
+    workflow:
+      primary_path:
+        agents: ["orchestrator", "analyst", "researcher", "architect"]
+        monitoring: "Continuous health checks"
+        
+      backup_paths:
+        scenario_1:
+          trigger: "Analyst unavailable"
+          alternative: "Orchestrator performs basic elicitation"
+          degradation: "Less nuanced requirements"
+          
+        scenario_2:
+          trigger: "Researcher blocked"
+          alternative: "Use cached domain knowledge"
+          degradation: "Less current information"
+          
+        scenario_3:
+          trigger: "Architect overloaded"
+          alternative: "Use standard patterns"
+          degradation: "Less optimization"
+      
+      circuit_breakers:
+        - condition: "Quality score <70%"
+          action: "Halt and escalate"
+          
+        - condition: "Timeline exceeded 2x"
+          action: "Switch to simplified approach"
+          
+        - condition: "User dissatisfaction"
+          action: "Reset to discovery phase"
+
+  # Continuous Validation Pattern
+  continuous_validation:
+    name: "Real-time Quality Assurance"
+    when_to_use: "High-stakes or regulated environments"
+    description: "Validate continuously throughout creation process"
+    
+    workflow:
+      validation_points:
+        - checkpoint: "Requirements complete"
+          validator: master
+          criteria: "BMAD compliance"
+          gate: "Hard stop if failed"
+          
+        - checkpoint: "Research complete"
+          validator: domain_expert
+          criteria: "Accuracy and completeness"
+          gate: "Soft - can proceed with notes"
+          
+        - checkpoint: "Each agent created"
+          validator: validator
+          criteria: "Personality and capability"
+          gate: "Hard stop if score <8"
+          
+        - checkpoint: "Integration designed"
+          validator: architect
+          criteria: "Technical feasibility"
+          gate: "Hard stop if infeasible"
+      
+      continuous_checks:
+        frequency: "Every 30 minutes"
+        metrics:
+          - "Progress vs. timeline"
+          - "Quality scores"
+          - "Requirement coverage"
+          - "Risk indicators"
+        
+        alerts:
+          yellow: "10% behind schedule"
+          orange: "Quality dropping"
+          red: "Blocker detected"
+
+  # Swarm Intelligence Pattern
+  swarm_intelligence:
+    name: "Collective Problem Solving"
+    when_to_use: "Complex, multi-faceted problems"
+    description: "Multiple agents work on problem simultaneously"
+    
+    workflow:
+      problem_broadcast:
+        initiator: orchestrator
+        message: "Problem statement and constraints"
+        recipients: "All available agents"
+        
+      parallel_solving:
+        duration: "30 minutes"
+        agents:
+          analyst: "User perspective solution"
+          researcher: "Industry best practices"
+          architect: "Technical approach"
+          po: "Business value approach"
+          prompt-specialist: "Communication strategy"
+        
+      solution_synthesis:
+        coordinator: pm
+        method: "Combine best elements"
+        conflict_resolution: "Weighted voting"
+        output: "Integrated solution"
+        
+      validation:
+        agent: master
+        criteria: "Coherence and completeness"
+        refinement: "Iterate if needed"
+
+  # Adaptive Complexity Pattern
+  adaptive_complexity:
+    name: "Right-sized Team Creation"
+    when_to_use: "Varying complexity requirements"
+    description: "Adjust approach based on complexity assessment"
+    
+    workflow:
+      complexity_assessment:
+        agent: orchestrator
+        factors:
+          - domain_complexity: "1-10 scale"
+          - integration_count: "Number of systems"
+          - stakeholder_count: "Number of groups"
+          - regulatory_requirements: "Yes/No"
+          - timeline_pressure: "1-10 scale"
+        
+        calculation: "Sum of factors"
+        
+      approach_selection:
+        low_complexity: # Score 5-15
+          approach: "Rapid creation"
+          team_size: "2-3 agents"
+          timeline: "1 day"
+          validation: "Basic testing only"
+          
+        medium_complexity: # Score 16-30
+          approach: "Standard process"
+          team_size: "4-6 agents"
+          timeline: "3-5 days"
+          validation: "Full test suite"
+          
+        high_complexity: # Score 31-50
+          approach: "Deep dive creation"
+          team_size: "7-12 agents"
+          timeline: "1-2 weeks"
+          validation: "Extensive testing + pilot"
+      
+      dynamic_adjustment:
+        trigger: "Complexity changes during creation"
+        action: "Shift approach accordingly"
+        communication: "Inform user of changes"
+
+  # Knowledge Graph Pattern
+  knowledge_graph:
+    name: "Relationship-Driven Design"
+    when_to_use: "Complex interconnected domains"
+    description: "Build agents based on knowledge relationships"
+    
+    workflow:
+      graph_construction:
+        agent: researcher
+        nodes:
+          - "Domain concepts"
+          - "Processes"
+          - "Roles"
+          - "Tools"
+          - "Regulations"
+        
+        edges:
+          - "Depends on"
+          - "Influences"
+          - "Validates"
+          - "Triggers"
+          - "Conflicts with"
+      
+      cluster_analysis:
+        agent: architect
+        method: "Identify tightly coupled clusters"
+        output: "Natural agent boundaries"
+        
+      agent_mapping:
+        agent: agent-creator
+        approach:
+          - "Each cluster becomes an agent"
+          - "Edge density determines integration needs"
+          - "Central nodes become coordinators"
+      
+      validation:
+        method: "Graph traversal scenarios"
+        criteria: "All paths covered by agents"
+
+  # Time-boxed Escalation Pattern
+  timeboxed_escalation:
+    name: "Progressive Enhancement with Deadlines"
+    when_to_use: "Strict timeline requirements"
+    description: "Deliver incrementally with time boundaries"
+    
+    workflow:
+      time_boxes:
+        box_1:
+          duration: "4 hours"
+          goal: "Minimum viable team"
+          deliverables:
+            - "2-3 core agents"
+            - "Basic workflow"
+            - "Essential commands"
+          quality_bar: "Functional"
+          
+        box_2:
+          duration: "8 hours"
+          goal: "Production ready team"
+          deliverables:
+            - "All core agents"
+            - "Integration points"
+            - "Error handling"
+          quality_bar: "Robust"
+          
+        box_3:
+          duration: "16 hours"
+          goal: "Optimized team"
+          deliverables:
+            - "Performance tuning"
+            - "Advanced features"
+            - "Comprehensive docs"
+          quality_bar: "Excellent"
+      
+      escalation_triggers:
+        - "Time box ending"
+        - "Blocker encountered"
+        - "Quality gate failed"
+      
+      decisions:
+        - "Deliver current state"
+        - "Extend timeline"
+        - "Reduce scope"
+        - "Add resources"
+
+  # Consensus Building Pattern
+  consensus_building:
+    name: "Multi-Agent Agreement"
+    when_to_use: "Controversial or high-stakes decisions"
+    description: "Achieve consensus among Mother Box agents"
+    
+    workflow:
+      proposal_generation:
+        initiator: "Any agent"
+        format: "Structured proposal"
+        distribution: "All affected agents"
+        
+      review_period:
+        duration: "30 minutes"
+        actions:
+          - "Each agent reviews independently"
+          - "Documents concerns"
+          - "Suggests modifications"
+          
+      consensus_round:
+        facilitator: orchestrator
+        method: "Modified Delphi technique"
+        rounds:
+          1: "Initial positions"
+          2: "Address concerns"
+          3: "Final positions"
+        
+        outcomes:
+          unanimous: "Proceed immediately"
+          majority: "Proceed with noted dissent"
+          split: "Escalate to master"
+          blocked: "Return to proposal phase"
+      
+      implementation:
+        owner: pm
+        action: "Document decision and rationale"
+        communication: "Inform all agents"
+
+# Pattern Selection Matrix
+selection_matrix:
+  factors:
+    - factor: "Domain complexity"
+      high: ["expertise_injection", "knowledge_graph"]
+      medium: ["iterative_refinement", "swarm_intelligence"]
+      low: ["adaptive_complexity", "timeboxed_escalation"]
+    
+    - factor: "Time pressure"
+      high: ["timeboxed_escalation", "parallel_discovery"]
+      medium: ["adaptive_complexity", "continuous_validation"]
+      low: ["iterative_refinement", "expertise_injection"]
+    
+    - factor: "Quality requirements"
+      high: ["continuous_validation", "consensus_building"]
+      medium: ["iterative_refinement", "failover_orchestration"]
+      low: ["timeboxed_escalation", "adaptive_complexity"]
+    
+    - factor: "Stakeholder count"
+      high: ["parallel_discovery", "consensus_building"]
+      medium: ["swarm_intelligence", "knowledge_graph"]
+      low: ["iterative_refinement", "adaptive_complexity"]
+
+# Implementation Notes
+implementation:
+  prerequisites:
+    - "All Mother Box agents activated"
+    - "Domain context established"
+    - "Resources allocated"
+    - "Timeline defined"
+  
+  monitoring:
+    - "Pattern effectiveness metrics"
+    - "Time to completion"
+    - "Quality scores"
+    - "User satisfaction"
+  
+  optimization:
+    - "Learn from each use"
+    - "Refine pattern parameters"
+    - "Document lessons learned"
+    - "Share successful adaptations"

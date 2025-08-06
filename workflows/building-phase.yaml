@@ -1,0 +1,393 @@
+# Building Phase Workflow
+# Mother Box process for creating agent team from validated requirements
+
+workflow:
+  name: Building Phase
+  version: 1.0
+  duration: 16-36 hours
+  description: Transform validated requirements into complete agent team package
+  prerequisites:
+    - Understanding Phase complete
+    - Requirements validated by user
+    - Domain research comprehensive
+    - Success criteria defined
+  
+phases:
+  - name: Kickoff
+    duration: 0.5-1 hour
+    agents:
+      - orchestrator
+      - pm
+      - all-building-team
+    steps:
+      - id: distribute-requirements
+        agent: orchestrator
+        action: Share all Understanding Phase outputs
+        inputs:
+          - Requirements document
+          - Domain knowledge base
+          - Team blueprint
+          - Success criteria
+        output: Team briefed
+      
+      - id: present-blueprint
+        agent: pm
+        action: Present comprehensive blueprint to team
+        output: Shared understanding
+      
+      - id: assign-responsibilities
+        agent: orchestrator
+        action: Assign specific agents to tasks
+        output: Work assigned
+
+  - name: Architecture Design
+    duration: 2-4 hours
+    agents:
+      - architect
+      - prompt-specialist
+      - pm
+    parallel: true
+    steps:
+      - id: design-communication
+        agent: architect
+        action: Design agent communication patterns
+        tasks:
+          - design-system-architecture.md
+        output: Communication architecture
+      
+      - id: design-integration
+        agent: architect
+        action: Create integration specifications
+        tasks:
+          - create-communication-patterns.md
+        output: Integration specs
+      
+      - id: design-state
+        agent: architect
+        action: Design state management system
+        output: State management design
+      
+      - id: analyze-prompts
+        agent: prompt-specialist
+        action: Analyze all planned agents for LLM optimization
+        parallel: true
+        output: Optimization guide
+      
+      - id: create-patterns
+        agent: prompt-specialist
+        action: Create prompt pattern library
+        output: Pattern library
+
+  - name: Agent Creation
+    duration: 6-12 hours
+    agents:
+      - agent-creator
+      - prompt-specialist
+      - validator
+    iterative: true
+    steps:
+      - id: create-agent
+        agent: agent-creator
+        action: Write agent definition
+        tasks:
+          - write-agent-definition.md
+        inputs:
+          - PM blueprint
+          - Architect design
+          - Prompt patterns
+          - Domain research
+        output: Agent definition
+      
+      - id: optimize-prompts
+        agent: prompt-specialist
+        action: Optimize agent prompts
+        tasks:
+          - optimize-prompts.md
+        output: Optimized prompts
+      
+      - id: validate-agent
+        agent: validator
+        action: Review agent document
+        tasks:
+          - validate-agent-document.md
+        decision:
+          pass: Continue to next agent
+          fail: Return for revision
+        output: Validation report
+      
+      - id: revise-agent
+        agent: agent-creator
+        condition: validation-failed
+        action: Revise based on feedback
+        output: Updated agent
+      
+      - id: repeat-for-all
+        description: Repeat for each agent in blueprint
+        iteration: For each required agent
+
+  - name: Component Creation
+    duration: 4-8 hours
+    agents:
+      - agent-creator
+      - pm
+      - architect
+    parallel: possible
+    steps:
+      - id: create-tasks
+        agent: agent-creator
+        action: Write task definitions
+        tasks:
+          - create-task-workflows.md
+        output: Task files
+      
+      - id: create-templates
+        agent: pm
+        action: Create document templates
+        tasks:
+          - create-templates.md
+        output: Template files
+      
+      - id: create-checklists
+        agent: pm
+        action: Write quality checklists
+        output: Checklist files
+      
+      - id: create-data
+        agent: agent-creator
+        action: Compile knowledge bases
+        output: Data files
+      
+      - id: create-workflows
+        agent: architect
+        action: Define multi-step workflows
+        output: Workflow files
+
+  - name: Integration Testing
+    duration: 2-4 hours
+    agents:
+      - validator
+      - architect
+      - prompt-specialist
+    steps:
+      - id: test-handoffs
+        agent: validator
+        action: Test all agent handoffs
+        tasks:
+          - test-integration.md
+        output: Handoff test results
+      
+      - id: test-communication
+        agent: architect
+        action: Verify communication protocols
+        output: Protocol validation
+      
+      - id: test-state
+        agent: architect
+        action: Test state management
+        output: State test results
+      
+      - id: simulate-workflows
+        agent: validator
+        action: Simulate complete workflows
+        tasks:
+          - simulate-conversation.md
+        output: Workflow test results
+      
+      - id: identify-issues
+        agent: validator
+        action: Document all issues found
+        output: Issue list
+
+  - name: Quality Review
+    duration: 2-3 hours
+    agents:
+      - master
+      - validator
+      - po
+    sequential: true
+    steps:
+      - id: comprehensive-review
+        agent: master
+        action: Review all components for BMAD compliance
+        checklist: bmad-compliance.md
+        output: Compliance report
+      
+      - id: quality-scoring
+        agent: master
+        action: Score all quality dimensions
+        criteria:
+          - Clarity: 1-10
+          - Consistency: 1-10
+          - Completeness: 1-10
+          - Compliance: 1-10
+        output: Quality scores
+      
+      - id: validate-success
+        agent: po
+        action: Verify success criteria met
+        checklist: value-delivery.md
+        output: Success validation
+      
+      - id: final-validation
+        agent: validator
+        action: Final package validation
+        output: Validation certificate
+
+  - name: Package Assembly
+    duration: 1-2 hours
+    agents:
+      - pm
+      - orchestrator
+    steps:
+      - id: organize-files
+        agent: pm
+        action: Organize all files in correct structure
+        structure:
+          - agents/
+          - tasks/
+          - templates/
+          - checklists/
+          - data/
+          - workflows/
+          - agent-teams/
+        output: Organized package
+      
+      - id: create-config
+        agent: pm
+        action: Create core configuration files
+        files:
+          - core-config.yaml
+          - install-manifest.yaml
+        output: Config files
+      
+      - id: write-guide
+        agent: pm
+        action: Write user guide
+        template: user-guide-template.md
+        output: User guide
+      
+      - id: final-check
+        agent: orchestrator
+        action: Verify package completeness
+        checklist: delivery-checklist.md
+        output: Ready for delivery
+
+  - name: Final Approval
+    duration: 0.5-1 hour
+    agents:
+      - master
+      - po
+      - orchestrator
+    steps:
+      - id: master-approval
+        agent: master
+        action: Final quality approval
+        gate: final-quality-gate
+        output: Quality approved
+      
+      - id: value-confirmation
+        agent: po
+        action: Confirm value delivery
+        output: Value confirmed
+      
+      - id: package-delivery
+        agent: orchestrator
+        action: Prepare package for delivery
+        output: Package ready
+
+quality_gates:
+  - name: Architecture Approval
+    owner: master
+    phase: Architecture Design
+    criteria:
+      - Communication patterns clear
+      - Integration defined
+      - State management robust
+    minimum_score: 8
+
+  - name: Agent Quality
+    owner: validator
+    phase: Agent Creation
+    criteria:
+      - Prompts optimized
+      - Personas authentic
+      - Commands complete
+      - Boundaries defined
+    minimum_score: 8
+
+  - name: Integration Readiness
+    owner: architect
+    phase: Integration Testing
+    criteria:
+      - All handoffs work
+      - State preserved
+      - Protocols clear
+      - Error handling present
+    minimum_score: 9
+
+  - name: Final Delivery
+    owner: master
+    phase: Final Approval
+    criteria:
+      - All components present
+      - Quality scores met
+      - Success criteria validated
+      - Package complete
+    minimum_score: 9
+
+parallel_opportunities:
+  - group: architecture-and-optimization
+    activities:
+      - Architect designs system
+      - Prompt Specialist creates patterns
+    coordination: Share outputs for alignment
+  
+  - group: component-creation
+    activities:
+      - Create tasks
+      - Create templates
+      - Create checklists
+    coordination: PM oversees consistency
+
+error_handling:
+  - error: Agent creation blocked
+    handler: agent-creator
+    action: Request clarification from PM
+  
+  - error: Integration failure
+    handler: architect
+    action: Redesign integration point
+  
+  - error: Quality gate failure
+    handler: master
+    action: Identify specific fixes needed
+  
+  - error: Prompt optimization issue
+    handler: prompt-specialist
+    action: Alternative pattern selection
+
+deliverables:
+  required:
+    - All agent definitions
+    - All task workflows
+    - Core templates
+    - Key checklists
+    - Domain data files
+    - Integration workflows
+    - core-config.yaml
+    - install-manifest.yaml
+    - user-guide.md
+  
+  quality_metrics:
+    - BMAD compliance: 100%
+    - Integration tested: 100%
+    - Documentation complete: 100%
+    - Quality score: 9+/10
+
+success_criteria:
+  - All agents created and validated
+  - Integration tests pass
+  - Quality gates passed
+  - Package structure correct
+  - User guide comprehensive
+  - Ready for deployment

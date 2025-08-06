@@ -1,0 +1,409 @@
+# Handoff Protocol Template
+# Used by Mother Box Architect to define agent-to-agent handoff specifications
+
+document:
+  type: handoff-protocol
+  version: 1.0
+  created_by: Mother Box Architect
+  purpose: Define precise handoff mechanisms between agents
+
+# Handoff Definition
+handoff_definition:
+  name:
+    type: text
+    required: true
+    example: "Triage to Technical Specialist"
+  
+  id:
+    type: text
+    format: "snake_case"
+    required: true
+    example: "triage_to_tech"
+  
+  description:
+    type: text
+    required: true
+    max_length: 200
+    example: "Handoff when issue requires deep technical investigation"
+
+# Participants
+participants:
+  sender:
+    agent_id:
+      type: text
+      required: true
+      example: "triage-agent"
+    
+    role:
+      type: text
+      required: true
+      example: "Initial Assessment"
+    
+    responsibilities:
+      type: list
+      items:
+        - "Gather initial information"
+        - "Categorize issue"
+        - "Prepare context for handoff"
+  
+  receiver:
+    agent_id:
+      type: text
+      required: true
+      example: "tech-specialist"
+    
+    role:
+      type: text
+      required: true
+      example: "Technical Investigation"
+    
+    responsibilities:
+      type: list
+      items:
+        - "Deep technical analysis"
+        - "Root cause identification"
+        - "Solution implementation"
+
+# Trigger Conditions
+triggers:
+  conditions:
+    structure: list
+    required: true
+    items:
+      condition_type:
+        type: select
+        options: ["threshold", "pattern", "flag", "timeout", "manual"]
+      
+      description:
+        type: text
+        example: "Issue complexity score > 7"
+      
+      evaluation:
+        type: text
+        example: "if (complexity_score > 7) then trigger"
+  
+  examples:
+    - trigger: "Customer explicitly requests technical help"
+      action: "Immediate handoff"
+    
+    - trigger: "Error pattern matches known technical issue"
+      action: "Automatic handoff with context"
+    
+    - trigger: "Resolution time exceeds 10 minutes"
+      action: "Escalate to specialist"
+
+# Context Transfer
+context_transfer:
+  required_data:
+    structure: list
+    required: true
+    items:
+      field_name:
+        type: text
+        example: "ticket_id"
+      
+      data_type:
+        type: select
+        options: ["string", "number", "object", "array", "boolean"]
+      
+      required:
+        type: boolean
+        default: true
+      
+      validation:
+        type: text
+        example: "Must be valid ticket ID format"
+      
+      source:
+        type: text
+        example: "From initial ticket submission"
+  
+  data_structure:
+    format: yaml
+    example: |
+      handoff_context:
+        ticket:
+          id: "TICK-12345"
+          priority: "P2"
+          created: "2024-01-15T10:30:00Z"
+        
+        customer:
+          id: "CUST-789"
+          tier: "Enterprise"
+          sentiment: "Frustrated"
+        
+        issue:
+          category: "Technical"
+          description: "API returns 500 errors intermittently"
+          attempts: ["Restart attempted", "Cache cleared"]
+        
+        metadata:
+          handoff_reason: "Technical complexity"
+          urgency: "High"
+          sla_remaining: "45 minutes"
+
+# Communication Protocol
+communication:
+  initiation:
+    sender_actions:
+      1: "Prepare context package"
+      2: "Set handoff flag"
+      3: "Send handoff request"
+      4: "Wait for acknowledgment"
+    
+    message_format:
+      type: object
+      structure:
+        header:
+          from: "sender_agent_id"
+          to: "receiver_agent_id"
+          timestamp: "ISO-8601"
+          handoff_id: "UUID"
+          priority: "P1-P4"
+        
+        body:
+          context: "Full context object"
+          reason: "Why handoff needed"
+          urgency: "Time sensitivity"
+          special_instructions: "Any specific notes"
+  
+  acknowledgment:
+    receiver_actions:
+      1: "Receive handoff request"
+      2: "Validate context completeness"
+      3: "Send acknowledgment"
+      4: "Begin processing"
+    
+    ack_format:
+      type: object
+      structure:
+        handoff_id: "UUID from request"
+        status: "accepted|rejected|queued"
+        estimated_time: "Expected processing time"
+        message: "Any additional info"
+    
+    timeout_handling:
+      wait_time: "30 seconds"
+      retry_attempts: 3
+      retry_interval: "10 seconds"
+      fallback: "Route to backup agent or alert human"
+
+# State Management
+state_management:
+  before_handoff:
+    sender_state:
+      - Save current work
+      - Mark item as "handed off"
+      - Start timeout timer
+      - Log handoff attempt
+    
+    shared_state:
+      - Update owner field
+      - Set handoff_in_progress flag
+      - Record handoff timestamp
+      - Update status
+  
+  during_handoff:
+    monitoring:
+      - Track acknowledgment status
+      - Monitor timeout
+      - Check for errors
+      - Maintain audit log
+    
+    rollback_capability:
+      - Keep original context
+      - Maintain sender availability
+      - Have fallback plan ready
+  
+  after_handoff:
+    sender_state:
+      - Clear active item
+      - Update metrics
+      - Archive context
+      - Available for new work
+    
+    receiver_state:
+      - Load context fully
+      - Set active item
+      - Begin processing
+      - Track time spent
+    
+    shared_state:
+      - Clear handoff flag
+      - Update owner confirmed
+      - Record completion time
+      - Update audit trail
+
+# Error Handling
+error_handling:
+  common_errors:
+    - error: "Receiver not available"
+      detection: "No acknowledgment in timeout"
+      recovery:
+        1: "Try backup agent"
+        2: "Queue for later"
+        3: "Alert supervisor"
+        4: "Return to sender"
+    
+    - error: "Context incomplete"
+      detection: "Required fields missing"
+      recovery:
+        1: "Request missing data"
+        2: "Use defaults if possible"
+        3: "Reject handoff"
+        4: "Alert sender"
+    
+    - error: "Handoff loop detected"
+      detection: "Same item handed off 3+ times"
+      recovery:
+        1: "Break loop"
+        2: "Escalate to supervisor"
+        3: "Mark for human review"
+    
+    - error: "State corruption"
+      detection: "Inconsistent state detected"
+      recovery:
+        1: "Rollback to checkpoint"
+        2: "Reconstruct from audit log"
+        3: "Alert system admin"
+        4: "Fail safely"
+
+# Validation Rules
+validation:
+  pre_handoff:
+    checks:
+      - "All required fields present"
+      - "Receiver is available"
+      - "No circular dependencies"
+      - "Authority to handoff"
+      - "Within business rules"
+  
+  post_handoff:
+    checks:
+      - "Acknowledgment received"
+      - "Context transferred completely"
+      - "State consistent"
+      - "Audit trail updated"
+      - "Metrics recorded"
+
+# Performance Targets
+performance:
+  timing:
+    handoff_initiation: "<1 second"
+    acknowledgment: "<2 seconds"
+    context_transfer: "<5 seconds"
+    total_handoff: "<10 seconds"
+  
+  reliability:
+    success_rate: ">99%"
+    data_integrity: "100%"
+    rollback_success: ">95%"
+  
+  monitoring:
+    metrics:
+      - "Handoff volume"
+      - "Success rate"
+      - "Average time"
+      - "Error rate"
+      - "Rollback frequency"
+
+# Audit Requirements
+audit:
+  required_logging:
+    - event: "Handoff initiated"
+      data: ["timestamp", "sender", "receiver", "context_id"]
+    
+    - event: "Handoff acknowledged"
+      data: ["timestamp", "status", "receiver"]
+    
+    - event: "Handoff completed"
+      data: ["timestamp", "duration", "success"]
+    
+    - event: "Handoff failed"
+      data: ["timestamp", "error", "recovery_action"]
+  
+  retention:
+    period: "90 days"
+    storage: "Structured log storage"
+    searchable: true
+    exportable: true
+
+# Testing Scenarios
+testing:
+  test_cases:
+    - name: "Happy path handoff"
+      setup: "Both agents available, valid context"
+      expected: "Successful transfer <10 seconds"
+    
+    - name: "Receiver unavailable"
+      setup: "Receiver offline or busy"
+      expected: "Fallback to backup or queue"
+    
+    - name: "Invalid context"
+      setup: "Missing required fields"
+      expected: "Rejection with clear error"
+    
+    - name: "Network interruption"
+      setup: "Connection lost during handoff"
+      expected: "Retry and recover"
+    
+    - name: "Concurrent handoffs"
+      setup: "Multiple handoffs simultaneously"
+      expected: "All complete successfully"
+
+# Usage Examples
+examples:
+  simple_handoff:
+    scenario: "Basic customer issue escalation"
+    yaml: |
+      handoff:
+        from: triage-agent
+        to: support-agent
+        context:
+          ticket_id: "12345"
+          issue: "Password reset"
+          priority: "Normal"
+  
+  complex_handoff:
+    scenario: "Multi-stage technical investigation"
+    yaml: |
+      handoff:
+        from: support-agent
+        to: tech-specialist
+        context:
+          ticket_id: "12345"
+          investigation:
+            logs_reviewed: true
+            patterns_found: ["500 errors", "timeout"]
+            hypothesis: "Database connection pool exhausted"
+          customer:
+            impact: "Production down"
+            users_affected: 1000+
+          next_steps:
+            - "Check database connections"
+            - "Review connection pool settings"
+            - "Analyze query performance"
+
+# Implementation Notes
+implementation_notes:
+  considerations:
+    - "Ensure atomic handoff operations"
+    - "Implement circuit breakers for failing handoffs"
+    - "Consider async handoffs for non-critical items"
+    - "Build monitoring dashboard for handoff health"
+    - "Plan for graceful degradation"
+  
+  best_practices:
+    - "Always acknowledge receipt"
+    - "Validate before processing"
+    - "Keep handoffs idempotent"
+    - "Log everything for debugging"
+    - "Test failure scenarios thoroughly"
+
+# Metadata
+metadata:
+  template_version: "1.0"
+  last_updated: "2024-01-15"
+  created_by: "Mother Box Architect"
+  review_cycle: "Quarterly"
+  compliance: ["SOC2", "ISO27001"]

@@ -1,0 +1,447 @@
+# Team Blueprint Template
+# Used by Mother Box PM to create comprehensive agent team design
+
+document:
+  type: team-blueprint
+  version: 1.0
+  created_by: Mother Box PM
+  purpose: Define complete agent team architecture and specifications
+
+# Team Overview
+team_overview:
+  name:
+    type: text
+    required: true
+    example: "Customer Success Agent Team"
+  
+  domain:
+    type: text
+    required: true
+    example: "SaaS B2B Software"
+  
+  mission:
+    type: text
+    required: true
+    max_length: 200
+    example: "Ensure customer success through proactive support, onboarding excellence, and retention optimization"
+  
+  size:
+    type: number
+    required: true
+    range: 2-12
+    justification: "Why this number of agents"
+
+# Problem-Solution Mapping
+problem_solution_map:
+  structure: list
+  required: true
+  format:
+    problem:
+      type: text
+      description: "Specific problem from requirements"
+    
+    solution:
+      type: text
+      description: "How agent team addresses it"
+    
+    responsible_agent:
+      type: text
+      description: "Which agent handles this"
+    
+    success_metric:
+      type: text
+      description: "How we measure success"
+
+# Agent Definitions
+agents:
+  structure: list
+  required: true
+  min_items: 2
+  max_items: 12
+  
+  agent_specification:
+    name:
+      type: text
+      required: true
+      example: "Customer Success Manager"
+    
+    id:
+      type: text
+      format: "lowercase-hyphenated"
+      required: true
+      example: "cs-manager"
+    
+    category:
+      type: select
+      options: ["Core", "Supporting", "Specialist", "Coordinator"]
+      required: true
+    
+    justification:
+      type: text
+      required: true
+      min_length: 50
+      prompt: "Why is this agent essential?"
+    
+    primary_responsibilities:
+      type: list
+      required: true
+      min_items: 3
+      max_items: 7
+    
+    key_capabilities:
+      type: list
+      required: true
+      min_items: 5
+      prompt: "What must this agent be able to do?"
+    
+    success_metrics:
+      type: list
+      required: true
+      min_items: 2
+      format:
+        metric: "KPI name"
+        target: "Specific target"
+        measurement: "How measured"
+    
+    interactions:
+      receives_from:
+        type: list
+        items: "agent-id"
+      
+      sends_to:
+        type: list
+        items: "agent-id"
+      
+      collaborates_with:
+        type: list
+        items: "agent-id"
+    
+    tools_required:
+      type: list
+      items:
+        tool: "Tool name"
+        purpose: "Why needed"
+        integration: "How it connects"
+    
+    knowledge_requirements:
+      domain_knowledge:
+        type: list
+        items: "Specific knowledge area"
+      
+      technical_skills:
+        type: list
+        items: "Technical capability"
+      
+      soft_skills:
+        type: list
+        items: "Interpersonal skill"
+
+# Interaction Model
+interaction_model:
+  communication_patterns:
+    structure: list
+    items:
+      pattern_name:
+        type: text
+        example: "Escalation"
+      
+      trigger:
+        type: text
+        example: "Customer issue beyond L1 scope"
+      
+      flow:
+        type: text
+        example: "L1 → L2 → Manager"
+      
+      protocol:
+        type: text
+        example: "Include ticket ID, customer context, attempted solutions"
+  
+  decision_authority:
+    structure: matrix
+    format:
+      decision_type:
+        type: text
+        example: "Refund approval"
+      
+      authority_level:
+        type: text
+        example: "Up to $500"
+      
+      owner:
+        type: text
+        example: "billing-agent"
+      
+      escalation:
+        type: text
+        example: "manager-agent for >$500"
+  
+  handoff_protocols:
+    structure: list
+    items:
+      from_agent: "agent-id"
+      to_agent: "agent-id"
+      trigger: "What causes handoff"
+      data_passed: "What information transfers"
+      format: "Structure of handoff"
+      sla: "Expected response time"
+
+# Workflow Definitions
+workflows:
+  structure: list
+  required: true
+  min_items: 3
+  
+  workflow_spec:
+    name:
+      type: text
+      required: true
+    
+    description:
+      type: text
+      required: true
+    
+    trigger:
+      type: text
+      required: true
+    
+    actors:
+      type: list
+      items: "agent-id"
+    
+    steps:
+      type: ordered_list
+      format:
+        step_number: number
+        actor: "agent-id"
+        action: "What they do"
+        input: "What they need"
+        output: "What they produce"
+        duration: "Expected time"
+    
+    decision_points:
+      type: list
+      format:
+        point: "Description"
+        criteria: "Decision criteria"
+        outcomes: "Possible paths"
+    
+    success_criteria:
+      type: text
+      required: true
+    
+    error_handling:
+      type: text
+      required: true
+
+# Integration Requirements
+integrations:
+  external_systems:
+    structure: list
+    items:
+      system_name:
+        type: text
+        example: "Salesforce"
+      
+      integration_type:
+        type: select
+        options: ["API", "Webhook", "Database", "File", "Email"]
+      
+      data_exchanged:
+        inbound: "What we receive"
+        outbound: "What we send"
+      
+      frequency:
+        type: text
+        example: "Real-time, Hourly, Daily"
+      
+      authentication:
+        type: text
+        example: "OAuth 2.0"
+      
+      affected_agents:
+        type: list
+        items: "agent-id"
+  
+  data_requirements:
+    structure: list
+    items:
+      data_type: "Type of data"
+      source: "Where it comes from"
+      format: "Structure/schema"
+      validation: "Rules to apply"
+      storage: "Where/how stored"
+
+# State Management
+state_management:
+  shared_context:
+    structure: object
+    format:
+      field_name: "Field description"
+      type: "Data type"
+      updated_by: "Which agents can update"
+      read_by: "Which agents can read"
+  
+  persistence:
+    method:
+      type: select
+      options: ["Database", "File", "Memory", "Distributed Cache"]
+    
+    retention:
+      type: text
+      example: "7 days active, 90 days archive"
+  
+  synchronization:
+    type: text
+    description: "How state stays consistent"
+
+# Quality Specifications
+quality_specs:
+  performance:
+    response_time:
+      target: "Time in seconds/minutes"
+      measurement: "How measured"
+    
+    throughput:
+      target: "Volume per time unit"
+      peak_capacity: "Maximum load"
+    
+    accuracy:
+      target: "Percentage"
+      validation: "How verified"
+  
+  reliability:
+    availability:
+      target: "Uptime percentage"
+      measurement: "Monitoring approach"
+    
+    error_rate:
+      target: "Acceptable error rate"
+      handling: "Error recovery approach"
+  
+  scalability:
+    growth_plan:
+      current: "Initial capacity"
+      future: "Projected growth"
+      triggers: "When to scale"
+
+# Success Validation
+success_validation:
+  capability_coverage:
+    structure: checklist
+    items:
+      - "All user requirements addressed"
+      - "All workflows implemented"
+      - "All integrations defined"
+      - "All agents justified"
+      - "No gaps identified"
+  
+  value_delivery:
+    roi_calculation:
+      benefits: "Quantified benefits"
+      costs: "Implementation costs"
+      payback: "Time to value"
+    
+    success_metrics:
+      type: list
+      items:
+        metric: "What to measure"
+        baseline: "Current state"
+        target: "Future state"
+        timeline: "When achieved"
+
+# Risk Assessment
+risks:
+  structure: list
+  items:
+    risk_description:
+      type: text
+      required: true
+    
+    probability:
+      type: select
+      options: ["Low", "Medium", "High"]
+    
+    impact:
+      type: select
+      options: ["Low", "Medium", "High"]
+    
+    mitigation:
+      type: text
+      required: true
+    
+    owner:
+      type: text
+      required: true
+
+# Implementation Plan
+implementation:
+  phases:
+    structure: list
+    items:
+      phase_name: "Name"
+      duration: "Timeline"
+      deliverables: "What's delivered"
+      dependencies: "What's needed"
+      success_criteria: "Completion definition"
+  
+  priorities:
+    must_have:
+      type: list
+      description: "Critical for launch"
+    
+    should_have:
+      type: list
+      description: "Important but not critical"
+    
+    nice_to_have:
+      type: list
+      description: "Future enhancements"
+
+# Approval Section
+approvals:
+  requirements_coverage:
+    confirmed_by: "analyst"
+    date: datetime
+    notes: text
+  
+  technical_feasibility:
+    confirmed_by: "architect"
+    date: datetime
+    notes: text
+  
+  quality_standards:
+    confirmed_by: "master"
+    date: datetime
+    notes: text
+  
+  value_delivery:
+    confirmed_by: "po"
+    date: datetime
+    notes: text
+
+# Metadata
+metadata:
+  version:
+    type: string
+    auto_increment: true
+  
+  created_date:
+    type: datetime
+    auto_populate: true
+  
+  last_modified:
+    type: datetime
+    auto_populate: true
+  
+  created_by:
+    type: string
+    auto_populate: from_agent
+  
+  status:
+    type: select
+    options: ["Draft", "Review", "Approved", "Building"]
+  
+  project_id:
+    type: string
+    auto_generate: uuid

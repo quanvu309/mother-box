@@ -1,0 +1,492 @@
+# Data Collection Templates for Mother Box Research
+# Structured templates for gathering domain-specific data
+
+# Expert Interview Data Collection
+expert_interview_template:
+  metadata:
+    interview_id: "Generated UUID"
+    date: "YYYY-MM-DD"
+    duration: "Minutes"
+    interviewer: "Researcher name"
+    method: "Video call / Phone / In-person"
+    recording_consent: "Yes/No"
+    follow_up_needed: "Yes/No"
+  
+  participant_profile:
+    basic_info:
+      name: "Full name"
+      title: "Current job title"
+      company: "Current employer"
+      industry: "Primary industry"
+      location: "Geographic location"
+      linkedin_profile: "URL if available"
+    
+    experience:
+      years_in_domain: "Total years"
+      years_current_role: "Years in current position"
+      previous_roles:
+        - role: "Previous title"
+          company: "Previous employer"
+          duration: "Years"
+          key_responsibilities: "Main duties"
+      career_progression: "Brief career arc"
+      specializations: "Areas of expertise"
+      certifications: "Professional certifications"
+    
+    context:
+      company_size: "Employees count range"
+      company_type: "Enterprise/SMB/Startup/Consultant"
+      team_size: "Direct team size"
+      budget_responsibility: "Yes/No and amount"
+      geographic_scope: "Local/National/Global"
+  
+  domain_insights:
+    core_concepts:
+      fundamental_principles:
+        - concept: "Principle name"
+          explanation: "How they explain it"
+          importance: "Why it matters"
+          common_mistakes: "What people get wrong"
+          mastery_indicators: "How to recognize expertise"
+      
+      mental_models:
+        - model: "Framework name"
+          description: "How they think about problems"
+          application: "When they use it"
+          variations: "Different schools of thought"
+          evolution: "How it's changing"
+    
+    terminology_deep_dive:
+      critical_terms:
+        - term: "Domain-specific word"
+          definition: "Their definition"
+          context: "When/how used"
+          nuances: "Subtle meanings"
+          evolution: "How usage is changing"
+          regional_variations: "Geographic differences"
+          level_indicators: "Beginner vs expert usage"
+      
+      jargon_translations:
+        - insider_phrase: "What experts say"
+          outsider_translation: "What it actually means"
+          usage_context: "When it's appropriate"
+          formality_level: "Casual/Professional/Technical"
+  
+  workflow_analysis:
+    typical_day:
+      time_blocks:
+        - time: "9:00-10:00 AM"
+          activity: "What they typically do"
+          tools_used: "Software/systems"
+          interactions: "Who they work with"
+          decisions_made: "Types of choices"
+          challenges: "Common obstacles"
+        
+      weekly_patterns:
+        - day: "Monday"
+          focus: "Weekly priorities"
+          meetings: "Regular commitments"
+          deliverables: "What's due"
+      
+      monthly_cycles:
+        - period: "Month start"
+          activities: "Regular monthly tasks"
+          reporting: "Required reports"
+          planning: "Planning activities"
+    
+    decision_frameworks:
+      decision_types:
+        - decision: "Type of choice"
+          frequency: "How often made"
+          stakeholders: "Who's involved"
+          criteria: "What factors matter"
+          process: "How decision is reached"
+          timeframe: "How long it takes"
+          reversibility: "Can it be changed"
+          consequences: "Impact of wrong choice"
+      
+      problem_solving:
+        - scenario: "Common problem type"
+          approach: "How they tackle it"
+          resources: "What they consult"
+          collaboration: "Who they involve"
+          validation: "How they verify solution"
+          documentation: "How they record it"
+  
+  tools_and_systems:
+    daily_tools:
+      - tool: "Software name"
+        purpose: "What it's used for"
+        frequency: "How often used"
+        proficiency: "Expert/Intermediate/Basic"
+        satisfaction: "Rating 1-10"
+        pain_points: "What's frustrating"
+        workarounds: "How they cope with limitations"
+        alternatives: "What they'd prefer"
+    
+    integration_landscape:
+      - system_a: "First system"
+        system_b: "Second system"
+        integration_type: "API/File/Manual"
+        data_flow: "What data moves"
+        frequency: "How often"
+        pain_points: "Integration challenges"
+        workarounds: "How they handle issues"
+  
+  cultural_insights:
+    unwritten_rules:
+      - rule: "What everyone knows but isn't documented"
+        context: "When it applies"
+        consequences: "What happens if violated"
+        origin: "Why this rule exists"
+        evolution: "How it's changing"
+    
+    status_indicators:
+      - indicator: "What signals expertise/success"
+        recognition: "How others identify it"
+        acquisition: "How to develop it"
+        importance: "Why it matters"
+    
+    communication_norms:
+      - context: "Meeting/Email/Slack"
+        style: "Formal/Casual/Technical"
+        expectations: "Response time/Format"
+        taboos: "What not to do"
+        best_practices: "How to excel"
+
+# Community Research Data Collection
+community_research_template:
+  platform_analysis:
+    platform_info:
+      name: "Reddit/LinkedIn/Stack Overflow"
+      url: "Specific community URL"
+      member_count: "Number of members"
+      activity_level: "Posts per day"
+      moderation_style: "Heavy/Light/Community-driven"
+      entry_barriers: "Open/Invitation/Paid"
+    
+    content_analysis:
+      time_period: "Date range analyzed"
+      sample_size: "Number of posts/comments"
+      
+      post_categorization:
+        - category: "Questions"
+          count: "Number of posts"
+          themes: "Common topics"
+          engagement: "Average responses"
+        
+        - category: "Discussions"
+          count: "Number of posts"
+          topics: "What's debated"
+          sentiment: "Positive/Negative/Neutral"
+        
+        - category: "News/Updates"
+          count: "Number of posts"
+          sources: "Where news comes from"
+          reaction_patterns: "How community responds"
+      
+      terminology_frequency:
+        - term: "Domain word"
+          count: "Times mentioned"
+          context: "How it's used"
+          sentiment: "Positive/Negative/Neutral"
+          expertise_correlation: "Beginner/Expert usage"
+      
+      pain_point_analysis:
+        - pain_point: "Common complaint"
+          frequency: "How often mentioned"
+          severity_indicators: "Language used"
+          proposed_solutions: "Community suggestions"
+          satisfaction: "Solution effectiveness"
+      
+      trend_identification:
+        - trend: "Emerging topic"
+          trajectory: "Increasing/Decreasing"
+          drivers: "What's causing it"
+          implications: "Potential impact"
+          timeline: "When it might peak"
+  
+  influence_mapping:
+    thought_leaders:
+      - name: "Community influencer"
+        platform_presence: "Follower count"
+        expertise_areas: "What they're known for"
+        content_style: "Technical/Accessible/Academic"
+        engagement_rate: "Likes/Comments per post"
+        credibility_indicators: "Why people trust them"
+        recent_focus: "Current interests"
+    
+    content_creators:
+      - creator: "Blog/YouTube/Podcast"
+        audience_size: "Reach metrics"
+        content_frequency: "How often they publish"
+        engagement_quality: "Depth of interactions"
+        monetization: "How they make money"
+        influence_on_domain: "Impact on industry"
+
+# Workflow Observation Template
+workflow_observation_template:
+  session_metadata:
+    date: "YYYY-MM-DD"
+    participant: "Person observed"
+    role: "Their job title"
+    duration: "Minutes observed"
+    environment: "Office/Remote/Lab"
+    tools_available: "Software/Hardware present"
+  
+  activity_log:
+    time_stamped_activities:
+      - timestamp: "HH:MM"
+        activity: "What they're doing"
+        tools_used: "Software/systems"
+        information_sources: "What they reference"
+        decisions_made: "Choices they make"
+        interactions: "Who they contact"
+        outputs_created: "What they produce"
+        obstacles_encountered: "Problems faced"
+        problem_resolution: "How they solve issues"
+  
+  decision_point_analysis:
+    critical_decisions:
+      - decision: "What they decided"
+        context: "Situation requiring choice"
+        information_gathered: "Data they collected"
+        options_considered: "Alternatives evaluated"
+        criteria_applied: "How they chose"
+        confidence_level: "How certain they were"
+        validation_sought: "Who they consulted"
+        time_taken: "How long to decide"
+  
+  expertise_indicators:
+    shortcuts_used:
+      - shortcut: "What they did quickly"
+        context: "When they used it"
+        knowledge_required: "What you need to know"
+        risk_level: "Potential downside"
+        alternative: "Safer but slower method"
+    
+    pattern_recognition:
+      - pattern: "What they recognized"
+        indicators: "What tipped them off"
+        implications: "What it meant"
+        actions_taken: "What they did about it"
+        experience_level: "Years needed to see this"
+  
+  quality_assurance:
+    validation_methods:
+      - checkpoint: "When they check quality"
+        method: "How they verify"
+        criteria: "What they look for"
+        tools: "What helps them check"
+        frequency: "How often done"
+    
+    error_handling:
+      - error_type: "What went wrong"
+        detection: "How they found it"
+        impact: "Consequences"
+        resolution: "How they fixed it"
+        prevention: "How to avoid future"
+
+# Competitive Analysis Template
+competitive_analysis_template:
+  solution_profile:
+    basic_info:
+      name: "Product/Service name"
+      vendor: "Company providing it"
+      category: "Type of solution"
+      target_market: "Who it's for"
+      pricing_model: "How it's priced"
+      launch_date: "When it was released"
+      latest_version: "Current version"
+      geographic_availability: "Where it's sold"
+    
+    positioning_analysis:
+      value_proposition:
+        primary_benefit: "Main value claim"
+        target_persona: "Ideal customer"
+        differentiation: "How it's unique"
+        messaging: "Key marketing messages"
+      
+      competitive_comparison:
+        strengths: "What it does well"
+        weaknesses: "Where it falls short"
+        opportunities: "Market gaps it could fill"
+        threats: "Competitive risks"
+  
+  feature_analysis:
+    capability_matrix:
+      - feature_category: "Functional area"
+        capabilities:
+          - feature: "Specific capability"
+            availability: "Yes/No/Partial"
+            quality: "Excellent/Good/Poor"
+            uniqueness: "Unique/Standard/Missing"
+            user_feedback: "What users say"
+    
+    integration_ecosystem:
+      - integration: "System it connects to"
+        type: "Native/API/Third-party"
+        quality: "Rating"
+        setup_complexity: "Easy/Medium/Hard"
+        maintenance_burden: "Low/Medium/High"
+  
+  market_reception:
+    user_feedback:
+      review_summary:
+        total_reviews: "Count across platforms"
+        average_rating: "Overall score"
+        rating_distribution: "1-5 star breakdown"
+        
+      sentiment_analysis:
+        positive_themes:
+          - theme: "What users love"
+            frequency: "How often mentioned"
+            example_quotes: "Actual user comments"
+        
+        negative_themes:
+          - theme: "What users dislike"
+            frequency: "How often mentioned"
+            severity: "Deal-breaker/Annoying/Minor"
+            example_quotes: "Actual complaints"
+      
+      feature_requests:
+        - request: "What users want"
+          frequency: "How often requested"
+          business_impact: "Why it matters"
+          competitive_relevance: "If others have it"
+
+# Regulatory Research Template
+regulatory_research_template:
+  regulation_profile:
+    basic_info:
+      name: "Regulation name"
+      jurisdiction: "Where it applies"
+      effective_date: "When it started"
+      authority: "Who enforces it"
+      scope: "What it covers"
+      penalty_range: "Fines/consequences"
+    
+    compliance_requirements:
+      mandatory_controls:
+        - control: "Required practice"
+          description: "What must be done"
+          frequency: "How often"
+          documentation: "What must be recorded"
+          validation: "How compliance is proven"
+          responsibility: "Who's accountable"
+      
+      reporting_obligations:
+        - report: "Required document"
+          frequency: "How often due"
+          content: "What information"
+          format: "Required structure"
+          submission: "Where/how to send"
+          penalties: "For late/incorrect"
+    
+    operational_impact:
+      process_changes:
+        - process: "Business activity affected"
+          change_required: "What must be different"
+          cost_impact: "Financial consequence"
+          time_impact: "Speed/efficiency effect"
+          skill_requirements: "New capabilities needed"
+      
+      system_requirements:
+        - requirement: "Technical control needed"
+          implementation: "How to achieve it"
+          cost_estimate: "Financial investment"
+          timeline: "How long to implement"
+          ongoing_maintenance: "Continuing requirements"
+
+# Data Synthesis Template
+synthesis_template:
+  research_summary:
+    methodology_used:
+      - method: "Interview/Observation/Community"
+        duration: "Time invested"
+        participants: "Number of people/posts"
+        coverage: "Scope achieved"
+        quality: "Confidence in findings"
+    
+    key_findings:
+      domain_characteristics:
+        - finding: "Important insight"
+          evidence: "Supporting data"
+          confidence: "High/Medium/Low"
+          sources: "Where it came from"
+          implications: "What it means for agents"
+      
+      persona_insights:
+        - insight: "Understanding about users"
+          behavior_pattern: "What they do"
+          motivation: "Why they do it"
+          pain_point: "What frustrates them"
+          opportunity: "How to help them"
+      
+      solution_opportunities:
+        - opportunity: "Unmet need identified"
+          market_size: "How many affected"
+          current_solutions: "What exists today"
+          gaps: "What's missing"
+          value_potential: "Benefit of solving"
+  
+  validation_evidence:
+    triangulation_check:
+      - finding: "Key insight"
+        source_1: "First confirmation"
+        source_2: "Second confirmation"
+        source_3: "Third confirmation"
+        conflicts: "Contradicting evidence"
+        resolution: "How conflicts resolved"
+    
+    expert_validation:
+      - validator: "Domain expert name"
+        credentials: "Why they're credible"
+        feedback: "Their assessment"
+        corrections: "What they changed"
+        confidence: "Their certainty level"
+  
+  agent_implications:
+    personality_requirements:
+      - agent_type: "Role needed"
+        personality_traits: "Required characteristics"
+        knowledge_depth: "Expertise level"
+        communication_style: "How they should talk"
+        decision_authority: "What they can decide"
+    
+    capability_specifications:
+      - capability: "What agent must do"
+        knowledge_required: "Domain expertise needed"
+        process_understanding: "Workflow knowledge"
+        tool_integration: "System connections"
+        quality_standards: "Performance expectations"
+
+# Quality Assurance Checklist
+quality_checklist:
+  completeness:
+    - "All planned research activities completed"
+    - "Sufficient expert perspectives gathered"
+    - "Community insights representative"
+    - "Competitive landscape mapped"
+    - "Regulatory requirements understood"
+  
+  accuracy:
+    - "Facts verified with authoritative sources"
+    - "Expert insights cross-validated"
+    - "Terminology definitions accurate"
+    - "Process descriptions verified"
+    - "No significant contradictions unresolved"
+  
+  utility:
+    - "Findings directly applicable to agent creation"
+    - "Personality insights actionable"
+    - "Process knowledge detailed enough"
+    - "Cultural understanding sufficient"
+    - "Gap analysis identifies opportunities"
+  
+  ethical_compliance:
+    - "Consent obtained for all interviews"
+    - "Confidentiality agreements honored"
+    - "Attribution appropriate"
+    - "Community guidelines respected"
+    - "Intellectual property respected"

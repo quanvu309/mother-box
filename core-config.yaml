@@ -1,0 +1,181 @@
+# Mother Box Core Configuration
+# Meta-team that creates custom agent teams following BMAD methodology
+
+name: Mother Box
+version: 1.0.0
+description: A sophisticated meta-team of agents that creates custom agent teams for specific user needs through deep domain research and BMAD-compliant package generation
+author: Mother Box Team
+created: 2025-08-06
+
+# System Configuration
+system:
+  framework: BMAD
+  methodology_version: 1.0
+  llm_optimization: true
+  research_depth: comprehensive
+  quality_gates: true
+  
+# Core Operating Principles
+principles:
+  - research_first: Always conduct deep domain research before creating
+  - authenticity: Create domain-authentic agents, not generic ones
+  - user_collaboration: Work WITH users to understand needs
+  - quality_focus: Multiple quality gates ensure excellence
+  - llm_optimized: All outputs optimized for LLM consumption
+  - lean_core: No unnecessary complexity or add-ons
+  - complete_packages: Create full BMAD packages, not just agents
+
+# Operating Phases
+phases:
+  understanding:
+    description: Work with user to clarify and validate requirements
+    duration_hours: 8-20
+    agents:
+      - orchestrator
+      - analyst
+      - researcher
+      - pm
+      - master
+      - po
+    deliverables:
+      - requirements_document
+      - domain_research
+      - team_blueprint
+      - success_criteria
+    quality_gate: user_validation
+    
+  building:
+    description: Transform requirements into complete agent team package
+    duration_hours: 16-36
+    agents:
+      - orchestrator
+      - pm
+      - architect
+      - agent_creator
+      - validator
+      - master
+      - po
+      - prompt_specialist
+    deliverables:
+      - agent_definitions
+      - tasks_workflows
+      - templates_checklists
+      - integration_specs
+      - user_guide
+    quality_gate: master_approval
+
+# Agent Team Composition
+agents:
+  core_leadership:
+    - orchestrator: Manages overall process and coordination
+    - master: Guards methodology and quality standards
+    
+  research_analysis:
+    - analyst: Trusted advisor and requirements expert
+    - researcher: Deep domain investigation specialist
+    
+  creation_team:
+    - pm: Documentation hub and synthesis expert
+    - architect: System design and integration patterns
+    - agent_creator: Writes agent definitions and personas
+    - validator: Reviews and validates quality
+    - po: Defines and guards success criteria
+    
+  specialists:
+    - prompt_specialist: Masters LLM behavior and psychology
+
+# Communication Patterns
+communication:
+  patterns:
+    - direct_messaging: "@AgentName: Request"
+    - broadcast: "@team: Announcement"
+    - request_response: "REQUEST: Task" → "RESPONSE: Result"
+    - event_notification: "EVENT: Trigger" → Action
+  
+  protocols:
+    context_preservation: true
+    structured_formats: true
+    acknowledgment_required: true
+    escalation_enabled: true
+
+# Quality Standards
+quality:
+  gates:
+    - end_of_understanding: Requirements complete and validated
+    - before_building: Research comprehensive and accurate
+    - during_creation: Each component meets BMAD standards
+    - final_review: Package ready for delivery
+    
+  validation:
+    clarity_score: 1-10
+    consistency_score: 1-10
+    completeness_score: 1-10
+    integration_readiness: 1-10
+    
+  enforcement:
+    master_authority: Can halt progress for quality issues
+    validator_review: All documents reviewed before proceeding
+    po_approval: Success criteria must be met
+
+# Output Structure
+output:
+  package_structure:
+    - agents/: Agent definition files
+    - tasks/: Executable workflows
+    - templates/: Document templates
+    - checklists/: Quality control lists
+    - data/: Domain knowledge bases
+    - workflows/: Multi-step processes
+    - utils/: Helper resources
+    - agent-teams/: Team configurations
+    - core-config.yaml: Configuration
+    - install-manifest.yaml: Setup instructions
+    - user-guide.md: Usage documentation
+
+# Success Metrics
+metrics:
+  understanding_phase:
+    - requirements_clarity: 90%+
+    - domain_coverage: 95%+
+    - user_satisfaction: Validated
+    
+  building_phase:
+    - bmad_compliance: 100%
+    - integration_tested: 100%
+    - documentation_complete: 100%
+    
+  overall:
+    - delivery_time: Within committed timeline
+    - quality_score: 9+/10
+    - user_acceptance: Confirmed
+
+# Escalation Paths
+escalation:
+  triggers:
+    - scope_change: Major requirements change
+    - technical_blocker: Cannot proceed technically
+    - quality_failure: Repeated quality gate failures
+    - domain_complexity: Beyond research capabilities
+    
+  handlers:
+    - orchestrator: First-line resolution
+    - master: Quality and methodology issues
+    - analyst: User communication and clarification
+    - human: Final escalation point
+
+# Configuration Parameters
+parameters:
+  research:
+    min_sources: 3
+    max_research_hours: 8
+    domain_depth: comprehensive
+    
+  creation:
+    prompt_optimization: true
+    role_reinforcement: true
+    boundary_enforcement: strict
+    
+  validation:
+    test_scenarios: required
+    edge_cases: documented
+    integration_tests: mandatory

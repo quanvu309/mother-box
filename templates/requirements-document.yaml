@@ -1,0 +1,269 @@
+# Requirements Document Template
+# Used by Mother Box Analyst to capture user needs
+
+document:
+  type: requirements
+  version: 1.0
+  created_by: Mother Box Analyst
+  purpose: Capture and validate agent team requirements
+
+# Project Context Section
+project_context:
+  prompt: "Describe the overall project context"
+  fields:
+    domain:
+      label: "Industry/Domain"
+      type: text
+      required: true
+      example: "Healthcare, Fintech, E-commerce"
+      validation: "Must be specific industry"
+    
+    organization:
+      label: "Organization Type"
+      type: select
+      options: ["Startup", "SMB", "Enterprise", "Non-profit", "Government"]
+      required: true
+    
+    team_size:
+      label: "Current Team Size"
+      type: number
+      required: true
+      validation: "Positive integer"
+    
+    maturity:
+      label: "Project Maturity"
+      type: select
+      options: ["Greenfield", "Early Stage", "Growth", "Mature", "Legacy"]
+      required: true
+    
+    timeline:
+      label: "Timeline Requirements"
+      type: text
+      required: true
+      example: "Need operational by Q2 2025"
+
+# Problems and Pain Points
+problems:
+  prompt: "What problems need solving?"
+  structure: list
+  fields:
+    problem_statement:
+      label: "Problem Description"
+      type: text
+      required: true
+      min_length: 50
+    
+    current_impact:
+      label: "Current Impact"
+      type: text
+      required: true
+      example: "Costs 10 hours/week, delays projects by 2 days"
+    
+    affected_users:
+      label: "Who is Affected"
+      type: text
+      required: true
+    
+    priority:
+      label: "Priority Level"
+      type: select
+      options: ["Critical", "High", "Medium", "Low"]
+      required: true
+
+# Agent Roles Needed
+agent_roles:
+  prompt: "What agent roles are needed?"
+  structure: list
+  fields:
+    role_name:
+      label: "Agent Role Name"
+      type: text
+      required: true
+      example: "Customer Service Agent"
+    
+    primary_responsibility:
+      label: "Main Responsibility"
+      type: text
+      required: true
+      min_length: 30
+    
+    key_decisions:
+      label: "Decisions This Agent Makes"
+      type: list
+      required: true
+      min_items: 2
+    
+    interactions:
+      label: "Who They Interact With"
+      type: list
+      required: true
+    
+    required_expertise:
+      label: "Required Domain Knowledge"
+      type: text
+      required: true
+    
+    success_metrics:
+      label: "How to Measure Success"
+      type: text
+      required: true
+
+# Workflows to Automate
+workflows:
+  prompt: "Describe workflows that need automation"
+  structure: list
+  fields:
+    workflow_name:
+      label: "Workflow Name"
+      type: text
+      required: true
+    
+    trigger_event:
+      label: "What Triggers This Workflow"
+      type: text
+      required: true
+    
+    steps:
+      label: "Workflow Steps"
+      type: ordered_list
+      required: true
+      min_items: 3
+    
+    decision_points:
+      label: "Where Decisions Are Made"
+      type: list
+      required: false
+    
+    expected_outcome:
+      label: "Expected Result"
+      type: text
+      required: true
+    
+    frequency:
+      label: "How Often This Occurs"
+      type: text
+      required: true
+      example: "100 times/day"
+
+# Success Criteria
+success_criteria:
+  prompt: "How will we measure success?"
+  fields:
+    quantitative_metrics:
+      label: "Measurable Metrics"
+      type: list
+      required: true
+      example: ["Response time < 2 min", "Accuracy > 95%", "Cost reduction 40%"]
+      min_items: 2
+    
+    qualitative_goals:
+      label: "Qualitative Improvements"
+      type: list
+      required: true
+      example: ["Better user experience", "Reduced frustration", "Improved consistency"]
+      min_items: 2
+    
+    timeline_milestones:
+      label: "Key Milestones"
+      type: list
+      required: false
+      example: ["Phase 1 by March", "Full deployment by June"]
+    
+    roi_expectations:
+      label: "Return on Investment"
+      type: text
+      required: false
+      example: "Save $200K/year in operational costs"
+
+# Constraints and Requirements
+constraints:
+  prompt: "What constraints exist?"
+  fields:
+    technical_constraints:
+      label: "Technical Limitations"
+      type: list
+      required: false
+      example: ["Must integrate with Salesforce", "On-premise only", "Python required"]
+    
+    compliance_requirements:
+      label: "Regulatory/Compliance Needs"
+      type: list
+      required: false
+      example: ["HIPAA compliant", "SOC2 required", "GDPR considerations"]
+    
+    budget_constraints:
+      label: "Budget Limitations"
+      type: text
+      required: false
+    
+    integration_requirements:
+      label: "System Integrations Needed"
+      type: list
+      required: false
+      example: ["Slack API", "Microsoft Teams", "Custom CRM"]
+
+# Research Questions for Domain Expert
+research_needs:
+  prompt: "What needs further investigation?"
+  structure: list
+  fields:
+    question:
+      label: "Research Question"
+      type: text
+      required: true
+    
+    why_important:
+      label: "Why This Matters"
+      type: text
+      required: true
+    
+    expected_answer_type:
+      label: "Type of Answer Needed"
+      type: select
+      options: ["Best practices", "Technical specs", "Compliance rules", "Industry standards", "Tool recommendations"]
+
+# Validation Section
+validation:
+  prompt: "Confirm understanding with user"
+  fields:
+    user_confirmation:
+      label: "User Confirms Requirements"
+      type: boolean
+      required: true
+    
+    revision_notes:
+      label: "Changes Requested"
+      type: text
+      required: false
+    
+    final_approval:
+      label: "Ready for Building Phase"
+      type: boolean
+      required: true
+    
+    approval_timestamp:
+      label: "Approval Date/Time"
+      type: datetime
+      auto_populate: true
+
+# Metadata
+metadata:
+  created_date:
+    type: datetime
+    auto_populate: true
+  
+  last_modified:
+    type: datetime
+    auto_populate: true
+  
+  version:
+    type: string
+    default: "1.0"
+  
+  analyst:
+    type: string
+    auto_populate: from_agent
+  
+  project_id:
+    type: string
+    auto_generate: uuid

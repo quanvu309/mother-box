@@ -1,0 +1,140 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Deployment
+.env.production
+.env.staging
+config/secrets/
+secrets/
+certs/
+
+# Backup files
+backups/
+*.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# API Keys and Secrets
+*.key
+*.pem
+*.crt
+config/api-keys.yaml
+config/secrets.yaml
+
+# State files
+state/
+.state/
+checkpoints/
+
+# Build artifacts
+build/
+dist/
+out/
+
+# Monitoring and metrics
+metrics/
+monitoring/
+prometheus/
+grafana/
+
+# Cache
+.cache/
+*.cache
+
+# Test artifacts
+test-results/
+test-reports/
+coverage/
+
+# Mother Box specific
+outputs/
+generated-teams/
+research-data/
+validation-reports/

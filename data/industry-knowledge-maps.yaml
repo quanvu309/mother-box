@@ -1,0 +1,457 @@
+# Industry Knowledge Maps for Mother Box
+# Structured knowledge representations for rapid domain understanding
+
+# Healthcare Industry Knowledge Map
+healthcare:
+  domain_overview:
+    definition: "Healthcare encompasses medical services, health insurance, medical devices, and health information technology"
+    market_size: "$4.5 trillion globally, $4.1 trillion in US"
+    complexity_factors: ["Heavy regulation", "Life-critical decisions", "Privacy requirements", "Complex billing"]
+    
+  key_stakeholders:
+    providers:
+      - stakeholder: "Physicians"
+        roles: ["Diagnosis", "Treatment", "Patient care"]
+        pain_points: ["EHR usability", "Administrative burden", "Time constraints"]
+        tools: ["Epic", "Cerner", "AllScripts"]
+        
+      - stakeholder: "Nurses"
+        roles: ["Patient monitoring", "Medication administration", "Care coordination"]
+        pain_points: ["Documentation overhead", "Staffing shortages", "Technology complexity"]
+        tools: ["Nursing stations", "Mobile devices", "Alert systems"]
+        
+      - stakeholder: "Hospital Administrators"
+        roles: ["Operations", "Finance", "Compliance", "Quality"]
+        pain_points: ["Cost control", "Regulatory compliance", "Quality metrics"]
+        tools: ["HIS", "Financial systems", "Quality dashboards"]
+    
+    payers:
+      - stakeholder: "Insurance Companies"
+        roles: ["Claims processing", "Coverage decisions", "Risk management"]
+        pain_points: ["Fraud detection", "Cost containment", "Member satisfaction"]
+        tools: ["Claims systems", "Actuarial software", "CRM"]
+        
+      - stakeholder: "Government Programs"
+        roles: ["Medicare/Medicaid administration", "Policy enforcement"]
+        pain_points: ["Budget constraints", "Program integrity", "Access equity"]
+        tools: ["CMS systems", "State Medicaid platforms"]
+  
+  core_processes:
+    patient_care:
+      workflow: "Registration → Triage → Assessment → Treatment → Discharge → Follow-up"
+      decision_points:
+        - point: "Triage priority"
+          criteria: ["Severity", "Urgency", "Resources"]
+          stakeholders: ["Triage nurse", "Physician"]
+          
+        - point: "Treatment plan"
+          criteria: ["Diagnosis", "Evidence", "Patient preferences", "Cost"]
+          stakeholders: ["Physician", "Patient", "Care team"]
+      
+      quality_measures: ["Patient satisfaction", "Clinical outcomes", "Safety indicators", "Length of stay"]
+    
+    revenue_cycle:
+      workflow: "Registration → Insurance verification → Service delivery → Coding → Billing → Payment → Collections"
+      pain_points: ["Coding accuracy", "Prior authorizations", "Denial management", "Collection rates"]
+      key_metrics: ["Days in AR", "Collection rate", "Denial rate", "Cost to collect"]
+  
+  regulatory_landscape:
+    major_regulations:
+      - regulation: "HIPAA"
+        scope: "Privacy and security of health information"
+        impact: "All healthcare entities"
+        penalties: "Up to $1.9M per incident"
+        
+      - regulation: "HITECH"
+        scope: "Electronic health records and breach notification"
+        impact: "Healthcare providers and technology vendors"
+        penalties: "Enhanced HIPAA penalties"
+        
+      - regulation: "21st Century Cures Act"
+        scope: "Interoperability and information blocking"
+        impact: "EHR vendors and health systems"
+        penalties: "Up to $1M per violation"
+  
+  technology_ecosystem:
+    core_systems:
+      - system: "Electronic Health Records (EHR)"
+        vendors: ["Epic", "Cerner Oracle", "Meditech", "AllScripts"]
+        market_share: "Epic 31%, Cerner 25%, Others 44%"
+        purpose: "Patient record management and clinical workflows"
+        
+      - system: "Revenue Cycle Management"
+        vendors: ["Epic", "Cerner", "Optum", "Change Healthcare"]
+        purpose: "Billing, coding, and financial management"
+        
+      - system: "Picture Archiving and Communication (PACS)"
+        vendors: ["GE Healthcare", "Philips", "Siemens"]
+        purpose: "Medical imaging storage and viewing"
+  
+  domain_terminology:
+    clinical_terms:
+      - term: "ICD-10"
+        definition: "International Classification of Diseases, 10th Revision"
+        usage: "Medical diagnosis coding for billing and statistics"
+        expertise_level: "All clinical and billing staff must know"
+        
+      - term: "CPT"
+        definition: "Current Procedural Terminology"
+        usage: "Medical procedure coding for billing"
+        expertise_level: "Billing and clinical documentation specialists"
+        
+      - term: "HL7 FHIR"
+        definition: "Fast Healthcare Interoperability Resources"
+        usage: "Standard for health information exchange"
+        expertise_level: "IT and interoperability specialists"
+  
+  emerging_trends:
+    - trend: "Value-based care"
+      description: "Payment models based on patient outcomes rather than volume"
+      timeline: "Accelerating adoption over next 5 years"
+      impact: "Requires new metrics, care coordination, and risk management"
+      
+    - trend: "Digital health and telemedicine"
+      description: "Remote care delivery and digital therapeutics"
+      timeline: "Rapid growth post-COVID"
+      impact: "New care models, technology requirements, and regulatory considerations"
+
+# Financial Services Knowledge Map
+financial_services:
+  domain_overview:
+    definition: "Financial services encompass banking, insurance, investment management, and fintech"
+    market_size: "$22 trillion in assets under management globally"
+    complexity_factors: ["Heavy regulation", "Risk management", "Real-time processing", "Security requirements"]
+  
+  key_stakeholders:
+    traditional_banks:
+      - stakeholder: "Commercial Bankers"
+        roles: ["Lending decisions", "Relationship management", "Credit analysis"]
+        pain_points: ["Digital transformation", "Regulatory compliance", "Competition from fintech"]
+        tools: ["Core banking systems", "CRM", "Credit analysis platforms"]
+        
+      - stakeholder: "Investment Advisors"
+        roles: ["Portfolio management", "Client advisory", "Risk assessment"]
+        pain_points: ["Regulatory reporting", "Market volatility", "Client expectations"]
+        tools: ["Portfolio management systems", "Trading platforms", "Research tools"]
+    
+    fintech:
+      - stakeholder: "Product Managers"
+        roles: ["Product strategy", "User experience", "Market analysis"]
+        pain_points: ["Regulatory uncertainty", "Customer acquisition", "Competition"]
+        tools: ["Analytics platforms", "A/B testing", "Customer journey mapping"]
+  
+  core_processes:
+    lending:
+      workflow: "Application → Credit check → Underwriting → Approval → Funding → Servicing → Collections"
+      decision_frameworks:
+        - framework: "5 C's of Credit"
+          components: ["Character", "Capacity", "Capital", "Collateral", "Conditions"]
+          application: "Personal and business lending decisions"
+          
+      risk_factors: ["Credit score", "Debt-to-income ratio", "Employment stability", "Economic conditions"]
+    
+    trading:
+      workflow: "Market analysis → Order placement → Execution → Settlement → Reporting"
+      time_criticality: "Microseconds matter in high-frequency trading"
+      risk_controls: ["Position limits", "Stop losses", "Circuit breakers"]
+  
+  regulatory_landscape:
+    major_regulations:
+      - regulation: "Dodd-Frank Act"
+        scope: "Comprehensive financial system reform"
+        impact: "All major financial institutions"
+        requirements: ["Stress testing", "Living wills", "Volcker Rule compliance"]
+        
+      - regulation: "Basel III"
+        scope: "International banking capital requirements"
+        impact: "Global banks"
+        requirements: ["Capital ratios", "Liquidity requirements", "Leverage ratios"]
+        
+      - regulation: "PCI DSS"
+        scope: "Payment card data security"
+        impact: "All organizations handling card payments"
+        requirements: ["Secure networks", "Data protection", "Vulnerability management"]
+  
+  technology_ecosystem:
+    core_systems:
+      - system: "Core Banking"
+        vendors: ["FIS", "Fiserv", "Jack Henry", "Temenos"]
+        purpose: "Account management, transaction processing, customer data"
+        
+      - system: "Trading Platforms"
+        vendors: ["Bloomberg Terminal", "Refinitiv Eikon", "FactSet"]
+        purpose: "Market data, analytics, trade execution"
+        
+      - system: "Risk Management"
+        vendors: ["SAS", "IBM OpenPages", "GRC platforms"]
+        purpose: "Risk assessment, compliance monitoring, reporting"
+
+# Software Development Knowledge Map
+software_development:
+  domain_overview:
+    definition: "Software development encompasses the design, creation, testing, and maintenance of software applications"
+    market_size: "$429 billion globally, growing at 11% CAGR"
+    complexity_factors: ["Rapid technology evolution", "Scale requirements", "Security threats", "User expectations"]
+  
+  key_stakeholders:
+    development_roles:
+      - stakeholder: "Software Engineers"
+        levels: ["Junior (0-3 years)", "Mid (3-7 years)", "Senior (7+ years)", "Staff/Principal"]
+        responsibilities: ["Code development", "Architecture design", "Code review", "Mentoring"]
+        pain_points: ["Technical debt", "Changing requirements", "Legacy systems", "Work-life balance"]
+        tools: ["IDEs", "Version control", "Testing frameworks", "Monitoring tools"]
+        
+      - stakeholder: "DevOps Engineers"
+        responsibilities: ["CI/CD pipelines", "Infrastructure management", "Monitoring", "Security"]
+        pain_points: ["Tool sprawl", "Scaling challenges", "Security compliance", "On-call burden"]
+        tools: ["Kubernetes", "Docker", "Jenkins", "Terraform", "Prometheus"]
+        
+      - stakeholder: "Product Managers"
+        responsibilities: ["Requirements gathering", "Prioritization", "Stakeholder management", "Go-to-market"]
+        pain_points: ["Balancing features vs technical debt", "Estimation accuracy", "Cross-team alignment"]
+        tools: ["Jira", "Confluence", "Analytics platforms", "Prototyping tools"]
+  
+  core_processes:
+    sdlc_methodologies:
+      - methodology: "Agile/Scrum"
+        characteristics: ["Iterative", "Collaborative", "Customer-focused", "Adaptive"]
+        ceremonies: ["Sprint planning", "Daily standups", "Sprint review", "Retrospective"]
+        artifacts: ["Product backlog", "Sprint backlog", "User stories", "Definition of done"]
+        
+      - methodology: "DevOps"
+        characteristics: ["Continuous integration", "Continuous delivery", "Automation", "Collaboration"]
+        practices: ["Infrastructure as code", "Automated testing", "Monitoring", "Incident response"]
+        tools_integration: "Development and operations tool chains"
+    
+    quality_assurance:
+      testing_levels: ["Unit", "Integration", "System", "Acceptance"]
+      testing_types: ["Functional", "Performance", "Security", "Usability"]
+      quality_gates: ["Code coverage thresholds", "Static analysis", "Security scans", "Performance benchmarks"]
+  
+  technology_ecosystem:
+    programming_languages:
+      - language: "Python"
+        use_cases: ["Web development", "Data science", "Automation", "AI/ML"]
+        ecosystem: ["Django/Flask", "NumPy/Pandas", "TensorFlow/PyTorch"]
+        market_position: "High growth, especially in AI/data science"
+        
+      - language: "JavaScript/TypeScript"
+        use_cases: ["Web frontend", "Backend (Node.js)", "Mobile (React Native)"]
+        ecosystem: ["React", "Angular", "Vue", "Express", "Next.js"]
+        market_position: "Dominant in web development"
+        
+      - language: "Java"
+        use_cases: ["Enterprise applications", "Backend services", "Android development"]
+        ecosystem: ["Spring", "Spring Boot", "Maven", "Gradle"]
+        market_position: "Mature, widespread in enterprise"
+    
+    cloud_platforms:
+      - platform: "Amazon Web Services (AWS)"
+        market_share: "33% of cloud market"
+        key_services: ["EC2", "S3", "RDS", "Lambda", "EKS"]
+        strengths: ["Comprehensive service offering", "Market maturity"]
+        
+      - platform: "Microsoft Azure"
+        market_share: "21% of cloud market"
+        key_services: ["Virtual Machines", "Blob Storage", "SQL Database", "Functions", "AKS"]
+        strengths: ["Enterprise integration", "Hybrid capabilities"]
+  
+  domain_terminology:
+    technical_terms:
+      - term: "CI/CD"
+        definition: "Continuous Integration/Continuous Deployment"
+        usage: "Automated pipeline for code integration and deployment"
+        expertise_level: "Essential for all developers and DevOps"
+        
+      - term: "Microservices"
+        definition: "Architectural pattern with small, independent services"
+        usage: "System design discussions and implementation planning"
+        expertise_level: "Important for senior developers and architects"
+        
+      - term: "Technical Debt"
+        definition: "Code that works but isn't optimal and needs future refactoring"
+        usage: "Planning discussions about code quality vs delivery speed"
+        expertise_level: "All team members should understand concept"
+
+# E-commerce Knowledge Map
+ecommerce:
+  domain_overview:
+    definition: "Electronic commerce involving online buying and selling of goods and services"
+    market_size: "$5.2 trillion globally in 2021, growing at 14.7% CAGR"
+    complexity_factors: ["Omnichannel experience", "Payment security", "Global logistics", "Customer expectations"]
+  
+  key_stakeholders:
+    business_roles:
+      - stakeholder: "E-commerce Managers"
+        responsibilities: ["Online store management", "Digital marketing", "Conversion optimization"]
+        pain_points: ["Customer acquisition costs", "Cart abandonment", "Competition"]
+        tools: ["E-commerce platforms", "Analytics tools", "Marketing automation"]
+        
+      - stakeholder: "Digital Marketers"
+        specializations: ["SEO", "PPC", "Social media", "Email marketing", "Content marketing"]
+        pain_points: ["Attribution complexity", "Privacy regulations", "Platform changes"]
+        tools: ["Google Ads", "Facebook Ads", "Email platforms", "Analytics tools"]
+    
+    technical_roles:
+      - stakeholder: "E-commerce Developers"
+        responsibilities: ["Platform customization", "Integration development", "Performance optimization"]
+        pain_points: ["Platform limitations", "Third-party integrations", "Scalability"]
+        tools: ["Shopify", "Magento", "WooCommerce", "Custom platforms"]
+  
+  core_processes:
+    customer_journey:
+      stages: ["Awareness", "Consideration", "Purchase", "Fulfillment", "Support", "Retention"]
+      conversion_funnel:
+        - stage: "Traffic acquisition"
+          metrics: ["Sessions", "Traffic sources", "Cost per click"]
+          
+        - stage: "Browse to cart"
+          metrics: ["Page views", "Time on site", "Add to cart rate"]
+          
+        - stage: "Cart to checkout"
+          metrics: ["Cart abandonment rate", "Checkout initiation"]
+          
+        - stage: "Checkout to purchase"
+          metrics: ["Conversion rate", "Average order value", "Payment success rate"]
+    
+    order_fulfillment:
+      workflow: "Order placement → Payment processing → Inventory check → Picking → Packing → Shipping → Delivery"
+      optimization_factors: ["Inventory turnover", "Shipping costs", "Delivery speed", "Returns processing"]
+  
+  technology_ecosystem:
+    platforms:
+      - platform: "Shopify"
+        market_position: "Leading SaaS e-commerce platform"
+        strengths: ["Ease of use", "App ecosystem", "Scalability"]
+        target_market: "SMB to mid-market"
+        
+      - platform: "Magento Commerce"
+        market_position: "Enterprise-focused platform"
+        strengths: ["Customization", "B2B features", "Scalability"]
+        target_market: "Mid-market to enterprise"
+    
+    payment_processors:
+      - processor: "Stripe"
+        strengths: ["Developer-friendly", "Global coverage", "Feature-rich APIs"]
+        pricing: "2.9% + 30¢ per transaction"
+        
+      - processor: "PayPal"
+        strengths: ["Brand recognition", "Buyer protection", "Global presence"]
+        pricing: "2.9% + fixed fee per transaction"
+
+# Manufacturing Knowledge Map
+manufacturing:
+  domain_overview:
+    definition: "Manufacturing involves transforming raw materials into finished products through industrial processes"
+    market_size: "$12.8 trillion globally"
+    complexity_factors: ["Supply chain complexity", "Quality requirements", "Safety regulations", "Efficiency optimization"]
+  
+  key_stakeholders:
+    operational_roles:
+      - stakeholder: "Plant Managers"
+        responsibilities: ["Production oversight", "Safety compliance", "Cost management", "Team leadership"]
+        pain_points: ["Equipment downtime", "Quality issues", "Labor shortages", "Cost pressures"]
+        tools: ["MES systems", "ERP platforms", "Quality management systems"]
+        
+      - stakeholder: "Quality Engineers"
+        responsibilities: ["Quality system design", "Process improvement", "Root cause analysis"]
+        pain_points: ["Defect prevention", "Supplier quality", "Regulatory compliance"]
+        tools: ["Statistical software", "Measurement systems", "Quality databases"]
+        
+      - stakeholder: "Maintenance Technicians"
+        responsibilities: ["Equipment maintenance", "Troubleshooting", "Preventive maintenance"]
+        pain_points: ["Unplanned downtime", "Parts availability", "Technical complexity"]
+        tools: ["CMMS", "Diagnostic equipment", "Maintenance procedures"]
+  
+  core_processes:
+    production_planning:
+      inputs: ["Demand forecast", "Inventory levels", "Capacity constraints", "Material availability"]
+      outputs: ["Production schedule", "Material requirements", "Resource allocation"]
+      optimization_goals: ["Minimize costs", "Meet demand", "Optimize capacity utilization"]
+    
+    quality_management:
+      approaches: ["Six Sigma", "Lean Manufacturing", "Total Quality Management"]
+      tools: ["Statistical process control", "Control charts", "Root cause analysis"]
+      metrics: ["Defect rates", "First pass yield", "Customer complaints"]
+  
+  regulatory_landscape:
+    safety_regulations:
+      - regulation: "OSHA (US)"
+        scope: "Workplace safety and health standards"
+        impact: "All manufacturing facilities"
+        requirements: ["Safety programs", "Training", "Incident reporting"]
+        
+      - regulation: "ISO 9001"
+        scope: "Quality management systems"
+        impact: "Optional but widely adopted"
+        requirements: ["Documented processes", "Continuous improvement", "Customer focus"]
+
+# Knowledge Map Synthesis Framework
+synthesis_framework:
+  pattern_identification:
+    cross_industry_patterns:
+      - pattern: "Regulatory Compliance"
+        industries: ["Healthcare", "Financial Services", "Manufacturing"]
+        common_elements: ["Documentation requirements", "Audit trails", "Training needs"]
+        
+      - pattern: "Digital Transformation"
+        industries: ["All industries"]
+        common_elements: ["Legacy system integration", "Data analytics", "Process automation"]
+        
+      - pattern: "Customer Experience Focus"
+        industries: ["E-commerce", "Financial Services", "Healthcare"]
+        common_elements: ["Omnichannel strategies", "Personalization", "Real-time support"]
+  
+  role_archetypes:
+    technical_specialists:
+      characteristics: ["Deep domain expertise", "Problem-solving focus", "Tool-centric"]
+      communication_style: "Technical, precise, detail-oriented"
+      decision_criteria: "Accuracy, efficiency, technical soundness"
+      
+    business_managers:
+      characteristics: ["Strategic thinking", "ROI focus", "Stakeholder management"]
+      communication_style: "Business language, outcome-focused"
+      decision_criteria: "Business value, risk management, stakeholder satisfaction"
+      
+    operational_staff:
+      characteristics: ["Process adherence", "Quality focus", "Safety awareness"]
+      communication_style: "Clear, procedural, safety-conscious"
+      decision_criteria: "Compliance, quality, efficiency"
+  
+  technology_adoption_patterns:
+    enterprise_adoption_curve:
+      stages: ["Innovation", "Early adoption", "Mainstream", "Legacy"]
+      factors: ["Vendor stability", "ROI demonstration", "Integration capabilities"]
+      
+    decision_influencers: ["IT leadership", "Business stakeholders", "End users", "Vendors"]
+
+# Usage Guidelines
+usage_guidelines:
+  research_prioritization:
+    high_priority_areas:
+      - "Stakeholder pain points and motivations"
+      - "Core business processes and decision points"
+      - "Domain-specific terminology and expertise levels"
+      - "Technology ecosystem and tool preferences"
+      - "Cultural norms and communication styles"
+    
+    medium_priority_areas:
+      - "Competitive landscape and market dynamics"
+      - "Regulatory requirements and compliance processes"
+      - "Future trends and industry evolution"
+    
+    lower_priority_areas:
+      - "Historical context and industry background"
+      - "Detailed technical specifications"
+      - "Market size and financial data"
+  
+  customization_approach:
+    adaptation_steps:
+      1: "Start with industry knowledge map template"
+      2: "Validate and update stakeholder profiles"
+      3: "Refine process workflows based on specific context"
+      4: "Update technology ecosystem with current tools"
+      5: "Customize terminology for specific sub-domains"
+      6: "Add company-specific or regional variations"
+      7: "Validate with domain experts"
+      8: "Iterate based on feedback"
