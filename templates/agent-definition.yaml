@@ -1,11 +1,19 @@
-# Agent Definition Template
+# Agent Definition Template Configuration
 # Used by Mother Box Agent Creator to write new agents
+# 
+# IMPORTANT: The actual agent template is in agent-definition-template.md
+# This YAML file provides the configuration and validation rules
+#
+# For a complete example with context preservation, see:
+# examples/agent-with-context-preservation.md
 
 document:
-  type: agent-definition
-  version: 1.0
+  type: agent-definition-configuration
+  version: 2.0
   format: BMAD-compliant
   created_by: Mother Box Agent Creator
+  template_file: agent-definition-template.md
+  example_file: examples/agent-with-context-preservation.md
 
 # Header Section
 header:
