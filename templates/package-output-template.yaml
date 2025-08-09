@@ -1,0 +1,240 @@
+# Mother Box Package Output Template
+# This template defines what a complete package delivery looks like
+# Mother Box uses this to ensure nothing is missing
+
+package_output_structure:
+  name: "[team-name]-package"
+  version: "1.0.0"
+  
+  # Required root files
+  root_files:
+    - file: "README.md"
+      required: true
+      template: "templates/package-readme-template.md"
+      content: "Overview, quick start, team description"
+    
+    - file: "INSTALL.md"
+      required: true
+      template: "templates/package-install-template.md"
+      content: "Setup instructions, prerequisites, configuration"
+    
+    - file: "package-manifest.yaml"
+      required: true
+      auto_generated: true
+      content: "Complete inventory with checksums"
+    
+    - file: "core-config.yaml"
+      required: true
+      content: "Main configuration and settings"
+  
+  # Required directories with specifications
+  directories:
+    agents:
+      required: true
+      minimum_files: 5
+      must_have:
+        - "orchestrator.md"
+      validation: "Each agent follows agent-definition-template.md"
+      includes:
+        - "Full persona definition"
+        - "Commands with * prefix"
+        - "Context preservation"
+        - "Dependencies listed"
+    
+    agent_teams:
+      required: true
+      minimum_files: 1
+      must_have:
+        - "[team-name].yaml"
+      validation: "Team composition defined"
+    
+    workflows:
+      required: true
+      minimum_files: 3
+      typical:
+        - "primary-workflow.yaml"
+        - "alternative-workflow.yaml"
+        - "error-recovery-workflow.yaml"
+      validation: "Complete step sequences with agents"
+    
+    tasks:
+      required: true
+      minimum_files: 15
+      organization: "By category or phase"
+      validation: "Clear instructions with inputs/outputs"
+    
+    templates:
+      required: true
+      structure:
+        inputs:
+          required: true
+          minimum_files: 3
+        outputs:
+          required: true
+          minimum_files: 3
+        reports:
+          required: true
+          minimum_files: 3
+        internal:
+          required: true
+          minimum_files: 3
+      validation: "All templates have field definitions"
+    
+    checklists:
+      required: true
+      structure:
+        pre-flight:
+          required: true
+          minimum_files: 2
+        quality-gates:
+          required: true
+          minimum_files: 2
+        deliverables:
+          required: true
+          minimum_files: 2
+        completion:
+          required: true
+          minimum_files: 2
+      validation: "Actionable items with clear criteria"
+    
+    data:
+      required: true
+      structure:
+        domain:
+          required: true
+          typical: ["industry-knowledge.md", "terminology.md"]
+        patterns:
+          required: true
+          typical: ["solution-patterns.md", "anti-patterns.md"]
+        references:
+          required: false
+        knowledge-base:
+          required: true
+          typical: ["faqs.md", "troubleshooting.md"]
+        examples:
+          required: true
+        prompts:
+          required: true
+          typical: ["prompt-patterns.yaml"]
+        metrics:
+          required: false
+        relationships:
+          required: false
+    
+    scripts:
+      required: true
+      must_have:
+        - "install.sh"
+        - "validate.sh"
+      optional:
+        - "deploy.sh"
+        - "test.sh"
+    
+    documentation:
+      required: true
+      must_have:
+        - "user-guide.md"
+      recommended:
+        - "architecture.md"
+        - "troubleshooting.md"
+        - "api-reference.md"
+    
+    utils:
+      required: true
+      must_have:
+        - "context-preservation-guide.md"
+    
+    .claude:
+      required: true
+      must_have:
+        - "CLAUDE.md"
+      structure:
+        agents:
+          mirror_of: "/agents"
+        tasks:
+          mirror_of: "/tasks"
+        checklists:
+          mirror_of: "/checklists"  
+        templates:
+          mirror_of: "/templates"
+
+# Validation criteria for complete package
+validation_criteria:
+  structure_complete:
+    all_required_directories: true
+    all_required_files: true
+    minimum_file_counts_met: true
+  
+  content_quality:
+    agents_have_full_definitions: true
+    tasks_have_clear_instructions: true
+    templates_have_examples: true
+    checklists_are_actionable: true
+  
+  integration:
+    internal_references_valid: true
+    no_broken_dependencies: true
+    workflows_reference_existing_agents: true
+    tasks_use_available_templates: true
+  
+  claude_optimization:
+    claude_directory_complete: true
+    claude_md_instructions_present: true
+    mirrors_accurate: true
+  
+  documentation:
+    user_can_start_immediately: true
+    troubleshooting_covers_common_issues: true
+    examples_provided: true
+
+# Package scoring rubric
+scoring:
+  structure: 30  # All required components present
+  content: 30    # Quality of content
+  integration: 20 # Components work together
+  documentation: 10 # Clear and helpful
+  optimization: 10 # Claude-ready
+  
+  minimum_passing_score: 85
+  
+  grade_levels:
+    excellent: 95-100
+    good: 85-94
+    acceptable: 75-84
+    needs_improvement: 65-74
+    incomplete: 0-64
+
+# Delivery formats
+delivery_options:
+  format_1:
+    type: "directory"
+    description: "Uncompressed directory structure"
+    
+  format_2:
+    type: "archive"
+    description: "ZIP or TAR.GZ archive"
+    
+  format_3:
+    type: "git_repository"
+    description: "Git repository with initial commit"
+    
+  format_4:
+    type: "claude_project"
+    description: "Ready for Claude Projects"
+
+# Generation instructions for Mother Box
+generation_steps:
+  1: "Create directory structure"
+  2: "Generate orchestrator agent"
+  3: "Generate domain-specific agents"
+  4: "Create tasks based on agent capabilities"
+  5: "Fill template categories"
+  6: "Create checklists for all phases"
+  7: "Populate data folder with domain knowledge"
+  8: "Generate workflows connecting agents"
+  9: "Create documentation"
+  10: "Mirror to .claude directory"
+  11: "Validate package completeness"
+  12: "Generate manifest with inventory"
+  13: "Run final quality check"
+  14: "Package for delivery"

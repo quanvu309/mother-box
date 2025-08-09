@@ -1,0 +1,229 @@
+# Package Manifest Template
+# Auto-generated inventory of package contents
+
+manifest:
+  package:
+    name: "[team-name]-package"
+    version: "1.0.0"
+    created: "[ISO-8601-timestamp]"
+    generator: "Mother Box Framework v2.0"
+    
+  metadata:
+    domain: "[domain/industry]"
+    team_size: 0
+    complexity: "[low|medium|high]"
+    use_case: "[primary use case]"
+    
+  inventory:
+    agents:
+      count: 0
+      required: ["orchestrator.md"]
+      included:
+        - file: "orchestrator.md"
+          role: "Team Coordinator"
+          validated: true
+        # [Additional agents listed here]
+      
+    tasks:
+      count: 0
+      categories:
+        discovery: 0
+        analysis: 0
+        development: 0
+        testing: 0
+        deployment: 0
+        maintenance: 0
+      files: []
+      
+    templates:
+      count: 0
+      structure:
+        inputs:
+          count: 0
+          files: []
+        outputs:
+          count: 0
+          files: []
+        reports:
+          count: 0
+          files: []
+        internal:
+          count: 0
+          files: []
+        domain_specific:
+          count: 0
+          files: []
+      
+    checklists:
+      count: 0
+      structure:
+        pre_flight:
+          count: 0
+          files: []
+        quality_gates:
+          count: 0
+          files: []
+        deliverables:
+          count: 0
+          files: []
+        completion:
+          count: 0
+          files: []
+        domain_specific:
+          count: 0
+          files: []
+      
+    workflows:
+      count: 0
+      types:
+        primary: []
+        alternative: []
+        error_recovery: []
+        maintenance: []
+      
+    data:
+      categories:
+        domain:
+          present: false
+          files: []
+        patterns:
+          present: false
+          files: []
+        references:
+          present: false
+          files: []
+        knowledge_base:
+          present: false
+          files: []
+        examples:
+          present: false
+          files: []
+        prompts:
+          present: false
+          files: []
+        metrics:
+          present: false
+          files: []
+        relationships:
+          present: false
+          files: []
+      
+    documentation:
+      required:
+        readme:
+          present: false
+          file: "README.md"
+        install:
+          present: false
+          file: "INSTALL.md"
+        user_guide:
+          present: false
+          file: "documentation/user-guide.md"
+      optional:
+        architecture:
+          present: false
+          file: "documentation/architecture.md"
+        troubleshooting:
+          present: false
+          file: "documentation/troubleshooting.md"
+        api_reference:
+          present: false
+          file: "documentation/api-reference.md"
+      
+    scripts:
+      required:
+        install:
+          present: false
+          file: "scripts/install.sh"
+        validate:
+          present: false
+          file: "scripts/validate.sh"
+      optional: []
+      
+    claude_optimization:
+      directory_present: false
+      claude_md:
+        present: false
+        file: ".claude/CLAUDE.md"
+      mirrors:
+        agents:
+          synced: false
+          count: 0
+        tasks:
+          synced: false
+          count: 0
+        checklists:
+          synced: false
+          count: 0
+        templates:
+          synced: false
+          count: 0
+  
+  validation:
+    structure_complete:
+      score: 0
+      max_score: 30
+      details:
+        all_required_dirs: false
+        all_required_files: false
+        minimum_counts_met: false
+    
+    content_quality:
+      score: 0
+      max_score: 30
+      details:
+        agents_validated: false
+        tasks_clear: false
+        templates_complete: false
+        checklists_actionable: false
+    
+    integration:
+      score: 0
+      max_score: 20
+      details:
+        references_valid: false
+        dependencies_met: false
+        workflows_connected: false
+    
+    documentation:
+      score: 0
+      max_score: 10
+      details:
+        user_ready: false
+        examples_provided: false
+        troubleshooting_complete: false
+    
+    optimization:
+      score: 0
+      max_score: 10
+      details:
+        claude_ready: false
+        context_preservation: false
+        llm_optimized: false
+    
+    total_score: 0
+    maximum_score: 100
+    grade: "incomplete"
+    ready_for_delivery: false
+  
+  issues:
+    critical: []
+    warnings: []
+    suggestions: []
+  
+  checksums:
+    algorithm: "sha256"
+    package_checksum: ""
+    file_checksums: {}
+  
+  delivery:
+    format: "[directory|archive|git|claude_project]"
+    size_bytes: 0
+    file_count: 0
+    timestamp: "[ISO-8601]"
+    
+  certification:
+    mother_box_certified: false
+    version_compatible: "2.0+"
+    quality_assured: false
+    production_ready: false

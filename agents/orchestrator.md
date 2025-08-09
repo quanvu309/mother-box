@@ -66,6 +66,11 @@ commands: # All commands require * prefix when used (e.g., *help, *status)
   - gate-check: Verify quality gate readiness for phase
   - escalate {issue}: Escalate blocker to appropriate handler
   - timeline: Show project timeline and milestones
+  - validate-package: Run complete package validation check
+  - generate-package: Generate complete agent team package
+  - package-status: Show package completeness status
+  - package-manifest: Generate package manifest with inventory
+  - prepare-delivery: Final package preparation for delivery
   - yolo: Toggle skip confirmations mode
   - doc-out: Output current project documentation
   - exit: Complete orchestrator session and return
@@ -97,6 +102,13 @@ help-display-template: |
   *context ............ Full project summary
   *blockers ........... List impediments
   *escalate [issue] ... Escalate blocker
+  
+  Package Delivery:
+  *validate-package ... Check package completeness
+  *generate-package ... Create full package
+  *package-status ..... Package completeness status
+  *package-manifest ... Generate inventory
+  *prepare-delivery ... Final preparation
   
   Other:
   *yolo ............... Toggle confirmations
@@ -182,22 +194,79 @@ state-indicators:
     - Timeline at risk
     - Scope change detected
     - Resource unavailable
+package-delivery-workflow:
+  validation-requirements:
+    structure:
+      agents:
+        must_have: ["orchestrator.md"]
+        typical_count: "5-10"
+      templates:
+        must_have_dirs: ["inputs/", "outputs/", "reports/", "internal/"]
+      checklists:
+        must_have_dirs: ["pre-flight/", "quality-gates/", "deliverables/", "completion/"]
+      claude_directory:
+        must_have: ["CLAUDE.md", "agents/", "tasks/", "checklists/", "templates/"]
+    
+    documentation:
+      required: ["README.md", "INSTALL.md", "user-guide.md"]
+    
+    quality_score:
+      minimum: 85
+      calculation: "structure(30) + content(30) + integration(20) + documentation(10) + optimization(10)"
+  
+  package-generation-steps:
+    1: "Verify all agents created and tested"
+    2: "Compile all tasks from agents"
+    3: "Fill all template categories"
+    4: "Create checklists for all phases"
+    5: "Generate workflows connecting agents"
+    6: "Populate data folder with domain knowledge"
+    7: "Create documentation suite"
+    8: "Mirror everything to .claude/"
+    9: "Generate package manifest"
+    10: "Run validation checks"
+    11: "Calculate quality score"
+    12: "Prepare for delivery"
+  
+  validation-checklist:
+    - "✓ Package structure matches template"
+    - "✓ All required components present"
+    - "✓ Internal references valid"
+    - "✓ No broken dependencies"
+    - "✓ .claude/ directory synced"
+    - "✓ Documentation complete"
+    - "✓ Quality score >= 85"
+    - "✓ Ready for immediate use"
+  
+  delivery-formats:
+    directory: "Uncompressed folder structure"
+    archive: "ZIP or TAR.GZ file"
+    git_repository: "Git repo with initial commit"
+    claude_project: "Ready for Claude Projects"
+
 dependencies:
   tasks:
     - orchestrate-understanding.md
     - orchestrate-building.md
     - manage-state-transitions.md
     - coordinate-parallel-work.md
+    - validate-package.md
+    - generate-package.md
   templates:
     - project-state.yaml
     - status-report.yaml
     - handoff-protocol.yaml
     - phase-transition.yaml
+    - package-output-template.yaml
+    - package-readme-template.md
+    - package-manifest-template.yaml
   checklists:
     - phase-readiness.md
     - quality-gate-criteria.md
     - understanding-complete.md
     - building-complete.md
+    - package-complete.md
+    - delivery-readiness.md
   data:
     - mother-box-methodology.md
     - orchestration-patterns.md
